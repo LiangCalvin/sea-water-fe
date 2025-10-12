@@ -2,8 +2,8 @@ import { CommonModule } from '@angular/common';
 import { Component, EventEmitter, HostListener, Input, Output } from '@angular/core';
 import { NzButtonModule } from "ng-zorro-antd/button";
 import { NzIconModule } from 'ng-zorro-antd/icon';
-import { GlobalService } from '../../../services/global.service';
 import { StudyDetailsModule } from '../../../core/enums/all-studies.enum';
+import { GlobalService } from '../../../pages/services/global.service';
 
 @Component({
   selector: 'app-button',
