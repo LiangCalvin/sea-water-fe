@@ -52,7 +52,19 @@ export class CreateNewStudyComponent {
 
   ngOnInit() {
     sessionStorage.clear();
+    // Mock Field Assets
+    this.fieldAssets = [
+      { id: '1', name: 'Asset A' },
+      { id: '2', name: 'Asset B' },
+      { id: '3', name: 'Asset C' }
+    ];
 
+    // Mock Locations
+    this.locations = [
+      { id: 'north', name: 'Northern Site' },
+      { id: 'south', name: 'Southern Site' },
+      { id: 'east', name: 'Eastern Site' }
+    ];
     this.form.get('locationId')?.disable();
     this.form.valueChanges.subscribe(() => {
       this.hasInteractedWithForm = true;
@@ -157,34 +169,70 @@ export class CreateNewStudyComponent {
     }
   }
 
+  // getAssetDropDown() {
+  //   this.createStudyService.getDropDownAsset().subscribe(async (response: any) => {
+  //     try {
+  //       this.fieldAssets = response.data;
+  //     } catch (error) {
+  //       console.log("error :", error);
+  //     }
+  //   });
+  // }
+
+  // getLocationDropDown(assetId: string) {
+  //   this.locations = [];
+  //   if (!assetId) {
+  //     return;
+  //   }
+
+  //   this.createStudyService.getDropDownLocation(assetId).subscribe({
+  //     next: (response: any) => {
+  //       try {
+  //         this.locations = response.data;
+  //         this.form.get('locationId')?.enable();
+  //       } catch (error) {
+  //         console.log("error :", error);
+  //       }
+  //     },
+  //     error: (error) => {
+  //       console.log("Location dropdown error:", error);
+  //     }
+  //   });
+  // }
+
   getAssetDropDown() {
-    this.createStudyService.getDropDownAsset().subscribe(async (response: any) => {
-      try {
-        this.fieldAssets = response.data;
-      } catch (error) {
-        console.log("error :", error);
-      }
-    });
+    // Mock data like from API
+    setTimeout(() => {
+      this.fieldAssets = [
+        { id: '1', name: 'Asset A' },
+        { id: '2', name: 'Asset B' },
+        { id: '3', name: 'Asset C' }
+      ];
+    }, 300); // simulate async
   }
 
   getLocationDropDown(assetId: string) {
-    this.locations = [];
-    if (!assetId) {
-      return;
-    }
-
-    this.createStudyService.getDropDownLocation(assetId).subscribe({
-      next: (response: any) => {
-        try {
-          this.locations = response.data;
-          this.form.get('locationId')?.enable();
-        } catch (error) {
-          console.log("error :", error);
-        }
-      },
-      error: (error) => {
-        console.log("Location dropdown error:", error);
+    // Simulate async API call
+    setTimeout(() => {
+      if (assetId === '1') {
+        this.locations = [
+          { id: 'N1', name: 'North Site A' },
+          { id: 'N2', name: 'North Site B' },
+        ];
+      } else if (assetId === '2') {
+        this.locations = [
+          { id: 'S1', name: 'South Site A' },
+          { id: 'S2', name: 'South Site B' },
+        ];
+      } else {
+        this.locations = [
+          { id: 'E1', name: 'East Site A' },
+          { id: 'E2', name: 'East Site B' },
+        ];
       }
-    });
+
+      // enable the control after mock load
+      this.form.get('locationId')?.enable();
+    }, 300);
   }
 }

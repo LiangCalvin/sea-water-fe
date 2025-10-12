@@ -4,7 +4,7 @@ import {
 } from '@angular/core';
 import { EnvironmentConfigurationService } from '../environment-configuration.service';
 import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { delay, Observable, of } from 'rxjs';
 import { CreateStudyRequest, CreateStudyResponse } from '../../core/models/create-study/create-study.model';
 
 @Injectable({
@@ -18,9 +18,9 @@ export class CreateStudyService {
 
   constructor() { }
 
-  postCreateStudy(req: CreateStudyRequest): Observable<CreateStudyResponse> {
-    return this.http.post<CreateStudyResponse>(`${this.BASE_URL}/v1/study`, req);
-  }
+  // postCreateStudy(req: CreateStudyRequest): Observable<CreateStudyResponse> {
+  //   return this.http.post<CreateStudyResponse>(`${this.BASE_URL}/v1/study`, req);
+  // }
 
   getDropDownAsset(): Observable<{ response: any }> {
     return this.http.get<any>(`${this.BASE_URL}/v1/study/field-assets`);
@@ -29,5 +29,11 @@ export class CreateStudyService {
   getDropDownLocation(assetId: string): Observable<{ response: any }> {
     return this.http.get<any>(`${this.BASE_URL}/v1/study/locations?asset_id=${assetId}`);
   }
-
+  postCreateStudy(req: any) {
+    const mockResponse = {
+      data: { studyCode: 'FAKE-123', ...req },
+      message: 'Mock API success'
+    };
+    return of(mockResponse).pipe(delay(500));
+  }
 }

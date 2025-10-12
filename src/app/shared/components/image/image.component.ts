@@ -14,9 +14,12 @@ export class ImageComponent {
   @Input() width?: string | number;
   @Input() height?: string | number;
   @Input() fit: 'cover' | 'contain' | 'fill' | 'none' | 'scale-down' = 'cover';
-  @Input() fallback = '/assets/fallback.png';
+  // @Input() fallback = '/assets/fallback.png';
   @Input() loading: 'lazy' | 'eager' = 'lazy';
-  private readonly defaultFallback = '../../../../assets/images/no-image.png';
+  // private readonly defaultFallback = '../../../../assets/images/no-image.png';
+
+  private readonly defaultFallback = 'assets/images/no-image.png';
+  @Input() fallback = 'assets/images/fallback.png';
   isLoading = true;
   isError = false;
 

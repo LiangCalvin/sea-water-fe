@@ -1,106 +1,78 @@
 <div class="main">
-    <div class="container w-[100%]">
-      @if (label) {
-        <div class="label-container">
-          <div class="flex-label">
-            <span class="text-label">{{ label }}</span>
-          </div>
-        </div>   
-      }
-      <div #dropdownInput>
-        <button
-         #triggerBtn
-          [id]="id"
-          type="button"
-          nz-dropdown
-          nzOverlayClassName="single-dropdown"
-          nzTrigger="click"
-          (nzBlur)="handleBlur()"
-          [nzDropdownMenu]="menu"
-          [(nzVisible)]="isOpened"
-          [disabled]="isDisabled"
-          [nzOverlayStyle]="{
+  <div class="container w-[100%]">
+    @if (label) {
+    <div class="label-container">
+      <div class="flex-label">
+        <span class="text-label">{{ label }}</span>
+      </div>
+    </div>
+    }
+    <div #dropdownInput>
+      <button #triggerBtn [id]="id" type="button" nz-dropdown nzOverlayClassName="single-dropdown" nzTrigger="click"
+        (nzBlur)="handleBlur()" [nzDropdownMenu]="menu" [(nzVisible)]="isOpened" [disabled]="isDisabled"
+        [nzOverlayStyle]="{
             'width.px': inputWidth,
             'border-radius.px': 6,
             'box-shadow': '0px 1px 6px 0px #00000029',
             overflow: 'hidden',
             'max-height': '250px',
             'overflowY': options.length >= 7 ? 'auto' : 'hidden'
-          }"
-          [ngClass]="{
+          }" [ngClass]="{
             'border-[#D52B1E]': textError,
             'border-[#E6E6E6] hover:border-[#BABABA] focus:border-[#009FDA]':!textError
-          }"
-          [ngStyle]="{
+          }" [ngStyle]="{
             'background-color': isDisabled ? '#f4f4f4' : (bgColor),
             'color': isDisabled ? '#747678' : '#000000'
           }"
-          class="group grid h-9 w-full grid-cols-[1fr,auto] items-center rounded-md border  pl-4 pr-2 text-sm font-medium text-[#000000] shadow-sm disabled:text-[#747678] disabled:hover:text-[#747678] disabled:hover:ring-0 disabled:hover:ring-[#E6E6E6]">
-          @if (selectedOption) {
-            <span class="text truncate pr-4 text-left font-bold">
-              {{ displayValue }}
-            </span>
-          } @else {
-            <span class="text truncate text-left text-sm text-[#BABABA]">
-              {{ placeholder }}
-            </span>
-          }
-  
-          <div class="flex items-center">
-            <div
-              *ngIf="selectedOption && removable"
-              class="mr-2 opacity-0 transition-opacity duration-200 group-hover:opacity-100">
-              <img
-                src="assets/icons/ic-close.svg"
-                alt="Clear selection"
-                class="h-3.5 w-3.5 cursor-pointer hover:opacity-70"
-                (click)="clearSelection($event)" />
-            </div>
-            <div class="mr-2 h-[35px] w-[0.5px]"></div>
-            <svg
-              [ngClass]="{
-                'group-focus:text-[#475569]': !textError
-              }"
-              class="h-5 w-5 text-[#475569] group-hover:text-[#BABABA]"
-              xmlns="http://www.w3.org/2000/svg"
-              viewBox="0 0 20 20"
-              fill="currentColor"
-              aria-hidden="true">
-              <path
-                fill-rule="evenodd"
-                d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
-                clip-rule="evenodd" />
-            </svg>
+        class="group grid h-9 w-full grid-cols-[1fr,auto] items-center rounded-md border  pl-4 pr-2 text-sm font-medium text-[#000000] shadow-sm disabled:text-[#747678] disabled:hover:text-[#747678] disabled:hover:ring-0 disabled:hover:ring-[#E6E6E6]">
+        @if (selectedOption) {
+        <span class="text truncate pr-4 text-left font-bold">
+          {{ displayValue }}
+        </span>
+        } @else {
+        <span class="text truncate text-left text-sm text-[#BABABA]">
+          {{ placeholder }}
+        </span>
+        }
+
+        <div class="flex items-center">
+          <div *ngIf="selectedOption && removable"
+            class="mr-2 opacity-0 transition-opacity duration-200 group-hover:opacity-100">
+            <img src="assets/icons/ic-close.svg" alt="Clear selection"
+              class="h-3.5 w-3.5 cursor-pointer hover:opacity-70" (click)="clearSelection($event)" onKeyPress="" />
           </div>
-        </button>
-      </div>
-      <div *ngIf="textError" class="text-error">
-           {{  textError }}
-      </div>
-  
-      <nz-dropdown-menu #menu="nzDropdownMenu" 
-      
-      [floatingDropdown]="triggerBtn"
-      [nzVisible]="isOpened">
-        <ul nz-menu nzSelectable>
-          @if (options.length > 0) {
-            @for (option of options; track option.id) {
-              <a
-                (click)="selectOption(option)"
-                [class.selected-option]="isSelectedOption(option)"
-                class="flex items-center px-[15px] py-2.5 text-[14px] font-[400] text-black hover:bg-[#f4f4f4] hover:text-black focus:bg-[#F4F4F4] focus:outline-none"
-                role="menuitem">
-                {{ option.name }}
-              </a>
-            }
-          } @else {
-            <p
-              class="flex items-center px-[15px] py-2.5 text-[14px] text-gray-500">
-              No options available
-            </p>
-          }
-        </ul>
-      </nz-dropdown-menu>
+          <div class="mr-2 h-[35px] w-[0.5px]"></div>
+          <svg [ngClass]="{
+                'group-focus:text-[#475569]': !textError
+              }" class="h-5 w-5 text-[#475569] group-hover:text-[#BABABA]" xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+            <path fill-rule="evenodd"
+              d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
+              clip-rule="evenodd" />
+          </svg>
+        </div>
+      </button>
     </div>
+    <div *ngIf="textError" class="text-error">
+      {{ textError }}
+    </div>
+
+    <nz-dropdown-menu #menu="nzDropdownMenu" [floatingDropdown]="triggerBtn" [nzVisible]="isOpened">
+      <ul nz-menu nzSelectable>
+        @if (options.length > 0) {
+        @for (option of options; track option.id) {
+        <a (click)="selectOption(option)" [class.selected-option]="isSelectedOption(option)"
+          class="flex items-center px-[15px] py-2.5 text-[14px] font-[400] text-black hover:bg-[#f4f4f4] hover:text-black focus:bg-[#F4F4F4] focus:outline-none"
+          role="menuitem">
+          {{ option.name }}
+        </a>
+        }
+        } @else {
+        <p class="flex items-center px-[15px] py-2.5 text-[14px] text-gray-500">
+          No options available
+        </p>
+        }
+      </ul>
+    </nz-dropdown-menu>
   </div>
-  
+</div>

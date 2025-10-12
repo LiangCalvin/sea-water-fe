@@ -7,7 +7,7 @@
         <div class="container">
             <div class="card-container">
                 <div class="flex-container">
-                    <app-image [src]="'assets/images/ImagePTT.png'"></app-image>
+                    <app-image [src]="'/assets/images/ImagePTT.png'"></app-image>
                     <div class="body">
                         <app-card [style]="{ boxShadow: 'none' }" [addPadding]="true">
                             <div content class="flex w-full flex-col gap-[10px] p-[40px]">
@@ -44,15 +44,16 @@
                         </app-card>
                         <div class="footer-container">
                             <div class="">
-                                <app-button type="white" width="auto" (click)="onCancel()">Cancel</app-button>
+                                <app-button type="white" width="auto" (click)="onCancel()"
+                                    onKeyPress="">Cancel</app-button>
                             </div>
                             <div class="button-container">
                                 <app-button [type]="'white'" [disabled]="false" [width]="'auto'" [class]="'btn-text'"
-                                    (click)="onCreateOnly()">
+                                    (click)="onCreateOnly()" onKeyPress="">
                                     Create Study Only
                                 </app-button>
                                 <app-button [type]="'primary'" [disabled]="false" [width]="'auto'" [class]="'btn-text'"
-                                    (click)="onSubmit()">
+                                    (click)="onSubmit()" onKeyPress="">
                                     Create and Calculate
                                 </app-button>
                             </div>
