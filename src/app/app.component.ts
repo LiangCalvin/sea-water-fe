@@ -1,5 +1,6 @@
 import {
   AfterViewInit,
+  ChangeDetectorRef,
   Component,
   computed,
   CUSTOM_ELEMENTS_SCHEMA,
@@ -85,11 +86,26 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
 
   constructor(
     private viewContainerRef: ViewContainerRef,
-    private unsavedChangesService: UnsavedChangesService
+    private unsavedChangesService: UnsavedChangesService,
+    private cdr: ChangeDetectorRef
+
   ) {
     this.setDynamicMenuItems();
   }
+  // ngOnInit() {
+  //   this.loaded = true;
+  //   this.unsavedChangesService.setViewContainerRef(this.viewContainerRef);
+  //   this.cdr.detectChanges();
 
+  // }
+  ngOnInit() {
+    this.unsavedChangesService.setViewContainerRef(this.viewContainerRef);
+
+    // Schedule after current CD cycle
+    Promise.resolve().then(() => {
+      this.loaded = true;
+    });
+  }
   ngOnDestroy(): void {
     this.destroy$.next(null);
     this.destroy$.complete();
@@ -104,10 +120,7 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
   //   this.unsavedChangesService.setViewContainerRef(this.viewContainerRef);
 
   // }
-  ngOnInit() {
-    this.loaded = true;
-    this.unsavedChangesService.setViewContainerRef(this.viewContainerRef);
-  }
+
 
   /**
    * Lifecycle hook that is called after Angular has fully initialized the component's view.
@@ -317,11 +330,24 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
    * and the service credentials.
    * @returns {boolean} True if the component can render, false otherwise.
    */
+  // get canRender() {
+  //   return (
+  //     this.$window().includes('login') ??
+  //     this.$window().includes('credentials-not-found') ??
+  //     this.globalService.hasServiceCredential
+  //   );
+  // }
   get canRender() {
     return (
-      this.$window().includes('login') ??
-      this.$window().includes('credentials-not-found') ??
+      this.$window().includes('login') ||
+      this.$window().includes('credentials-not-found') ||
       this.globalService.hasServiceCredential
     );
   }
+
+  readonly canRenderSignal = computed(() =>
+    this.$window().includes('login') ||
+    this.$window().includes('credentials-not-found') ||
+    this.globalService.hasServiceCredential
+  );
 }

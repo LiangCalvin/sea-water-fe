@@ -1,1 +1,123 @@
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans:wght@300;400;500;600;700&display=swap');
 /* You can add global styles to this file, and also import other style files */
+/* from Estelle Weyl's blog
+    http://www.standardista.com/css-reset/ */
+
+/* CSS BROWSER RESET */
+html,
+body,
+div,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p,
+dl,
+dt,
+dd,
+ul,
+ol,
+li,
+pre,
+form,
+fieldset,
+legend,
+input,
+textarea,
+label,
+blockquote,
+table,
+th,
+td,
+section,
+header,
+* {
+    margin: 0;
+    padding: 0;
+    background-repeat: no-repeat;
+    font-size: 100%;
+    line-height: 1.4;
+    box-sizing: border-box;
+    font-family: var(--font-family-base);
+}
+
+:root {
+    --font-family-base: var(--typography-font-family-font-sans, "Noto Sans");
+}
+
+a,
+span {
+    background-repeat: no-repeat;
+    outline: none;
+}
+
+table {
+    border-collapse: collapse;
+    border-spacing: 0;
+}
+
+fieldset,
+img,
+abbr,
+acronym {
+    border: none;
+    text-decoration: none;
+}
+
+ol,
+ul {
+    list-style: none;
+}
+
+caption,
+th {
+    text-align: left;
+    font-weight: normal;
+}
+
+q::before,
+q::after {
+    content: "";
+}
+
+input,
+textarea,
+select {
+    font-family: inherit;
+    font-size: inherit;
+    font-weight: inherit;
+}
+
+.clearfix:after {
+    visibility: hidden;
+    display: block;
+    font-size: 0;
+    content: " ";
+    clear: both;
+    height: 0;
+}
+
+p {
+    color: var(--tailwind-colors-gray-600, #4B5563);
+    font-family: var(--font-family-base);
+    font-size: var(--typography-base-sizes-small-font-size, 14px);
+    font-style: normal;
+    font-weight: var(--font-weight-normal, 400);
+    line-height: 100%;
+}
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+
+.ant-card-head-title {
+    color: var(--PTTEP-Nile-Blue-950, #122B3F);
+    font-family: var(--font-family-base);
+    font-size: var(--typography-base-sizes-3x-large-font-size, 30px);
+    font-style: normal;
+    font-weight: var(--font-weight-bold, 700);
+    line-height: 100%;
+}

@@ -1,1 +1,65 @@
-<p>create-new-study works!</p>
+<ng-container *ngIf="isLoading; else mainContent">
+    <ng-container [ngTemplateOutlet]="LOADING_TEMPLATE"></ng-container>
+</ng-container>
+
+<ng-template #mainContent>
+    <div class="new-study-layout">
+        <div class="container">
+            <div class="card-container">
+                <div class="flex-container">
+                    <app-image [src]="'../../../../assets/images/ImagePTT.png'"></app-image>
+                    <div class="body">
+                        <app-card [style]="{ boxShadow: 'none' }" [addPadding]="true">
+                            <div content class="flex w-full flex-col gap-[10px] p-[40px]">
+                                <div class="header-title-text">Create New Study</div>
+                                <p>Enter the details for your new WHP analysis study.</p>
+                                <div>
+                                    <div class="w-[80%]">
+                                        <form [formGroup]="form">
+                                            <div class="mb-5">
+                                                <app-input-text class="w-[60%]" [label]="'Project Name'"
+                                                    [requireLable]="false"
+                                                    [textError]="$any(form.get('studyName')).invalid && $any(form.get('studyName')).touched ? 'Required field': '' "
+                                                    [formControl]="$any(form.get('studyName'))">
+                                                </app-input-text>
+                                            </div>
+                                            <div class="mb-5">
+                                                <app-dropdown class="w-[50%]" [label]="'Field Asset'"
+                                                    [placeholder]="'Select Option'"
+                                                    [textError]="$any(form.get('assetId')).invalid && $any(form.get('assetId')).touched ? 'Required field': '' "
+                                                    [formControl]="$any(form.get('assetId'))" [options]="fieldAssets">
+                                                </app-dropdown>
+                                            </div>
+                                            <div class="mb-5">
+                                                <app-dropdown class="w-[50%]" [label]="'Location'"
+                                                    [placeholder]="'Select Option'"
+                                                    [textError]="$any(form.get('locationId')).invalid && $any(form.get('locationId')).touched ? 'Required field': '' "
+                                                    [formControl]="$any(form.get('locationId'))" [options]="locations">
+                                                </app-dropdown>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </app-card>
+                        <div class="footer-container">
+                            <div class="">
+                                <app-button type="white" width="auto" (click)="onCancel()">Cancel</app-button>
+                            </div>
+                            <div class="button-container">
+                                <app-button [type]="'white'" [disabled]="false" [width]="'auto'" [class]="'btn-text'"
+                                    (click)="onCreateOnly()">
+                                    Create Study Only
+                                </app-button>
+                                <app-button [type]="'primary'" [disabled]="false" [width]="'auto'" [class]="'btn-text'"
+                                    (click)="onSubmit()">
+                                    Create and Calculate
+                                </app-button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</ng-template>

@@ -1,31 +1,7 @@
-@if (loaded) {
-  <div cdkScrollable class="page-content-wrapper">
-    <!-- <pttep-layout-web-component
-      [pageTitle]="envConfig.getEnvConfig().APP_TITLE"
-      [menuItems]="menuItems"
-      [headerMenuIconItems]="HEADER_MENU_ICON_ITEMS"
-      [appNavTitle]="APP_NAV_TITLE"
-      [styles]="envConfig.getEnvConfig().LAYOUT_STYLE"
-      [theme]="theme"
-      [homeUrl]="envConfig.getEnvConfig().APP_FRONTEND_URL"
-      [mode]="$mode()"
-      [initLogin]="globalService.signIn$.getValue()"
-      [initLogout]="globalService.signOut$.getValue()"
-      [initRefreshToken]="globalService.initRefreshToken$.getValue()"
-      [apigeeApiKey]="envConfig.getEnvConfig().APIGW_KEY"
-      [apigeeServiceName]="envConfig.getEnvConfig().APIGW_SERVICE_NAME"
-      [appVersion]="envConfig.getEnvConfig().APP_VERSION"
-      (onAccessTokenChange)="mfeLayoutService.handleAccessTokenChange($event)"
-      (onUserChange)="mfeLayoutService.onUserChange($event)"
-      (navigate)="mfeLayoutService.handleNavigation($event)"
-    >
-      <app-app-template></app-app-template>
-    </pttep-layout-web-component> -->
-          <app-app-template></app-app-template>
+<div *ngIf="canRenderSignal(); else loading">
+  <router-outlet></router-outlet>
+</div>
 
-  </div>
-} @else {
-  <div class="h-full w-full overflow-hidden">
-    <ng-container [ngTemplateOutlet]="LOADING_TEMPLATE"></ng-container>
-  </div>
-}
+<ng-template #loading>
+  <ng-container [ngTemplateOutlet]="LOADING_TEMPLATE"></ng-container>
+</ng-template>
