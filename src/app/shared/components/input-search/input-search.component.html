@@ -1,0 +1,33 @@
+<div class="search-wrapper" >
+  <input type="text"
+    class="search-input" 
+    [placeholder]="placeholder" 
+    [(ngModel)]="value"
+    (keyup.enter)="onSearchEnter($event)"
+    (input)="onSearch($event)"
+    (click)="onClickInput()"
+    />
+  <button class="search-button" (click)="onClick()">
+    <i nz-icon nzType="search" nzTheme="outline"></i>
+  </button>
+  <div 
+    (scroll)="onScroll($event)"
+    *ngIf="isOpen && data.length > 0" 
+    class="list-data"  
+    [ngStyle]="{ 'max-height': '250px',  'overflowY': data?.length > 8 ? 'auto' : 'hidden' }" 
+    >
+    @if(isLoading){
+      <div class="item-loading">
+        <em nz-icon nzType="custom:loading" [nzSpin]="true"></em><span class="loading-text">Loading...</span>
+      </div>
+    }@else{
+      <div class="item" *ngFor="let item of data" (click)="selectItem(item)">
+        {{ item.label }}
+      </div>
+      <div class="item-loading" *ngIf="isScrollLoading">
+        <em nz-icon nzType="custom:loading" [nzSpin]="true"></em><span class="loading-text">Loading...</span>
+      </div>
+    }
+  
+  </div>
+</div>

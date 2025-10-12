@@ -1,0 +1,7 @@
+<div [nzTooltipTitle]="tooltip" [nzTooltipColor]="'white'" nz-button nz-tooltip>
+    <ng-content></ng-content>
+</div>
+
+<ng-template #tooltip>
+    <span class="text-tooltip">{{title}}</span>
+  </ng-template>

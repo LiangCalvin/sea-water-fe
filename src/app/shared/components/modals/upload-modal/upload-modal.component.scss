@@ -1,0 +1,246 @@
+.modal-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 24px;
+}
+
+.modal-header {
+    h3 {
+        margin: 0;
+        font-size: 18px;
+        font-weight: 600;
+    }
+
+    p {
+        color: #888;
+        margin: 8px 0;
+    }
+
+    button {
+        margin-top: 8px;
+    }
+}
+
+.modal-content {
+    display: flex;
+    justify-content: center;
+    text-align: center;
+}
+
+
+.upload-box {
+    width: 500px;
+    max-width: 100%;
+    padding: 16px;
+    height: 211px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 4px;
+    border-radius: 8px;
+    border: 1px dashed #e4e4e7;
+    background: #f4f4f5;
+    box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.05);
+    transition: border-color 0.3s;
+
+    &:hover {
+        border-color: #1890ff;
+    }
+
+    i {
+        font-size: 36px;
+        color: #1890ff;
+    }
+
+    p {
+        margin: 0;
+        font-size: 14px;
+    }
+}
+
+.upload-box-file {
+    width: 500px;
+    max-width: 100%;
+    padding: 16px;
+    height: 211px;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    gap: 4px;
+    border-radius: 8px;
+    border: 1px dashed #e4e4e7;
+    background: #f4f4f5;
+    box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.05);
+    transition: border-color 0.3s;
+
+    &:hover {
+        border-color: #1890ff;
+    }
+
+    i {
+        font-size: 36px;
+        color: #1890ff;
+    }
+
+    p {
+        margin: 0;
+        font-size: 14px;
+    }
+}
+
+.file-container {
+    display: grid;
+    width: 470px;
+    padding: 12px 10px;
+    gap: 10px;
+    border-radius: 6px;
+    border: 1px solid var(--color-border-line-line-2, #E6E6E6);
+    background: var(--Color-Background-BG-1, #FFF);
+    justify-content: space-between;
+    grid-template-columns: repeat(3, 1fr);
+
+    .icon {
+        display: flex;
+        flex-direction: column;
+
+        .imageIcon {
+            display: flex;
+            justify-content: center;
+        }
+    }
+
+    .name {
+        width: 300px;
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .text-size {
+        color: var(--Color-Primary-Primary-1, #009FDA);
+        font-family: var(--font-family-base);
+        font-size: 10px;
+        font-style: normal;
+        font-weight: 400;
+        line-height: 12px;
+    }
+
+    .text-name {
+        color: var(--Color-Text-Text-1, #000);
+        font-family: var(--font-family-base);
+        font-size: 14px;
+        font-style: normal;
+        font-weight: 400;
+        line-height: 16px;
+    }
+
+    .text-date {
+        color: var(--Color-Text-Text-2, #747678);
+        font-family: var(--font-family-base);
+        font-size: 12px;
+        font-style: normal;
+        font-weight: 400;
+        line-height: 14px;
+    }
+
+    .close-icon-container {
+        cursor: pointer;
+        display: flex;
+        justify-content: flex-end;
+
+    }
+
+    .close-icon {
+        width: 25px;
+    }
+}
+
+.error-container {
+    display: flex;
+    align-items: flex-start;
+    column-gap: 10px;
+
+    .error {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .text-error {
+        color: var(--pttep-thunderbird-600-initial, #D52B1E);
+        font-family: var(--font-family-base);
+        font-size: 12px;
+        font-style: normal;
+        font-weight: 400;
+        line-height: 14px;
+    }
+}
+
+.container-btn-download {
+    display: flex;
+    justify-content: center;
+    margin: 10px;
+}
+
+::ng-deep .ant-modal-content {
+    position: relative;
+    background-color: #fff;
+    background-clip: padding-box;
+    border: 0;
+    border-radius: 8px;
+    box-shadow: 0 3px 6px -4px rgba(0, 0, 0, 0.12), 0 6px 16px 0 rgba(0, 0, 0, 0.08), 0 9px 28px 8px rgba(0, 0, 0, 0.05);
+    pointer-events: auto;
+}
+
+
+.modal-footer {
+    display: flex;
+    justify-content: flex-end;
+    gap: 8px;
+    margin-top: 24px;
+    flex-wrap: wrap;
+
+    button {
+        min-width: 80px;
+    }
+}
+
+
+
+@media screen and (max-width: 600px) {
+    .modal-container {
+        padding: 16px;
+    }
+
+    .upload-box {
+        width: 100%;
+        max-width: none;
+        height: auto;
+        padding: 20px 12px;
+    }
+
+    .upload-box-file {
+        width: 100%;
+        max-width: none;
+        height: auto;
+        padding: 20px 12px;
+    }
+
+    .modal-header {
+        text-align: center;
+
+        h3 {
+            font-size: 16px;
+        }
+
+        p {
+            font-size: 13px;
+        }
+    }
+
+    .modal-footer {
+        justify-content: center;
+    }
+}

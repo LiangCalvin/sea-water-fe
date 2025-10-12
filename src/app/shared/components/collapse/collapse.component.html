@@ -1,0 +1,9 @@
+<div class="collapse-wrapper">
+    <div class="collapse-header" (click)="toggle()">
+      <span class="collapse-title">{{ label }}</span>
+      <img  class="collapse-arrow" src="../../../../assets/icons/ChevronDown.svg" [class.open]="isOpen"/>
+    </div>
+    <div class="collapse-body" [class.open]="isOpen">
+      <ng-content></ng-content>
+    </div>
+</div>

@@ -1,0 +1,16 @@
+<div class="modal-container">
+    <div class="modal-header">
+        <h3>{{title}}</h3>
+        <p>{{text}}</p>
+    </div>
+
+    <div class="modal-content">
+
+    </div>
+
+    <div class="modal-footer">
+        <app-button [type]="'white'" [width]="'auto'" (click)="onCancel()">{{btnCancelText}}</app-button>
+        <app-button [type]="'danger'" [width]="'auto'" (click)="onSubmit()">{{btnSubmitText}}</app-button>
+    </div>
+
+</div>

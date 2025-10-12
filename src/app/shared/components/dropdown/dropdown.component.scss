@@ -1,0 +1,50 @@
+.selected-option {
+  @apply bg-[#f4f4f4];
+}
+
+.single-dropdown {
+  border-radius: 6px;
+}
+
+.text {
+  color: var(--tailwind-colors-slate-600, #475569);
+  font-family: var(--font-family-base);
+  font-size: var(--typography-base-sizes-small-font-size, 14px);
+  font-style: normal;
+  font-weight: var(--font-weight-normal, 400);
+  line-height: var(--typography-base-sizes-small-line-height, 20px);
+}
+
+.text-error {
+  color: var(--base-destructive, #dc2626);
+  font-family: var(--font-family-base);
+  font-size: var(--typography-base-sizes-small-font-size, 14px);
+  font-style: normal;
+  font-weight: var(--font-weight-normal, 400);
+  line-height: var(--typography-base-sizes-small-line-height, 20px);
+}
+
+.main{
+  display: flex;
+  flex-direction: row;
+}
+
+.container{
+  display: flex;
+  flex-direction: column;
+}
+
+.label-container {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.text-label {
+  color: var(--tailwind-colors-slate-600, #475569);
+  font-family: var(--font-family-base);
+  font-size: var(--typography-base-sizes-small-font-size, 14px);
+  font-style: normal;
+  font-weight: var(--font-weight-medium, 500);
+  line-height: 100%;
+}

@@ -1,0 +1,67 @@
+.footer {
+  background-color: #fff;
+  width: 100%;
+  padding: 24px;
+  border-top: 1px solid #e2e8f0;
+
+  &:empty {
+    display: none;
+  }
+}
+
+app-card {
+  .card-wrapper {
+    border-radius: 10px;
+    border: 1px solid #e2e8f0;
+    background: #fff;
+    box-shadow: 0px 3px 20px 0px rgba(4, 49, 128, 0.1);
+  }
+
+  .card-group {
+    .ant-card {
+      box-shadow: none;
+    }
+
+    *:not(:first-child) .ant-card {
+      margin-top: 16px;
+    }
+  }
+
+  .card-content {
+    background-color: white;
+    width: 100%;
+    overflow: auto;
+  }
+
+  .ant-card-head {
+    padding: 10px;
+    border-radius: 10px 10px 0 0;
+
+    .ant-card-head-title {
+      padding: 0;
+    }
+
+    .ant-card-extra {
+      padding: 0;
+    }
+  }
+
+  .ant-card-body {
+    border-top: 1px solid #e2e8f0;
+  }
+}
+
+.content-padding {
+  padding: 10px;
+  background: #fff;
+}
+
+.content-padding:is(:empty) {
+  padding: 0px;
+}
+
+.app-nz-card {
+  -webkit-box-shadow: 0px 3px 20px 0px #0431801a;
+  -moz-box-shadow: 0px 3px 20px 0px #0431801a;
+  box-shadow: 0px 3px 20px 0px #0431801a;
+}

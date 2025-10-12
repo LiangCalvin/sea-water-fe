@@ -1,0 +1,86 @@
+.stepper-wrapper {
+    position: relative;
+    padding-left: 14px;
+}
+
+
+.step-line-inactive {
+    position: absolute;
+    top: 0.5rem;
+    left: 0.5rem;
+    width: 2px;
+    height: 100%;
+    background-color: #CBD5E1;
+    border-radius: 1px;
+    z-index: 0;
+}
+
+.step-line-active {
+    position: absolute;
+    top: 0.5rem;
+    left: 0.5rem;
+    width: 2px;
+    background-color: #009FDA;
+    border-radius: 1px;
+    z-index: 1;
+    transition: height 0.3s ease-in-out;
+}
+
+.stepper-container {
+    position: relative;
+}
+
+.step-item {
+    position: relative;
+    margin-bottom: 2.5rem;
+}
+
+.step-dot {
+    position: absolute;
+    top: 0.15rem;
+    left: -12px;
+    width: 14px;
+    height: 14px;
+    border-radius: 9999px;
+    z-index: 10;
+}
+
+.dot-active {
+    background-color: #009FDA;
+}
+
+.dot-complete{
+    background-color: #009FDA;
+}
+
+.dot-inactive {
+    background-color: #CBD5E1;
+}
+
+
+.step-label {
+    padding-left: 0.5rem;
+    font-size: 0.95rem;
+    cursor: pointer;
+}
+
+.label-active {
+    font-weight: 600;
+    color: #334155;
+}
+
+.label-complete {
+    color: #334155;
+}
+
+.label-inactive {
+    color: #CBD5E1;
+}
+
+.label-origin {
+    color: #334155;
+}
+
+.sub-title{
+    font-size: 12px;
+}

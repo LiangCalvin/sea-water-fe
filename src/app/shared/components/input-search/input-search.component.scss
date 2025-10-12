@@ -1,0 +1,94 @@
+.search-wrapper {
+    border-radius: 6px;
+    position: relative;
+    display: flex;
+    align-items: center;
+    border: 1px solid #e5e7eb;
+    border-radius: 6px;
+    background-color: #fff;
+    max-width: 100%;
+    width: 419px;
+    padding: 0px var(--Space-Padding-paddingXS, 8px);
+    gap: var(--Space-Margin-marginSM, 12px);
+    border: 1px solid var(--Neutral-Color-Border-colorBorder, #E6E6E6);
+    background-color: var(--Neutral-Color-Background-colorBgContainer, #FFF);
+
+    .search-input {
+        flex: 1;
+        border: none;
+        outline: none;
+        padding: 7px;
+        overflow: hidden;
+        color: var(--base-foreground, #18181b);
+        text-overflow: ellipsis;
+        font-family: var(--font-family-base);
+        font-size: var(--typography-base-sizes-small-font-size, 14px);
+        font-style: normal;
+        font-weight: var(--font-weight-normal, 400);
+        line-height: var(--typography-base-sizes-small-line-height, 20px);
+
+        &::placeholder {
+            color: #9ca3af;
+        }
+
+    }
+
+    &:focus-within {
+        border-color: #009FDA;
+    }
+
+    .search-button {
+        background: transparent;
+        border: none;
+        cursor: pointer;
+        padding: 0;
+        margin-left: 8px;
+        color: #6b7280;
+
+        i {
+            font-size: 16px;
+        }
+    }
+
+    .search-button:hover {
+        color: #18181b;
+    }
+
+    .list-data {
+        position: absolute;
+        top: 110%;
+        left: 0;
+        right: 0;
+        z-index: 1000;
+        border-radius: var(--border-radius-md, 6px);
+        border: 1px solid var(--base-border, #E4E4E7);
+        background-color: var(--base-popover, #FFF);
+        box-shadow: 0px 4px 6px -1px rgba(0, 0, 0, 0.10), 0px 2px 4px -1px rgba(0, 0, 0, 0.06);
+    }
+
+    .item {
+        cursor: pointer;
+        padding: 10px;
+    }
+
+    .item:hover {
+        background-color: #F0FAFF;
+    }
+
+    .item-loading {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        column-gap: 10px;
+    }
+
+    .loading-text{
+        color: var(--base-foreground, #009FDA);
+        font-family: var(--font-family-base);
+        font-size: var(--typography-base-sizes-small-font-size, 14px);
+        font-style: normal;
+        font-weight: var(--font-weight-normal, 400);
+        line-height: var(--typography-base-sizes-small-line-height, 20px)
+    }
+
+}

@@ -1,0 +1,13 @@
+<nz-breadcrumb [nzSeparator]="iconTemplate">
+    <ng-container *ngFor="let item of list;let i = index">
+        <nz-breadcrumb-item>
+            <a  [routerLink]="[item.link]" [queryParams]="item.queryParams">
+                <span [ngClass]="i === 0 ? 'link-text' : 'text'">{{ item.page }}</span>
+            </a>
+        </nz-breadcrumb-item>
+    </ng-container>
+</nz-breadcrumb>
+
+<ng-template #iconTemplate>
+    <nz-icon nzType="right" nzTheme="outline" />
+</ng-template>

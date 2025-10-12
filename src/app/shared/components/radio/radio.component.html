@@ -1,0 +1,15 @@
+<nz-radio-group
+  [(ngModel)]="value"
+  (ngModelChange)="onValueChange($event)"
+  [disabled]="disabled"
+  class="custom-radio-group"
+>
+  <label
+    nz-radio
+    *ngFor="let option of options"
+    [nzValue]="option.value"
+    [ngStyle]="{ color: value === option.value ? currentColor : 'inherit' }"
+  >
+    {{ option.label }}
+  </label>
+</nz-radio-group>

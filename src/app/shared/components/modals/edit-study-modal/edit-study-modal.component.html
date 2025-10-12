@@ -1,0 +1,35 @@
+<div class="modal-container">
+    <div class="modal-header">
+        <h3>{{title}}</h3>
+        <p>{{subTitle}}</p>
+    </div>
+
+    <div class="modal-content">
+        <form [formGroup]="form">
+            <div class="mb-5">
+                <app-input-text [label]="'Project Name'" [requireLable]="false"
+                    [textError]="$any(form.get('studyName')).invalid && $any(form.get('studyName')).touched ? 'Please complete all required data.': '' "
+                    [formControl]="$any(form.get('studyName'))">
+                </app-input-text>
+            </div>
+            <div class="mb-5">
+                <app-dropdown [label]="'Field Asset'" [placeholder]="'Select Option'"
+                    [textError]="$any(form.get('asset')).invalid && $any(form.get('asset')).touched ? 'Please complete all required data.': '' "
+                    [formControl]="$any(form.get('asset'))" [options]="fieldAssets">
+                </app-dropdown>
+            </div>
+            <div class="mb-5">
+                <app-dropdown [label]="'Location'" [placeholder]="'Select Option'"
+                    [textError]="$any(form.get('location')).invalid && $any(form.get('location')).touched ? 'Please complete all required data.': '' "
+                    [formControl]="$any(form.get('location'))" [options]="locations">
+                </app-dropdown>
+            </div>
+        </form>
+    </div>
+
+    <div class="modal-footer">
+        <app-button [type]="'white'" [width]="'auto'" (click)="onCancel()">{{btnCancelText}}</app-button>
+        <app-button [type]="'primary'" [width]="'auto'" (click)="onSubmit()">{{btnSubmitText}}</app-button>
+    </div>
+
+</div>

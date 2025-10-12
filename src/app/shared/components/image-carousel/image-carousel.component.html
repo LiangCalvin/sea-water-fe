@@ -1,0 +1,14 @@
+<div class="carousel-wrapper">
+  <nz-carousel #carouselRef="nzCarousel" [nzAutoPlay]="autoplay" [nzDotPosition]="dotPosition" [nzDots]="autoplay">
+    <div nz-carousel-content *ngFor="let img of images" class="slide">
+      <img [src]="img" [style.height]="height" [style.width]="'100%'" [style.object-fit]="fit" alt="carousel image" />
+
+      <button class="control prev" (click)="prev()">
+        <i nz-icon nzType="left" nzTheme="outline"></i>
+      </button>
+      <button class="control next" (click)="next()">
+        <i nz-icon nzType="right" nzTheme="outline"></i>
+      </button>
+    </div>
+  </nz-carousel>
+</div>

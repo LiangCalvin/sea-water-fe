@@ -1,0 +1,56 @@
+<div class="modal-container">
+    <div class="modal-header">
+        <h3>{{ title }}</h3>
+        <p>{{desc}}</p>
+        <div *ngIf="templateName" class="container-btn-download">
+            <app-button [type]="'white'" [disabled]="false" [width]="'auto'" [class]="'btn-text'"
+                (click)="downloadSampleTemplate()">
+                Download sample template
+            </app-button>
+        </div>
+    </div>
+
+    <div class="modal-content">
+        <nz-upload [nzShowUploadList]="false" [nzBeforeUpload]="beforeUpload" nzAccept=".xlsx">
+            <div *ngIf="this.selectedFile === null" class="upload-box">
+                <i nz-icon nzType="cloud-upload" nzTheme="outline" style="font-size: 36px;"></i>
+                <img class="" src="../../../../assets/icons/CloudUpload.svg" />
+                <p><strong>Upload file</strong></p>
+                <p>Drag file here to upload or <span>browse</span></p>
+                <p>(Size Limit: 10 MB)</p>
+            </div>
+
+        </nz-upload>
+        <div *ngIf="selectedFile" class="upload-box-file">
+            <div class="file-container">
+                <div class="icon">
+                    <div class="imageIcon">
+                        <img class="" src="../../../../assets/icons/File.svg" />
+                    </div>
+                    <span class="text-size">{{this.selectedFile.size + 'KB'}}</span>
+                </div>
+                <div class="name">
+                    <span class="text-name">{{this.selectedFile.name}}</span>
+                    <span class="text-date">{{this.selectedFile.lastModified | date: "MMM d, y 'at' h:mm a" }}</span>
+                </div>
+                <div class="close-icon-container" (click)="onClearFile()">
+                    <img class="close-icon" src="../../../../assets/icons/Close.svg" />
+                </div>
+            </div>
+            <div *ngIf="fileError" class="error-container">
+                <img class="" src="../../../../assets/icons/Warning.svg" />
+                <div class="error">
+                    <p class="text-error">Cannot upload the selected file</p>
+                    <p class="text-error">{{ fileError }}</p>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="modal-footer">
+        <app-button [type]="'white'" (click)="onCancel()">Cancel</app-button>
+        <app-button [type]="'primary'" (click)="onSubmit()" [disabled]="!!fileError || !selectedFile">Submit</app-button>
+    </div>
+
+</div>

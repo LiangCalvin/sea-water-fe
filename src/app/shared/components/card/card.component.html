@@ -1,0 +1,18 @@
+<nz-card
+  [nzBodyStyle]="{ background: bgColor, padding: '0' }"
+  [nzTitle]="title"
+  [ngStyle]="style"
+  [nzExtra]="extra"
+  [nzType]="type"
+  [class]="'app-nz-card card-wrapper ' + class"
+  [nzBordered]="false">
+  <div class="tabset">
+    <ng-content select="[tabset]"></ng-content>
+  </div>
+  <div [class.content-padding]="addPadding" class="'card-content'">
+    <ng-content select="[content]"></ng-content>
+  </div>
+  <div [class]="'footer ' + footerClass">
+    <ng-content select="[footer]">{{ footerText }}</ng-content>
+  </div>
+</nz-card>

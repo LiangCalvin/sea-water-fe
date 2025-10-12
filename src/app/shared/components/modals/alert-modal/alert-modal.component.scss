@@ -1,0 +1,77 @@
+.alert-backdrop {
+  position: fixed;
+  inset: 0;
+  background-color: rgba(0, 0, 0, 0.3);
+  z-index: 1000;
+  display: flex;
+  align-items: flex-end;
+  justify-content: flex-end;
+  padding: 0 16px 24px;
+}
+
+.alert-modal {
+  background: #fff;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  padding: 16px 20px;
+  width: 388px;
+  max-width: 90%;
+  position: relative;
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  animation: slide-up 0.3s ease;
+
+  .text {
+    .title {
+      color: var(--base-foreground, #18181B);
+      font-family: var(--font-family-base);
+      font-size: var(--typography-base-sizes-base-font-size, 16px);
+      font-style: normal;
+      font-weight: var(--font-weight-bold, 700);
+      line-height: var(--typography-base-sizes-base-line-height, 24px);
+      margin-bottom: 4px;
+    }
+
+    .message {
+      color: var(--base-foreground, #18181B);
+      font-family: var(--font-family-base);
+      font-size: var(--typography-base-sizes-small-font-size, 14px);
+      font-style: normal;
+      font-weight: var(--font-weight-normal, 400);
+      line-height: var(--typography-base-sizes-small-line-height, 20px);
+    }
+  }
+
+  .close-btn {
+    background: none;
+    border: none;
+    font-size: 20px;
+    color: #999;
+    position: absolute;
+    top: 8px;
+    right: 12px;
+    cursor: pointer;
+
+    &:hover {
+      color: #333;
+    }
+  }
+}
+
+.icon {
+  width: 40px;
+  max-width: 24px;
+}
+
+@keyframes slide-up {
+  from {
+    transform: translateY(20px);
+    opacity: 0;
+  }
+
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}

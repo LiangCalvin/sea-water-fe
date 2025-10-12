@@ -1,0 +1,46 @@
+.custom-radio-group:not(.disabled-radio)
+  ::ng-deep
+  .ant-radio-checked
+  .ant-radio-inner {
+  border-color: #94a3b8;
+}
+
+.custom-radio-group:not(.disabled-radio) ::ng-deep .ant-radio-inner::after {
+  background-color: #009fda;
+}
+
+.custom-radio-group.disabled-radio
+  ::ng-deep
+  .ant-radio-checked
+  .ant-radio-inner,
+.custom-radio-group
+  ::ng-deep
+  .ant-radio-wrapper-disabled
+  .ant-radio-checked
+  .ant-radio-inner {
+  border-color: #d1d5db !important;
+  background-color: #f3f4f6 !important;
+}
+
+.custom-radio-group.disabled-radio
+  ::ng-deep
+  .ant-radio-checked
+  .ant-radio-inner::after,
+.custom-radio-group
+  ::ng-deep
+  .ant-radio-wrapper-disabled
+  .ant-radio-checked
+  .ant-radio-inner::after {
+  background-color: #9ca3af !important;
+}
+
+.custom-radio-group.disabled-radio ::ng-deep .ant-radio-inner,
+.custom-radio-group ::ng-deep .ant-radio-wrapper-disabled .ant-radio-inner {
+  border-color: #d1d5db !important;
+  background-color: #f9fafb !important;
+}
+
+.custom-radio-group.disabled-radio ::ng-deep .ant-radio-wrapper,
+.custom-radio-group ::ng-deep .ant-radio-wrapper-disabled {
+  color: #9ca3af !important;
+}

@@ -1,0 +1,71 @@
+<div class="button-dropdown-container relative inline-block">
+  <button [type]="type" [disabled]="disabled || isLoading" [ngStyle]="buttonStyles" (click)="onButtonClick()" [ngClass]="[
+      'text inline-flex items-center justify-center gap-2 rounded-md transition-colors',
+      type === 'primary' && !disabled
+        ? 'bg-[#009FDA] text-white hover:bg-[#58CAF5]'
+        : '',
+      type === 'primary' && disabled ? 'bg-[#BABABA] text-white' : '',
+
+      type === 'secondary' && !disabled
+        ? 'border border-[#009FDA] text-[#009FDA] hover:border-[#58CAF5] hover:text-[#58CAF5]'
+        : '',
+      type === 'secondary' && disabled
+        ? 'border border-[#BABABA] text-[#BABABA]'
+        : '',
+
+      type === 'tertiary' && !disabled
+        ? 'text-[#009FDA] hover:text-[#58CAF5]'
+        : '',
+      type === 'tertiary' && disabled ? 'text-[#BABABA]' : '',
+
+      type === 'danger' && !disabled
+        ? 'bg-[#DC2626] text-white hover:bg-[#DC2626]'
+        : '',
+      type === 'danger' && disabled ? 'bg-[#BABABA] text-white' : '',
+
+      type === 'white' && !disabled
+        ? 'border border-[#E4E4E7] bg-white text-[#475569] hover:bg-[#E6E6E6]'
+        : '',
+
+      type === 'white' && disabled ? 'bg-gray-300 text-[#475569]' : '',
+
+      type === 'icon-text' && !disabled ? 'hover:bg-[#009FDA0D]' : '',
+
+      width === 'auto' ? 'px-4' : '',
+      size === '1' && type === 'icon-text' ? 'px-3 text-sm' : '',
+      size === '1' && type !== 'icon-text' ? 'px-5 text-sm' : '',
+      size === '2' ? 'px-[10px] text-sm' : '',
+      size === '3' ? 'px-[10px] text-[10px]' : '',
+      size === '4' ? 'text-[10px]' : '',
+
+      className
+    ]">
+    <img *ngIf="img && !isLoading" [src]="img" [alt]="iconAlt" [ngClass]="[
+        size === '1' ? 'h-[26px] w-[26px]' : '',
+        size === '2' ? 'h-[22px] w-[22px]' : '',
+        size === '3' || size === '4' ? 'h-[18px] w-[18px]' : '',
+        disabled ? 'grayscale' : ''
+      ]" />
+    <svg *ngIf="isLoading" [ngClass]="[
+        'animate-spin',
+        size === '1' ? 'h-5 w-5' : '',
+        size === '2' ? 'h-4 w-4' : '',
+        size === '3' || size === '4' ? 'h-3 w-3' : '',
+        type === 'primary' ? 'text-white' : 'text-current'
+      ]" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+      <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+      <path class="opacity-75" fill="currentColor"
+        d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z">
+      </path>
+    </svg>
+    <i *ngIf="icon && !isLoading" nz-icon [nzType]="icon" nzTheme="outline" style="color: #009FDA;"></i>
+    <ng-content></ng-content>
+  </button>
+  <div *ngIf="hasDropdown && isDropdownOpen" class="dropdown-card absolute right-0 top-full mt-1 z-50">
+    <div *ngFor="let action of getFilteredActions()" class="line-bottom">
+      <div class="list" (click)="onDropdownAction(action)">
+        <span>{{ action.title || action }}</span>
+      </div>
+    </div>
+  </div>
+</div>

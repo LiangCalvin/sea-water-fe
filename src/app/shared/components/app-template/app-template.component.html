@@ -1,0 +1,10 @@
+@if (canRender) {
+  <div cdkScrollable class="page-content-wrapper">
+    <app-alert-modal></app-alert-modal>
+    <router-outlet />
+  </div>
+} @else {
+  <div class="h-full w-full overflow-hidden">
+    <ng-container [ngTemplateOutlet]="LOADING_TEMPLATE"></ng-container>
+  </div>
+}

@@ -1,0 +1,33 @@
+<!-- <div class="modal-backdrop" *ngIf="isVisible" (click)="onBackdropClick($event)">
+    <div class="modal-dialog" (click)="$event.stopPropagation()">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Unsaved Changes</h5>
+            </div>
+            <div class="modal-body">
+                <p>You have unsaved changes that will be lost if you continue. Are you sure you want to leave?</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" (click)="onCancel()">
+                    Cancel
+                </button>
+                <button type="button" class="btn btn-danger" (click)="onLeave()">
+                    Leave anyway
+                </button>
+            </div>
+        </div>
+    </div>
+</div> -->
+
+<div class="modal-container">
+    <div class="modal-header">
+        <h3>{{title}}</h3>
+        <p>{{text}}</p>
+    </div>
+    <div class="modal-content">
+    </div>
+    <div class="modal-footer">
+        <app-button [type]="'white'" [width]="'auto'" (click)="onCancel()">{{btnCancelText}}</app-button>
+        <app-button [type]="'primary'" [width]="'auto'" (click)="onSubmit()">{{btnSubmitText}}</app-button>
+    </div>
+</div>

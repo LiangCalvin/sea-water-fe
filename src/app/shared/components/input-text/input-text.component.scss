@@ -1,0 +1,155 @@
+/* CSS variables for the component */
+:host {
+  --placeholder-color: #bababa;
+  --disabled-bg-color: #f4f4f4;
+  --placeholder-font-size: 14px;
+  --placeholder-font-weight: 400;
+}
+
+/* Disabled input styling */
+.input:disabled,
+.textarea:disabled {
+  background-color: var(--disabled-bg-color) !important;
+  color: #747678;
+  opacity: 1;
+  /* Firefox reduces opacity for disabled elements by default */
+}
+
+/* Common placeholder styling */
+.input::placeholder,
+.textarea::placeholder {
+  font-size: var(--placeholder-font-size);
+  font-weight: var(--placeholder-font-weight);
+  color: var(--placeholder-color);
+  opacity: 1;
+}
+
+/* Vendor-specific placeholder styles */
+.input::-webkit-input-placeholder,
+.textarea::-webkit-input-placeholder {
+  font-size: var(--placeholder-font-size);
+  font-weight: var(--placeholder-font-weight);
+  color: var(--placeholder-color);
+}
+
+.input:-ms-input-placeholder,
+.textarea:-ms-input-placeholder {
+  font-size: var(--placeholder-font-size);
+  font-weight: var(--placeholder-font-weight);
+  color: var(--placeholder-color);
+}
+
+.input::-moz-placeholder,
+.textarea::-moz-placeholder {
+  font-size: var(--placeholder-font-size);
+  font-weight: var(--placeholder-font-weight);
+  color: var(--placeholder-color);
+  opacity: 1;
+}
+
+.label-container {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.input-container {
+  display: flex;
+  align-items: center;
+  column-gap: 10px;
+}
+
+.text-unit {
+  display: flex;
+  align-items: center;
+  color: var(--tailwind-colors-slate-600, #71717a);
+  text-overflow: ellipsis;
+  font-family: var(--font-family-base);
+  font-size: var(--typography-base-sizes-small-font-size, 14px);
+  font-style: normal;
+  font-weight: var(--font-weight-normal, 400);
+  line-height: var(--typography-base-sizes-small-line-height, 20px);
+}
+
+.text-error {
+  color: var(--base-destructive, #dc2626);
+  font-family: var(--font-family-base);
+  font-size: var(--typography-base-sizes-small-font-size, 14px);
+  font-style: normal;
+  font-weight: var(--font-weight-normal, 400);
+  line-height: var(--typography-base-sizes-small-line-height, 20px);
+}
+
+.text {
+  overflow: hidden;
+  color: var(--base-foreground, #18181b);
+  text-overflow: ellipsis;
+  font-family: var(--font-family-base);
+  font-size: var(--typography-base-sizes-small-font-size, 14px);
+  font-style: normal;
+  font-weight: var(--font-weight-normal, 400);
+  line-height: var(--typography-base-sizes-small-line-height, 20px);
+}
+
+.text-default {
+  color: var(--base-muted-foreground, #94a3b8);
+  text-align: right;
+  font-family: var(--font-family-base);
+  font-size: var(--typography-base-sizes-small-font-size, 14px);
+  font-style: normal;
+  font-weight: var(--font-weight-normal, 400);
+  line-height: 100%;
+}
+
+.flex-label {
+  display: flex;
+  align-items: center;
+}
+
+.text-label {
+  color: var(--tailwind-colors-slate-600, #475569);
+  font-family: var(--font-family-base);
+  font-size: var(--typography-base-sizes-small-font-size, 14px);
+  font-style: normal;
+  font-weight: var(--font-weight-medium, 500);
+  line-height: 100%;
+}
+
+.tooltip-container {
+  margin-left: 10px;
+  cursor: pointer;
+}
+
+::ng-deep .custom-tooltip .ant-tooltip-inner {
+  color: red; /* เปลี่ยนสีข้อความ */
+}
+
+.text-tooltip {
+  color: var(--tailwind-colors-slate-600, #475569);
+  font-family: var(--font-family-base);
+  font-size: 14px;
+  font-style: normal;
+  font-weight: var(--font-weight-normal, 400);
+  line-height: 100%;
+}
+
+.main {
+  display: flex;
+  flex-direction: row;
+  column-gap: 10px;
+}
+
+.container {
+  display: flex;
+  flex-direction: column;
+  row-gap: 5px;
+}
+
+.text-warning {
+  color: var(--base-destructive,#F9A825);
+  font-family: var(--font-family-base);
+  font-size: var(--typography-base-sizes-small-font-size, 14px);
+  font-style: normal;
+  font-weight: var(--font-weight-normal, 400);
+  line-height: var(--typography-base-sizes-small-line-height, 20px);
+}

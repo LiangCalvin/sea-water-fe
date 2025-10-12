@@ -1,0 +1,16 @@
+<div class="alert-backdrop" *ngIf="alert?.isVisible" (click)="hide()">
+    <div class="alert-modal" (click)="$event.stopPropagation()">
+        <div class="">
+            @if(alert?.type === 'success'){
+            <img class="icon" src="../../../../assets/icons/CircleCheck.svg" />
+            }@else {
+            <img class="icon" src="../../../../assets/icons/CircleX.svg" />
+            }
+        </div>
+        <div class="text">
+            <div class="title">{{ alert?.title }}</div>
+            <div class="message">{{ alert?.message }}</div>
+        </div>
+        <button class="close-btn" (click)="hide()">×</button>
+    </div>
+</div>

@@ -1,0 +1,44 @@
+.text{
+color: var(--base-foreground, #475569);
+font-family: var(--font-family--base);
+font-size: var(--typography-base-sizes-extra-small-font-size, 12px);
+font-style: normal;
+font-weight: var(--font-weight-medium, 500);
+line-height: var(--typography-base-sizes-extra-small-line-height, 16px);
+}
+
+.link-text{
+color: var(--base-muted-foreground, #71717A);
+font-family: var(--typography-font-family-font-sans, "Noto Sans");
+font-size: var(--typography-base-sizes-extra-small-font-size, 12px);
+font-style: normal;
+font-weight: var(--font-weight-medium, 500);
+line-height: var(--typography-base-sizes-extra-small-line-height, 16px);
+}
+
+.link-text:hover{
+    color: var(--base-foreground, #475569);
+}
+
+/* ---- ปรับระยะใน breadcrumb ---- */
+:host ::ng-deep nz-breadcrumb {
+    /* ความกว้างช่องไฟซ้าย‑ขวาของ separator (→) */
+    --separator-gap: 8px;
+  
+    /* 1) ช่องว่างระหว่างไอคอนกับข้อความในลิงก์ */
+    .ant-breadcrumb-link a {
+      display: inline-flex;      /* ให้ไอคอนกับข้อความเรียงบรรทัดเดียว */
+      align-items: center;
+      gap: 4px;                  /* ← ปรับได้ตามชอบ (4‑8px) */
+      padding: 2px 0;            /* เพิ่ม hit‑area ด้านบน‑ล่างนิดหน่อย */
+      text-decoration: none;     /* ลบขีดใต้ลิงก์ (ตามต้องการ) */
+    }
+  
+    /* 2) ช่องว่างระหว่าง breadcrumb items (ตัวคั่น) */
+    .ant-breadcrumb-separator {
+      margin: 0 var(--separator-gap);
+    }
+  
+  
+  }
+  

@@ -1,0 +1,115 @@
+<div class="table-container" [ngStyle]="{ 'min-height': data.length > 0 ? '555px' : '0px' }">
+  <table class="data-table">
+    <thead>
+      <tr>
+
+        <th class="check-box" *ngIf="displaySelected">
+          <input type="checkbox" class="custom-checkbox" [checked]="isAllSelected()"
+            (change)="toggleSelectAll($event)" />
+        </th>
+
+        <th *ngFor="let col of columnNames" [ngClass]="{
+                    'sort-asc': sortField === col.key && sortDirection === 'asc',
+                    'sort-desc': sortField === col.key && sortDirection === 'desc'
+                }" class="sortable" (click)="sort(col.key)">
+          <div class="container-column">
+            <span class="text"> {{ col.label }} </span>
+            <span class="sort-icon"></span>
+          </div>
+
+        </th>
+        <th *ngIf="listAction.length > 0">
+        </th>
+      </tr>
+    </thead>
+
+    <tbody *ngIf="data.length > 0 && !isLoading">
+      <tr *ngFor="let row of data; let i = index">
+        <td class="check-box" *ngIf="displaySelected">
+          <input type="checkbox" class="custom-checkbox" [checked]="isSelected(row)"
+            (change)="toggleRowSelection(row)" />
+        </td>
+        <td *ngFor="let col of columnNames" (click)="onRowClick(row)">
+          @if(col?.key === 'status'){
+          <ng-container>
+            @if(isTooltip){
+            <app-tooltip class="tooltip-container" [title]="displayTextHover(row?.[col.key])">
+              <app-tag [text]="displayStatus(row?.[col.key])"
+                [backgroundColor]="displayColorStatus(row?.[col.key])"></app-tag>
+            </app-tooltip>
+            }@else {
+            <app-tag [text]="displayStatus(row?.[col.key])"
+              [backgroundColor]="displayColorStatus(row?.[col.key])"></app-tag>
+            }
+          </ng-container>
+          }@else if(col?.key === 'createdAt' || col?.key ==='updatedAt') {
+          <ng-container>
+            <span class="table-text">{{ row?.[col.key] | date: 'MMM d, y \'at\' h:mm a' }}</span>
+          </ng-container>
+          }@else if(col?.key === 'created_by' || col?.key === 'createdBy'){
+          <ng-container>
+            <span class="table-text"> {{this.displayName(row?.[col.key])}}</span>
+          </ng-container>
+          }@else if(col?.key === 'studyName'){
+          <ng-container>
+            <app-tooltip [title]="row?.[col.key]">
+              <span class="table-text"> {{this.displayStudyName(row?.[col.key])}} </span>
+            </app-tooltip>
+          </ng-container>
+          }
+          @else {
+          <ng-container>
+            <span class="table-text"> {{ row?.[col.key] || " - "}}</span>
+          </ng-container>
+          }
+        </td>
+        <td class="action-cell" *ngIf="listAction.length > 0">
+          <div class="action-more" (click)="onDisplayListMore(i)">
+            <i nz-icon nzType="more" nzTheme="outline" style="color: #009FDA;"></i>
+          </div>
+          <div *ngIf="expandedRow === i" class="more-card">
+            <div class="line-bottom" *ngFor="let list of getFilteredActions(row)">
+              <div class="list" (click)="onAction(row, list.title)">
+                <span class="list-text">{{ list.title }}</span>
+              </div>
+            </div>
+          </div>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<div *ngIf="!isLoading && data.length === 0" class="container-no-data">
+  <div class="container-content">
+    <i nz-icon nzType="inbox" class="large-icon" style="color: #E6E6E6;"></i>
+    <p class="text">{{notFoundText}}</p>
+    <ng-content *ngIf="isFoundData"></ng-content>
+  </div>
+</div>
+<div *ngIf="isLoading" class="no-data">
+  <i nz-icon nzType="loading" nzSpin class="large-icon"></i>
+</div>
+
+<div class="pagination-container" *ngIf="totalPages > 1 && !isLoading">
+  <button class="pagination-btn" [disabled]="currentPage === 1" (click)="goToPage(currentPage - 1)">
+    <span class="text">&lt; Previous</span>
+  </button>
+
+  <div class="page-numbers">
+    <ng-container *ngFor="let page of getVisiblePages()">
+      <button *ngIf="page !== '...'; else dots" class="page-btn" [ngClass]="{ 'active': page === currentPage }"
+        (click)="goToPage(page)">
+        {{ page }}
+      </button>
+
+      <ng-template #dots>
+        <span class="page-btn dots">...</span>
+      </ng-template>
+    </ng-container>
+  </div>
+
+  <button class="pagination-btn" [disabled]="currentPage === totalPages" (click)="goToPage(currentPage + 1)">
+    <span class="text">Next &gt;</span>
+  </button>
+</div>

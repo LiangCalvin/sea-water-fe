@@ -1,0 +1,45 @@
+<form [formGroup]="formGroup">
+  <table #excelTable iowcRangeSelectionTable [enableCellChild]="true" (parseEvent)="parseData($event)"
+    (copyEvent)="copyData($event)" class="relative w-full table-auto border-collapse">
+    <thead>
+      <tr
+        class="sticky left-0 top-0 bg-[#F7F8F8] *:sticky *:top-0 *:border *:border-line-primary *:p-2 *:text-center *:text-sm *:font-bold *:text-mercury">
+        @for (col of columnNameList; track col; let i = $index) {
+        <th>
+          <span [innerHTML]="this.formatChemicalText(col)"></span>
+        </th>
+        }
+      </tr>
+    </thead>
+    <tbody formArrayName="rows">
+      @for (row of rows.controls; track row; let i = $index) {
+      <ng-container [formGroupName]="i">
+        <tr formArrayName="columns" class="*:border *:border-line-primary *:p-0 *:text-left *:text-sm *:text-black"
+          [ngClass]="{
+              'bg-[#F7F8F8]': i % 2 === 1
+            }">
+          @for (col of columns(i).controls; track col; let j = $index) {
+          @if(j == 0){
+          <td [class.bg-[#26BFF733]]="col.dirty" [attr.data-row]="i" [attr.data-col]="j">
+            <div class="size-full border bg-transparent px-2 py-4 text-center">
+             <span [innerHTML]="this.formatChemicalText(col.value.value)"></span>
+            </div>
+          </td>
+          }@else {
+          <td [class.bg-[#26BFF733]]="col.dirty" [formGroupName]="j" [attr.data-row]="i" [attr.data-col]="j">
+            <input class="size-full border bg-transparent px-2 py-4 text-center"
+              [readonly]="readonly || col.value.defaultValueID === null" [class.border-red-600]="col.invalid"
+              [class.border-transparent]="!col.invalid" [ngStyle]="{
+                    borderColor: col.invalid ? 'red' : '',
+                    color: col.value.updatedBy !== 'SYSTEM' ? '#2b559d' : ''
+                  }" (keyup)="inputEventHandler($event)" (blur)="formatValueOnBlur(col)"
+              (keypress)="resetIsUpdateE2InOnRowIndex(i)" formControlName="value" />
+          </td>
+          }
+        }
+        </tr>
+      </ng-container>
+      }
+    </tbody>
+  </table>
+</form>

@@ -1,0 +1,66 @@
+<ng-template #loading>
+    <div id="loading" class="fade-in loading-custom">
+        <em nz-icon nzType="custom:loading" [nzSpin]="true"></em>
+        <div>Loading...</div>
+    </div>
+</ng-template>
+<ng-template #scrollLoading let-loading="loading">
+    @if (loading) {
+    <nz-spin id="scroll-loading" [nzSpinning]="true">
+        <div class="h-[100px]"></div>
+    </nz-spin>
+    }
+</ng-template>
+<ng-template #loadingSmallNoText>
+    <div id="loading-small" class="fade-in loading-custom-small">
+        <em nz-icon nzType="custom:loading" [nzSpin]="true"></em>
+    </div>
+</ng-template>
+<ng-template #loadingSmall>
+    <div id="loading-small" class="fade-in loading-custom-small">
+        <em nz-icon nzType="custom:loading" [nzSpin]="true"></em>
+        <div>Loading...</div>
+    </div>
+</ng-template>
+<ng-template #dataNotFound let-text="text">
+    <nz-empty id="data-not-found" [nzNotFoundContent]="text ?? 'No data to display'"
+        [nzNotFoundImage]="dataNotFoundImage"></nz-empty>
+</ng-template>
+<ng-template #dataNotFoundImage>
+    <img class="!h-[90px]" alt="Data not found" src="../../../../assets/icons/no-data.svg" width="90px" height="90px" />
+</ng-template>
+<ng-template #deleteTaskContentModal>
+    <div class="w-full max-w-[430px] text-center text-base leading-5" style="color: #8c8a8f">
+        Are you sure you want to delete this task?
+    </div>
+</ng-template>
+<ng-template #confirmDeleteModal let-text="text">
+    <div class="w-full max-w-[430px] text-center text-base leading-5" style="color: #8c8a8f">
+        Are you sure you want to delete?
+    </div>
+</ng-template>
+<ng-template #discardChangesModal>
+    <div class="w-full max-w-[430px] text-center text-base leading-5" style="color: #8c8a8f">
+        <div>Changes will not be saved.</div>
+        <div>Are you sure to discard all changes?</div>
+    </div>
+</ng-template>
+<ng-template #popupBlockerWarningModal>
+    <div class="w-full max-w-[600px] text-base leading-5" style="color: var(--dark-silver-color)">
+        <div class="mt-2">
+            This application requires popups to be enabled for certain features to
+            work properly.
+        </div>
+        <div class="mt-2 font-medium">
+            Please allow popups to continue using this application.
+        </div>
+        <div class="mt-4 font-medium">How to enable popups:</div>
+        <div class="mt-2 text-left">
+            <ol class="list-decimal pl-6">
+                <li>Look for the popup blocker icon in your browser's address bar</li>
+                <li>Click on it and select "Always allow popups from this site"</li>
+                <li>Refresh the page if necessary</li>
+            </ol>
+        </div>
+    </div>
+</ng-template>

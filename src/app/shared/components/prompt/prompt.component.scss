@@ -1,0 +1,74 @@
+.container-head-card {
+    border-radius: var(--border-radius-md, 6px) var(--border-radius-md, 6px) 0px 0px;
+    background: var(--tailwind-colors-slate-200, #E2E8F0);
+    display: inline-flex;
+    height: var(--height-h-10, 40px);
+    padding: var(--spacing-1, 4px);
+    align-items: center;
+
+    .active {
+        display: flex;
+        padding: var(--spacing-1-5, 6px) var(--spacing-3, 12px);
+        justify-content: center;
+        align-items: center;
+        gap: var(--spacing-2, 8px);
+        align-self: stretch;
+        border-radius: var(--border-radius-sm, 2px);
+        background: var(--base-background, #FFF);
+        box-shadow: 0px 1px 2px 0px rgba(0, 0, 0, 0.05);
+        cursor: pointer;
+    }
+
+    .in-active {
+        display: flex;
+        padding: var(--spacing-1-5, 6px) var(--spacing-3, 12px);
+        justify-content: center;
+        align-items: center;
+        gap: var(--spacing-2, 8px);
+        align-self: stretch;
+        border-radius: var(--border-radius-sm, 2px);
+        cursor: pointer;
+    }
+}
+
+.container-oparational-detail {
+    width: auto;
+    height: 843px;
+    background-color: #ECFDF7;
+
+    .container-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 8px;
+    }
+
+    .container-header-text {
+        display: flex;
+        column-gap: 10px;
+        align-items: flex-end;
+    }
+
+    .text-header {
+        overflow: hidden;
+        color: var(--tailwind-colors-slate-600, #475569);
+        text-overflow: ellipsis;
+        font-family: var(--typography-font-family-font-sans, "Noto Sans");
+        font-size: var(--typography-base-sizes-small-font-size, 14px);
+        font-style: normal;
+        font-weight: var(--font-weight-bold, 700);
+        line-height: 100%;
+    }
+
+    .container-button {
+        display: flex;
+        column-gap: 10px;
+    }
+
+    .container-content{
+        width: auto;
+        min-height: calc(100% - 65px);
+        background-color: #FFFFFF;
+        margin: 5px;
+    }
+}

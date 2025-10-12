@@ -1,0 +1,12 @@
+<nz-radio-group [(ngModel)]="value" (ngModelChange)="onChange($event)">
+  <div *ngFor="let opt of options" class="radio-description-wrapper">
+    <label
+      nz-radio
+      [nzValue]="opt.value"
+      [class.active]="opt.value === value"
+    >
+      <div class="label-text">{{ opt.label }}</div>
+      <div class="desc-text">{{ opt.description }}</div>
+    </label>
+  </div>
+</nz-radio-group>

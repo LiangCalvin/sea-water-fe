@@ -1,0 +1,26 @@
+<div class="stepper-wrapper">
+  <div class="step-line step-line-inactive" [ngStyle]="{ 'height': '90%', 'max-height': '100%' }"></div>
+
+  <div class="step-line step-line-active" [ngStyle]="{ height: activeLineHeight }"></div>
+
+  <div class="stepper-container">
+    <ng-container *ngFor="let step of steps; let i = index">
+      <div class="step-item" (click)="onStepClick(i)" [class.step-disabled]="disabled">
+        <div class="step-dot" [ngClass]="{
+              'dot-active': i === activeStep,
+              'dot-complete': i < activeStep,
+              'dot-inactive': i > activeStep,
+            }"></div>
+
+        <p class="step-label" [ngClass]="{
+            'label-active': i === activeStep,
+            'label-complete': i < activeStep,
+            'label-inactive': i > activeStep,
+            'label-origin': i <= stepOrigin
+          }">
+          {{ step.name }}
+        </p>
+      </div>
+    </ng-container>
+  </div>
+</div>
