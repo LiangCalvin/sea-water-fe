@@ -1,0 +1,159 @@
+.erosion-body {
+  padding: 0px 20px 0px 20px;
+}
+
+.erosion-section {
+  border-bottom: 1px solid #e2e8f0;
+  padding: 10px;
+}
+
+.section-header-row {
+  align-items: center;
+  padding-top: 24px;
+  padding-bottom: 24px;
+
+  h3 {
+    margin: 0;
+    font-weight: bold;
+    font-size: 16px;
+    align-items: center;
+    justify-content: center;
+    line-height: 1.5;
+    color: #4b5563;
+  }
+
+  .dropdown-select {
+    width: auto;
+    max-width: auto;
+  }
+}
+
+.section {
+  margin-bottom: 10px;
+}
+
+.section h4 {
+  margin: 0 0 16px 0;
+  font-size: 14px;
+  color: #475569;
+  font-weight: bold;
+}
+
+.radio-group {
+  display: flex;
+  gap: 16px;
+  margin-bottom: 16px;
+}
+
+.radio-group input[type="radio"] {
+  margin-right: 8px;
+}
+
+.input-group {
+  display: flex;
+  align-items: center;
+  border: 1px solid #cbd5e1;
+  border-radius: 4px;
+  overflow: hidden;
+  width: 300px;
+}
+
+.input-group input {
+  flex-grow: 1;
+  padding: 8px 12px;
+  font-size: 14px;
+}
+
+.input-group input:focus {
+  outline: none;
+}
+
+.input-group-error {
+  border: 1px solid red;
+}
+
+.input-value {
+  flex-grow: 1;
+  padding: 8px 12px;
+  font-size: 14px;
+  border: none;
+}
+
+.input-with-unit {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.unit {
+  display: flex;
+  align-items: center;
+  font-size: 14px;
+}
+
+.label-row {
+  display: flex;
+  justify-content: space-between;
+  width: 300px;
+}
+
+.default-value {
+  font-size: 14px;
+  color: #94a3b8;
+}
+
+.form-group {
+  margin-bottom: 24px;
+  font-weight: 700;
+  color: #475569;
+}
+
+.form-group p {
+  display: block;
+  margin-bottom: 8px;
+  font-size: 14px;
+  color: #475569;
+  font-weight: 500;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 8px;
+  font-size: 14px;
+  color: #64748b;
+}
+
+.parameter-row .form-group {
+  flex: 1;
+}
+
+.form-group.invalid input {
+  border-color: red;
+}
+
+.flow-types {
+  display: flex;
+  gap: 0px;
+  width: 840px;
+}
+
+.flow-column {
+  flex: 1;
+  color: #475569;
+}
+
+.error-message {
+  color: red;
+  font-size: 0.875rem;
+  margin-top: 0.25rem;
+}
+.unit-text {
+  display: inline; // ensures same line
+  margin-left: 4px;
+  font-size: 14px;
+  color: #71717a;
+  font-weight: 400;
+}
+.value-with-unit {
+  font-weight: 700;
+}

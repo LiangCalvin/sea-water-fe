@@ -1,1 +1,9 @@
-<p>position-selector works!</p>
+<div class="position-selector">
+  <div class="selector-label">
+    <label class="form-label" for="positionSelect">Select position</label>
+  </div>
+  <div class="selector-dropdown">
+    <app-dropdown [id]="'positionSelect'" [placeholder]="'Choose group'" [defaultSelected]="getSelectedOption()"
+      [options]="dropdownOptions" [isRequired]="true" (selectChange)="onDropdownChange($event)"></app-dropdown>
+  </div>
+</div>

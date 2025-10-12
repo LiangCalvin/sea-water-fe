@@ -1,0 +1,457 @@
+<div *ngFor="let data of details">
+    <div *ngIf="data.title === title">
+        <div class="m-[10px]">
+            <ng-container>
+                <div class="container-over-view p-[10px]">
+                    <span class="text-title">{{'Overview Summary'}}</span>
+                    <div class="container-content">
+                        <table border="1">
+                            <thead>
+                                <th *ngFor="let column of columnData">
+                                    <span class="text-table-header line">{{column.label}} </span>
+                                </th>
+                            </thead>
+                            <tbody>
+                                <tr *ngFor="let item of data.details">
+                                    <td class="text-table-content">
+                                        {{item.verification}}
+                                    </td>
+                                    <td>
+                                        @if(item.status === 'TRUE'){
+                                        <app-tag [text]="'PASSED'" [backgroundColor]="'#F6FFED'" [textColor]="'#52C41A'"
+                                            [border]="true" [borderColor]="'#B7EB8F'">
+                                        </app-tag>
+                                        }@else if(item.status === 'FALSE'){
+                                        <app-tag [text]="'FAILED'" [backgroundColor]="'#FFF1F0'" [textColor]="'#F5222D'"
+                                            [border]="true" [borderColor]="'#FFA39E'">
+                                        </app-tag>
+                                        }@else {
+                                        <div></div>
+                                        }
+                                    </td>
+                                    <td class="text-table-content">
+                                        {{ formatValue(item) }}
+                                    </td>
+                                    <td class="text-table-content">{{item.unit}}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </ng-container>
+
+            <ng-container>
+                <app-prompt>
+                    <ng-container>
+                        <div class="container-prompt">
+                             @if(title !== 'Position 4'){
+                                <ng-container *ngTemplateOutlet="promptContent"></ng-container>
+                             }@else {
+                                <ng-container *ngTemplateOutlet="promptPipeLineConten"></ng-container>
+                             }
+                        </div>
+                    </ng-container>
+                </app-prompt>
+            </ng-container>
+        </div>
+    </div>
+</div>
+
+
+
+<ng-template #promptContent>
+    <div class="container-prompt-text">
+        <span class="text-header">Prompt:</span>
+        <span class="text-prompt mb-2">
+            You are an engineer responsible for top-side verification on a wellhead platform.
+        </span>
+        <span class="text-prompt">
+            Your task is to review calculation inputs and outputs,
+            assess whether the verification result passes or fails,
+            and recommend how users can adjust their inputs to achieve a pass if the case fails.
+            Use the data provided below to support your reasoning and recommendation.
+        </span>
+    </div>
+
+    <ng-container *ngIf="promptData?.processInformation">
+        <div class="container-prompt-text">
+            <span class="text-header">The Process Input is below</span>
+            <span class="text">Fluid contain</span>
+            <span class="text">Gas {{promptData?.processInformation?.flowRate?.gas}} MMSCFD,</span>
+            <span class="text">
+                {{promptData?.processInformation?.flowRate?.condensate?.type === 'flowrate' ? 'Condenstae Flowrate':'CGR'}}
+                {{formatValue(promptData?.processInformation?.flowRate?.condensate?.value)}}
+                {{promptData?.processInformation?.flowRate?.condensate?.type === 'flowrate' ? 'BPD':'bb/MMSCF'}},
+            </span>
+            <span class="text">
+                {{promptData?.processInformation?.flowRate?.water?.type === 'flowrate' ? 'Water Flowrate' : 'WGR'}}
+                {{formatValue(promptData?.processInformation?.flowRate?.water?.value)}}
+                {{promptData?.processInformation?.flowRate?.condensate?.type === 'flowrate' ? 'BPD':'bb/MMSCF'}},
+            </span>
+            <span class="text">Export pressure {{formatValue(promptData?.processInformation?.temperature?.pressure)}} barg,</span>
+            <span class="text">Export Temperature {{formatValue(promptData?.processInformation?.temperature?.export)}} °C,</span>
+            <span class="text">Gas Export With CO₂ {{formatValue(promptData?.processInformation?.composition?.co2)}} %,</span>
+            <span class="text">and H₂S {{formatValue(promptData?.processInformation?.composition?.h2s)}} ppm</span>
+    
+        </div>
+    </ng-container>
+  
+    <div class="container-prompt-text">
+        <span class="text-header">Now we focus on ({{title}}) with below facility input</span>
+        <span class="text">Piping Size {{promptData?.pipingDetail?.pipingSize}} inch</span>
+        <span class="text">Piping Class {{promptData?.pipingDetail?.pipingClass}}</span>
+        <span class="text">Topside Design Pressure {{formatValue(promptData?.pipingDetail?.pipelineDesignPressure)}} barg</span>
+        <span class="text">Material {{ displayMaterialType(promptData?.pipingDetail?.material)}}</span>
+        <span class="text">Erosion Velocity Constant {{formatValue(promptData?.pipingDetail?.erosionVelocityConstant)}} ft/s</span>
+        <span class="text">Inner Diameter {{formatValue(promptData?.pipingDetail?.innerDiameter?.value)}} {{promptData?.pipingDetail?.innerDiameter?.unit}}</span>
+        <span class="text">Outer Diameter {{formatValue(promptData?.pipingDetail?.outerDiameter?.value)}} {{promptData?.pipingDetail?.outerDiameter?.unit}}</span>
+        <span class="text">Thickness {{formatValue(promptData?.pipingDetail?.thickness?.value)}} {{promptData?.pipingDetail?.thickness?.unit}}</span>
+        <span class="text">Actual Thickness {{formatValue(promptData?.pipingDetail?.actualThickness)}} mm</span>
+    </div>
+    <div class="container-prompt-text">
+        <span class="text">The results of verification are shown below</span>
+        <span class="text-header">Fluid properties Output:</span>
+        <span class="text">Volume Flow Rate {{formatValue(promptData?.hysysOutput?.overallActvolumeflow)}} m³/h</span>
+        <span class="text">Mixed Density {{formatValue(promptData?.hysysOutput?.overallDensity)}} kg/m³</span>
+    </div>
+
+    <ng-container *ngIf="isLineSizing">
+        <div class="container-prompt-text">
+            <div>
+                <span class="text-header">1. Velocity </span>
+                <span class="text"> {{formatValue(lineSizingCriteria?.details?.velocity,'Velocity API')}} m/s</span>
+                <span class="text"> shall be</span>
+            </div>
+            <span class="text ml-5">{{`- Pass: Velocity (m/s) <= Vₐₚᵢ ${formatValue(lineSizingCriteria?.details?.vapi, 'Velocity API')} (m/s)`}}</span>
+            <span class="text ml-5">{{`- Fail: Velocity (m/s) > Vₐₚᵢ ${formatValue(lineSizingCriteria?.details?.vapi, 'Velocity API')} (m/s)`}}</span>
+            <span class="text ml-7">And</span>
+            <span class="text ml-5">{{`- Pass: Velocity (m/s) <= Vₘₐₓ ${formatValue(lineSizingCriteria?.details?.vmax)} (m/s)`}}</span>
+            <span class="text ml-5">{{`- Fail: Velocity (m/s) > Vₘₐₓ ${formatValue(lineSizingCriteria?.details?.vmax)} (m/s)`}}</span>
+        </div>
+
+        <div class="container-prompt-text">
+            <div>
+                <span class="text-header">2. Momentum (PV²):</span>
+                <span class="text"> {{lineSizingCriteria?.details?.momentum | number:'1.0-0'}} kg/m.s²</span>
+                <span class="text"> shall be</span>
+            </div>
+            <span class="text ml-5"> - Pass: PV² result is within the acceptable range {{formatValue(lineSizingCriteria?.details?.maxVelocityRangeLowerBound)}} - {{this.formatValue(lineSizingCriteria?.details?.maxVelocityRangeUpperBound)}} kg/m.s²</span>
+            <span class="text ml-5"> - Fail: PV² result is outside the acceptable range {{formatValue(lineSizingCriteria?.details?.maxVelocityRangeLowerBound)}} - {{this.formatValue(lineSizingCriteria?.details?.maxVelocityRangeUpperBound)}} kg/m.s²</span>
+        </div>
+
+        <div class="container-prompt-text">
+            <div>
+                <span class="text-header">3. Sand erosion: </span>
+                <span class="text"> We have 2 options and in this case we select option {{ lineSizingCriteria?.details?.ErosionCalculationInput?.type === 'max_sand_rate' ? 'Erosion Rate':'Sand Production Rate'}}</span>
+            </div>
+            <span class="text ml-5">- Input allowable erosion rate and calculating max sand production rate</span>
+            <span class="text ml-5">- Input sand production rate and calculating erosion rate</span>
+        </div>
+        <div class="container-prompt-text">
+            <span class="text">The input and results are included</span>
+            <span class="text ml-4">- Sand Diameter {{formatValue(lineSizingCriteria?.details?.sandDiameter)}} (micron)</span>
+            <span class="text ml-4">- Sand Production Rate {{formatValue(lineSizingCriteria?.details?.ErosionCalculationOutput?.value)}} (kg/day)</span>
+            <span class="text ml-4">- Erosion Rate {{formatValue(lineSizingCriteria?.details?.ErosionCalculationInput?.value)}} (mm/year)</span>
+        </div>
+        <div class="container-prompt-text">
+            <div>
+                <span class="text-header">The typical criteria</span>
+                <span class="text"> is <= 0.1 mm/ year of sand errosion</span>
+            </div>
+        </div>
+    </ng-container>
+
+    <ng-container *ngIf="isFivLof">
+        <div class="container-prompt-text">
+            <span class="text-header">4. Flow induced Vibration verification</span>
+        </div>
+        <div class="container-prompt-text">
+            <span class="text-header">Inputs:</span>
+            <span class="text">Piping Size {{promptData?.pipingDetail?.pipingSize}} inch</span>
+            <span class="text">Inner Diameter {{formatValue(promptData?.pipingDetail?.innerDiameter?.value)}} {{promptData?.pipingDetail?.innerDiameter?.unit}}</span>
+            <span class="text">Span Type {{displaySpanType(promptData?.pipingDetail?.spanType)}}</span>
+            <span class="text">Thickness {{formatValue(promptData?.pipingDetail?.thickness?.value)}} {{promptData?.pipingDetail?.thickness?.unit}}</span>
+            <span class="text">Outer Diameter {{formatValue(promptData?.pipingDetail?.outerDiameter?.value)}} {{promptData?.pipingDetail?.outerDiameter?.unit}}</span>
+            <span class="text">Span Length(m) {{formatValue(promptData?.pipingDetail?.spanLength)}}</span>
+        </div>
+        <div class="container-prompt-text">
+            <span class="text-header">Fluid property below</span>
+            <span class="text">Dynamic Viscosity from Gas {{formatValue(promptData?.hysysOutput?.vapViscoity)}} Pa.s</span>
+            <span class="text">Volume Flow Rate {{formatValue(promptData?.hysysOutput?.overallActvolumeflow)}} m³/h</span>
+            <span class="text">Density {{formatValue(promptData?.hysysOutput?.overallDensity)}} kg/m³</span>
+        </div>
+        <div class="container-prompt-text">
+            <div>
+                <span class="text-header">The results</span>
+                <span class="text"> of LOF: {{formatValue(fivLofCriteria?.details)}} with the recommendation as:</span>
+            </div>
+            <span class="text">{{`Pass: LOF < 0.30`}}</span>
+            <span class="text">{{`Fail: LOF >= 0.30`}}</span>
+        </div>
+    </ng-container>
+
+    <ng-container *ngIf="isFitForService">
+        <div class="container-prompt-text">
+            <span class="text-header">5. Fit for Service: the calculation to verify the actual allowable pressure based on input pipe wall thickness.</span>
+        </div>
+        <div class="container-prompt-text">
+            <span class="text-header">Inputs:</span>
+            <span class="text">Max Operating Temperature {{formatValue(promptData?.pipingDetail?.maxOperatingTemp)}}°C</span>
+            <span class="text">Spec No. {{promptData?.pipingDetail?.specNo}}</span>
+            <span class="text">Material {{ displayMaterialType(promptData?.pipingDetail?.material)}}</span>
+            <span class="text">Topside Design Pressure {{formatValue(promptData?.pipingDetail?.pipelineDesignPressure)}} barg</span>
+            <span class="text">Corrosion Allowance {{formatValue(promptData?.pipingDetail?.corrosionAllowance)}} mm</span>
+            <span class="text">Actual Thickness {{formatValue(promptData?.pipingDetail?.actualThickness)}} mm while the original thickness is {{formatValue(promptData?.pipingDetail?.thickness?.value)}} {{promptData?.pipingDetail?.thickness?.unit}}</span>
+            <span class="text">Allowable Stress {{formatValue(promptData?.pipingDetail?.allowableStress)}} Ksi</span>
+            <span class="text">Quality Factor {{formatValue(promptData?.pipingDetail?.qualityFactor)}}</span>
+            <span class="text">Welding joint strength reduction factor {{formatValue(promptData?.pipingDetail?.weldingJointStrength)}}</span>
+            <span class="text">Coefficient {{formatValue(promptData?.pipingDetail?.coefficient)}}</span>
+        </div>
+
+        <div class="container-prompt-text">
+            <span class="text">The result of calculation</span>
+            <span class="text ml-5">- Actual allowable pressure: {{fitForServiceCriteria?.details?.maximumOperatingPressure | number:'1.1-1'}} barg</span>
+        </div>
+    </ng-container>
+
+    <ng-container *ngIf="isThermowell">
+        <div class="container-prompt-text">
+            <span class="text-header">6. Wake Frequency (Thermowell)</span>
+        </div>
+        <div class="container-prompt-text">
+            <span class="text-header">Inputs:</span>
+            <span class="text">Piping Size {{promptData?.pipingDetail?.pipingSize}} inch</span>
+            <span class="text">Piping Class {{promptData?.pipingDetail?.pipingClass}}</span>
+            <span class="text">Inner Diameter {{formatValue(promptData?.pipingDetail?.innerDiameter?.value)}} {{promptData?.pipingDetail?.innerDiameter?.unit}}</span>
+            <span class="text">Outer Diameter {{formatValue(promptData?.pipingDetail?.outerDiameter?.value)}} {{promptData?.pipingDetail?.outerDiameter?.unit}}</span>
+            <span class="text">Insulation Thickness {{formatValue(promptData?.thermowell?.insulationThickness)}}  mm</span>
+            <span class="text">Nozzle Length {{formatValue(promptData?.thermowell?.nozzleLength)}}  mm</span>
+            <span class="text">Insertion Length {{formatValue(promptData?.thermowell?.insertionLength)}}  mm</span>
+            <span class="text">Well Length (U-Length) {{formatValue(promptData?.thermowell?.wellLength)}} mm</span>
+            <span class="text">Stem Type {{displayStemType(promptData?.thermowell?.stemType)}} </span>
+            <span class="text">Thermowell Material {{displayThermowellMaterial(promptData?.thermowell?.thermowellMaterial)}}</span>
+            <span class="text">Young's Modulus {{formatValue(promptData?.thermowell?.youngModulus)}} barg</span>
+            <span class="text">Root Diameter {{formatValue(promptData?.thermowell?.rootDiameter)}} mm</span>
+            <span class="text">Tip Diameter {{formatValue(promptData?.thermowell?.tipDiameter)}} mm</span>
+            <span class="text">Bore Diameter {{formatValue(promptData?.thermowell?.boreDiameter)}} mm</span>
+            <span class="text">AVG Diam of Actual Insertion {{formatValue(promptData?.thermowell?.avgDiam)}} mm</span>
+            <span class="text">Connection Type {{displayConnectionType(promptData?.thermowell?.connectionType)}}</span>
+        </div>
+
+        <div class="container-prompt-text">
+            <span class="text-header">Result:</span>
+            <ng-container *ngFor="let data of thermowell.details; let i = index">
+                <ng-container *ngIf="isValid(data.velocity)">
+                    <span class="text">Velocity ({{displayWakeFrequency(data.phaseType)}} Phase) {{formatValue(data.velocity)}} m/s</span>
+                </ng-container>
+            </ng-container>
+            <ng-container *ngFor="let data of thermowell.details; let i = index">
+                <ng-container *ngIf="isValid(data.reynoldNumber)">
+                    <span class="text">Reynolds Number ({{displayWakeFrequency(data.phaseType)}} Phase) {{formatValue(data.reynoldNumber)}}</span>
+                </ng-container>
+            </ng-container>
+            <ng-container *ngFor="let data of thermowell.details; let i = index">
+                <ng-container *ngIf="isValid(data.strouhalNumber)">
+                    <span class="text">Strouchal Number ({{displayWakeFrequency(data.phaseType)}} Phase) {{formatValue(data.strouhalNumber)}}</span>
+                </ng-container>
+            </ng-container>
+            <ng-container *ngFor="let data of thermowell.details; let i = index">
+                <ng-container *ngIf="isValid(data.wakeFrequency)">
+                    <span class="text">Wake Frequency ({{displayWakeFrequency(data.phaseType)}} Phase) {{formatValue(data.wakeFrequency)}} Hz</span>
+                </ng-container>
+            </ng-container>
+            <ng-container *ngFor="let data of thermowell.details; let i = index">
+                <ng-container *ngIf="isValid(data.secondMomentOfArea)">
+                    <span class="text">Second Moment of Area (I) ({{displayWakeFrequency(data.phaseType)}} Phase) {{formatValue(data.secondMomentOfArea)}}</span>
+                </ng-container>
+            </ng-container>
+            <ng-container *ngFor="let data of thermowell.details; let i = index">
+                <ng-container *ngIf="isValid(data.crossSectionalArea)">
+                    <span class="text">Cross - Sectional Area (A) ({{displayWakeFrequency(data.phaseType)}} Phase) {{formatValue(data.crossSectionalArea)}}</span>
+                </ng-container>
+            </ng-container>
+            <ng-container *ngFor="let data of thermowell.details; let i = index">
+                <ng-container *ngIf="isValid(data.naturalFrequency)">
+                    <span class="text">Natural Frequency ({{displayWakeFrequency(data.phaseType)}} Phase) {{formatValue(data.naturalFrequency)}} Hz</span>
+                </ng-container>
+            </ng-container>
+            <ng-container *ngFor="let data of thermowell.details; let i = index">
+                <ng-container *ngIf="isValid(data.compareFrequency)">
+                    <span class="text">Frequency Criteria ({{displayWakeFrequency(data.phaseType)}} Phase) {{formatValue(data.compareFrequency)}}</span>
+                </ng-container>
+            </ng-container>
+        </div>
+
+        <div class="container-prompt-text">
+            <span class="text-header">Criteria:</span>
+            <span class="text">{{`Pass: Frequency Criteria < 0.8`}}</span>
+            <span class="text">{{`Fail: Frequency Criteria >= 0.8`}}</span>
+        </div>
+
+    </ng-container>
+
+    <div class="container-prompt-text">
+        <span class="text-header">Instructions:</span>
+        <span class="text-prompt">
+            From all calculations, please analyze which inputs contributed to the failure.
+            Suggest specific input adjustments that are realistic and within engineering constraints to help the
+            user in two points of view.
+        </span>
+        <span class="text-prompt ml-5 hanging-text">
+            1. In case we are operation team. How we can adjust the process parameter or process input to achieve all criteria
+        </span>
+        <span class="text-prompt ml-5 hanging-text">
+            2. In case we are engineering team. How we can adjust the design (fixed process parameter) to achieve all criteria
+        </span>
+    </div>
+
+</ng-template>
+
+<ng-template #promptPipeLineConten>
+    <div class="container-prompt-text">
+        <span class="text-header">Prompt:</span>
+        <span class="text-prompt">
+            You are an engineer responsible for pipeline verification on a wellhead platform.
+        </span>
+        <span class="text-prompt">
+            Your task is to review calculation inputs and outputs,
+            assess whether the verification result passes or fails,
+            and recommend how users can adjust their inputs to achieve a pass if the case fails.
+            Use the data provided below to support your reasoning and recommendation.
+        </span>
+    </div>
+    <ng-container>
+        <div class="container-prompt-text">
+            <span class="text-header">1.Erosional Velocity</span>
+        </div>
+        <div class="container-prompt-text">
+            <span class="text-header">Pipesim Output:</span>
+            <span class="text"> Erosional Velocity Ratio: {{formatValue(erosionalVelocityCriteria?.result)}}</span>
+        </div>
+        <div class="container-prompt-text">
+            <span class="text-header">Criteria:</span>
+            <span class="text">Erosional Velocity Ratio: {{formatValue(erosionalVelocityCriteria?.result)}}</span>
+            <span class="text">{{`Pass: Erosional Velocity Ratio <= 1.00 `}}</span>
+            <span class="text">{{`Fail: Erosional Velocity Ratio > 1.00 `}}</span>
+        </div>
+
+        <div class="container-prompt-text">
+            <span class="text-header">Result:</span>
+            @if(erosionalVelocityCriteria?.status === 'TRUE'){
+            <span class="text">{{`Pass`}}</span>
+            }@else {
+            <span class="text">{{`Failed`}}</span>
+            }
+        </div>
+
+    </ng-container>
+
+    <ng-container *ngIf="isPressureProfile">
+        <div class="container-prompt-text">
+            <span class="text-header">2.Pressure Profile </span>
+        </div>
+        <div class="container-prompt-text">
+            <span class="text-header">Inputs:</span>
+            <span class="text">U/S Wellhead Platform PAHH: {{formatValue(pressureProfileCriteria?.criteria[0]?.value)}} barg</span>
+            <span class="text">Pipeline Design Pressure: {{formatValue(pressureProfileCriteria?.criteria[1]?.value)}} barg</span>
+        </div>
+        <div class="container-prompt-text">
+            <span class="text-header">Pipesim Output:</span>
+            <span class="text">Back Pressure: {{formatValue(pressureProfileCriteria?.result)}} barg</span>
+        </div>
+        <div class="container-prompt-text">
+            <span class="text-header">Criteria:</span>
+            <span class="text">Back Pressure: {{formatValue(pressureProfileCriteria?.result)}} barg</span>
+            <span class="text">{{`Pass: Back Pressure < U/S Wellhead Platform PAHH and Pipeline Design Pressure`}}</span>
+            <span class="text">{{`Fail: Back Pressure >= U/S Wellhead Platform PAHH and/ or Pipeline Design Pressure `}}</span>
+        </div>
+        <div class="container-prompt-text">
+            <span class="text-header">Result:</span>
+            @if(pressureProfileCriteria?.status === 'TRUE'){
+            <span class="text">{{`Pass`}}</span>
+            }@else {
+            <span class="text">{{`Failed`}}</span>
+            }
+        </div>
+    </ng-container>
+
+    <ng-container *ngIf="isTemperatureProfile">
+        <div class="container-prompt-text">
+            <span class="text-header">3.Temperature Profile</span>
+        </div>
+        <div class="container-prompt-text">
+            <span class="text-header">Inputs:</span>
+            <span class="text">Design Temperature: {{formatValue(temperatureProfileCriteria?.resultCriteria)}} °C</span>
+        </div>
+        <div class="container-prompt-text">
+            <span class="text-header">Pipesim Output:</span>
+            <span class="text">Temperature: {{formatValue(temperatureProfileCriteria?.result)}} °C</span>
+        </div>
+        <div class="container-prompt-text">
+            <span class="text-header">Criteria:</span>
+            <span class="text">Design Temperature: {{formatValue(temperatureProfileCriteria?.resultCriteria)}} °C</span>
+            <span class="text">Temperature: {{formatValue(temperatureProfileCriteria?.result)}} °C</span>
+            <span class="text">{{`Pass: Temperature result line remains below the criteria line throughout the pipeline length.`}}</span>
+            <span class="text">{{`Fail: Temperature result line exceeds the criteria line at any point along the pipeline length.`}}</span>
+        </div>
+        <div class="container-prompt-text">
+            <span class="text-header">Result:</span>
+            @if(temperatureProfileCriteria?.status === 'TRUE'){
+            <span class="text">{{`Pass`}}</span>
+            }@else {
+            <span class="text">{{`Failed`}}</span>
+            }
+        </div>
+    </ng-container>
+
+
+    <ng-container *ngIf="isSourService">
+        <div class="container-prompt-text">
+            <span class="text-header">4.Sour Service Region and Design</span>
+        </div>
+        <div class="container-prompt-text">
+            <span class="text-header">Inputs:</span>
+            <span class="text">Target Pressure: {{formatValue(sourServiceCriteria?.input?.targetPressure)}} barg</span>
+            <span class="text">CO₂: {{formatValue(sourServiceCriteria?.input?.co2)}} mol%</span>
+            <span class="text">H₂S: {{formatValue(sourServiceCriteria?.input?.h2s)}} ppm</span>
+            <span class="text" *ngIf="sourServiceCriteria?.input?.ph">pH: {{formatValue(sourServiceCriteria?.input?.ph)}}</span>
+            <span class="text">Pipeline Design Region:{{displayRegion(sourServiceCriteria?.input?.pipelineDesignRegion)}} </span>
+        </div>
+        <div class="container-prompt-text">
+            <span class="text-header">Criteria:</span>
+            @if(sourServiceCriteria?.status === 'EMPTY'){
+            <span class="text">Input pH: - </span>
+            <span class="text">Calculated pH: {{'Unable to calculate pH as the result is out of range'}}</span>
+            }@else {
+            @if(sourServiceCriteria?.input?.ph){
+            <span class="text">Input pH: {{formatValue(sourServiceCriteria?.input?.ph)}}</span>
+            }@else {
+            <span class="text">Calculated pH: {{formatValue(sourServiceCriteria?.details?.yCoordinate)}}</span>
+            }
+            <span class="text">Pipeline Design Region: {{displayRegion(sourServiceCriteria?.criteria?.pipelineDesignRegion)}}</span>
+            <span class="text">{{`Pass: Sour service region result <= Sour service region of the pipeline`}}</span>
+            <span class="text">{{`Fail: Sour service region result > Sour service region of the pipeline`}}</span>
+            }
+        </div>
+        <div class="container-prompt-text">
+            <span class="text-header">Result:</span>
+            @if(sourServiceCriteria?.status === 'TRUE'){
+            <span class="text">{{`Pass`}}</span>
+            }@else if(sourServiceCriteria?.status === 'FALSE'){
+            <span class="text">{{`Failed`}}</span>
+            }@else {
+            <span class="text">{{`-`}}</span>
+            }
+        </div>
+    </ng-container>
+    <div class="container-prompt-text">
+        <span class="text-header">Instructions:</span>
+        <span class="text-prompt">
+            If the result is Pass, briefly confirm it with supporting reasoning.
+            If the result is Failed, analyze which inputs contributed to the failure.
+            Suggest specific input adjustments that are realistic and within engineering constraints to help the
+            user pass the verification.
+            Provide reasoning using engineering principles and the provided data.
+        </span>
+    </div>
+</ng-template>

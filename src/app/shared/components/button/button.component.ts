@@ -3,7 +3,7 @@ import { Component, EventEmitter, HostListener, Input, Output } from '@angular/c
 import { NzButtonModule } from "ng-zorro-antd/button";
 import { NzIconModule } from 'ng-zorro-antd/icon';
 import { StudyDetailsModule } from '../../../core/enums/all-studies.enum';
-import { GlobalService } from '../../../pages/services/global.service';
+import { GlobalService } from '../../../services/global.service';
 
 @Component({
   selector: 'app-button',

@@ -1,1 +1,13 @@
-<p>calculation-input works!</p>
+<div class="container">
+  <app-position-selector [sequenceFlow]="sequenceFlow" (interacted)="onChildInteracted()"></app-position-selector>
+  <app-process-information #processInfo (interacted)="onChildInteracted()"></app-process-information>
+  <app-piping-data #pipingData (nozzleLengthsChange)="onNozzleLengthsChanged($event)"
+    (interacted)="onChildInteracted()"></app-piping-data>
+  <app-erosion #erosion [hidden]="!THERMOWELL_AND_EROSION_SEQUENCE_FLOWS.includes(sequenceFlow)"
+    (interacted)="onChildInteracted()"></app-erosion>
+  <app-thermowell #thermowell (scrollToPiping)="onScrollToPipingData()" [nozzleLength]="nozzleLengths['1-1']"
+    [hidden]="!THERMOWELL_AND_EROSION_SEQUENCE_FLOWS.includes(sequenceFlow)"
+    (interacted)="onChildInteracted()"></app-thermowell>
+  <app-pipesim #pipesim (scrollToProcessInfo)="onScrollToProcessInfo()"
+    [hidden]="!PIPESIM_SEQUNCES_FLOWS.includes(sequenceFlow)" (interacted)="onChildInteracted()"></app-pipesim>
+</div>

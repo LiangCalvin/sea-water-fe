@@ -1,1 +1,75 @@
-<p>erosion works!</p>
+<div class="container">
+    <app-collapse [label]="'Erosion Calculation Data'" [isOpen]="expanded">
+        <div class="erosion-body" *ngIf="expanded">
+            <div class="erosion-section">
+                <nz-row class="section-header-row" align="left">
+                    <nz-col [nzSpan]="15">
+                        <h3>Erosion Data</h3>
+                    </nz-col>
+                    <nz-col [nzSpan]="9" class="text-right">
+                    </nz-col>
+                </nz-row>
+                <form #innerDiv [formGroup]="erosionForm">
+                    <div class="section">
+                        <h4>Calculation Options:</h4>
+                        <div class="flow-types">
+                            <div class="flow-column">
+                                <app-radio formControlName="calculationType" [options]="erosionRadioOptions"
+                                    (interacted)="onChildInteracted()">
+                                </app-radio>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="section" *ngIf="erosionForm.get('calculationType')?.value === 'maxSandRate'">
+                        <div class="form-group"
+                            [class.invalid]="erosionForm.get('allowableErosionRate')?.invalid && erosionForm.get('allowableErosionRate')?.touched">
+                            <app-input-text [witdthInput]="'w-[300px]'" [label]="'Erosion Rate'"
+                                [unit]="'mm/year'" [numeric]="true" [allowDecimals]="true" [decimalLimit]="4"
+                                [formControl]="getFormControl(erosionForm, 'allowableErosionRate')" [default]="'0.1'"
+                                [textError]="getFieldError(getFormControl(erosionForm, 'allowableErosionRate'), 0.1, 100)"
+                                (interacted)="onChildInteracted()">
+                            </app-input-text>
+                        </div>
+                    </div>
+                    <div class="section" *ngIf="erosionForm.get('calculationType')?.value === 'allowableErosionRate'">
+                        <div class="form-group"
+                            [class.invalid]="erosionForm.get('sandProductionRate')?.invalid && erosionForm.get('sandProductionRate')?.touched">
+                            <app-input-text [witdthInput]="'w-[300px]'" [label]="'Sand Production Rate'"
+                                [unit]="'kg/day'" [numeric]="true" [allowDecimals]="true" [decimalLimit]="4"
+                                [formControl]="getFormControl(erosionForm, 'sandProductionRate')"
+                                [textError]="getFieldError(getFormControl(erosionForm, 'sandProductionRate'), 0.1, 100)"
+                                (interacted)="onChildInteracted()">
+                            </app-input-text>
+                        </div>
+                    </div>
+                    <div class="section">
+                        <div class="flow-types">
+                            <div class="flow-column">
+                                <div class="form-group"
+                                    [class.invalid]="erosionForm.get('sandDiameter')?.invalid && erosionForm.get('sandDiameter')?.touched">
+                                    <app-input-text [witdthInput]="'w-[300px]'" [label]="'Sand Diameter'"
+                                        [default]="'100'" [unit]="'micron'" [numeric]="true" [allowDecimals]="true"
+                                        [decimalLimit]="4" [formControl]="getFormControl(erosionForm, 'sandDiameter')"
+                                        [textError]="getFieldError(getFormControl(erosionForm, 'sandDiameter'), 0.1, 100)"
+                                        (interacted)="onChildInteracted()">
+                                    </app-input-text>
+                                </div>
+                            </div>
+                            <div class="flow-column">
+                                <div class="form-group"
+                                    [class.invalid]="erosionForm.get('geometryConstant')?.invalid && erosionForm.get('geometryConstant')?.touched">
+                                    <app-input-text [witdthInput]="'w-[300px]'" [label]="'Geometry Constant'"
+                                        [default]="'5.5'" [numeric]="true" [allowDecimals]="true" [decimalLimit]="4"
+                                        [formControl]="getFormControl(erosionForm, 'geometryConstant')"
+                                        [textError]="getFieldError(getFormControl(erosionForm, 'geometryConstant'), 0.1, 100)"
+                                        (interacted)="onChildInteracted()">
+                                    </app-input-text>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </app-collapse>
+</div>

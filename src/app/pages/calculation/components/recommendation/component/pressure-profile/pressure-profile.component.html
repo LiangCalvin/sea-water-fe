@@ -1,0 +1,43 @@
+<div *ngFor="let data of details">
+    <div *ngIf="data.title === title">
+        <div *ngFor="let item of data.items">
+            <div *ngIf="item.type === 'pressure'">
+                <div class="m-[10px]">
+                    <ng-container>
+                        <div class="p-[10px]">
+                            <div class="container-content">
+                                <span class="text-title">{{'Back Pressure:'}}</span>
+                                 <span class="text">{{ formatValue(pressureData?.result) }}</span>
+                                <span class="text">{{'barg'}}</span>
+                            </div>
+                            <div class="container-content">
+                                <span class="text-title">{{'Criteria:'}}</span>
+                                <div class="flex-column">
+                                    <span class="text">{{`Pass: Back Pressure < U/S Wellhead Platform PAHH and Pipeline Design Pressure`}}</span>
+                                    <span class="text">{{`Fail: Back Pressure >= U/S Wellhead Platform PAHH and/or Pipeline Design Pressure`}}</span>
+                                </div>
+                            </div>
+                        </div>
+                    </ng-container>
+                    <ng-container>
+                        <div class="main">
+                            <div class="chart-container">
+                                <canvas #chartCanvas></canvas>
+                            </div>
+                        </div>
+                    </ng-container>
+                    <div class="container-recommendation p-[10px]">
+                        <span class="text-title">{{'Recommendation:'}}</span>
+                        @if(item.status === "TRUE"){
+                        <span class="text">{{'-'}}</span>
+                        }@else {
+                        <div class="flex-column">
+                            <span class="text">{{`Reduce Flowrate`}}</span>
+                        </div>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

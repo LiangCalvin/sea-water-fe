@@ -1,0 +1,235 @@
+.container-head-card {
+    border-radius: var(--border-radius-md, 6px) var(--border-radius-md, 6px) 0px 0px;
+    background: var(--tailwind-colors-slate-200, #E2E8F0);
+    display: inline-flex;
+    height: var(--height-h-10, 40px);
+    padding: var(--spacing-1, 4px);
+    align-items: center;
+
+    .active {
+        display: flex;
+        padding: var(--spacing-1-5, 6px) var(--spacing-3, 12px);
+        justify-content: center;
+        align-items: center;
+        gap: var(--spacing-2, 8px);
+        align-self: stretch;
+        border-radius: var(--border-radius-sm, 2px);
+        background: var(--base-background, #FFF);
+        box-shadow: 0px 1px 2px 0px rgba(0, 0, 0, 0.05);
+        cursor: pointer;
+    }
+
+    .in-active {
+        display: flex;
+        padding: var(--spacing-1-5, 6px) var(--spacing-3, 12px);
+        justify-content: center;
+        align-items: center;
+        gap: var(--spacing-2, 8px);
+        align-self: stretch;
+        border-radius: var(--border-radius-sm, 2px);
+        cursor: pointer;
+    }
+}
+
+.container-card {
+    border-radius: 0px 8px 8px 8px;
+    border: 1px solid var(--tailwind-colors-slate-200, #E2E8F0);
+    background: #FFF;
+   // width: 1200px;
+   width: 960px;
+    // height: 614px;
+    display: flex;
+    flex-direction: column;
+    //padding: 40px 50px;
+    //row-gap: 40px;
+
+
+    .container-header {
+        display: flex;
+        align-items: flex-end;
+        justify-content: space-between;
+        border-bottom: 1px solid #E2E8F0;
+        padding: 29px 32px 29px 32px;
+    }
+
+    .container-button {
+        display: flex;
+        column-gap: 10px;
+    }
+
+    .container-content {
+        display: flex;
+        flex-direction: column;
+        row-gap: 10px;
+        padding: 29px 34px 29px 34px;
+    }
+
+    .text-title {
+        overflow: hidden;
+        color: var(--tailwind-colors-slate-600, #475569);
+        text-overflow: ellipsis;
+        font-family: var(--typography-font-family-font-sans, "Noto Sans");
+        font-size: var(--typography-base-sizes-large-font-size, 18px);
+        font-style: normal;
+        font-weight: var(--font-weight-bold, 700);
+        line-height: 100%;
+    }
+
+    .text {
+        color: var(--tailwind-colors-slate-600, #475569);
+        font-family: var(--typography-font-family-font-sans, "Noto Sans");
+        font-size: var(--typography-base-sizes-small-font-size, 14px);
+        font-style: normal;
+        font-weight: var(--font-weight-normal, 400);
+        line-height: 130%;
+    }
+
+    .text-bold {
+        overflow: hidden;
+        color: var(--tailwind-colors-slate-600, #475569);
+        text-overflow: ellipsis;
+        font-family: var(--typography-font-family-font-sans, "Noto Sans");
+        font-size: var(--typography-base-sizes-small-font-size, 14px);
+        font-style: normal;
+        font-weight: 700;
+        line-height: var(--typography-base-sizes-small-line-height, 20px);
+    }
+}
+
+.title-text {
+    color: var(--PTTEP-Nile-Blue-950, #122B3F);
+    font-family: var(--font-family-base);
+    font-size: var(--typography-base-sizes-3x-large-font-size, 30px);
+    font-style: normal;
+    font-weight: var(--font-weight-bold, 700);
+    line-height: 100%;
+}
+
+
+.container-content-waiting {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 480px;
+    row-gap: 20px;
+
+    .container-text {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .main-text {
+        color: var(--tailwind-colors-slate-600, #475569);
+        text-align: center;
+        font-family: var(--font-family-base);
+        font-size: var(--typography-base-sizes-base-font-size, 16px);
+        font-style: normal;
+        font-weight: var(--font-weight-semibold, 600);
+        line-height: var(--typography-base-sizes-base-line-height, 24px);
+    }
+
+    .text {
+        color: var(--tailwind-colors-slate-600, #475569);
+        text-align: center;
+        font-family: var(--font-family-base);
+        font-size: var(--typography-base-sizes-base-font-size, 16px);
+        font-style: normal;
+        font-weight: var(--font-weight-semibold, 400);
+        line-height: var(--typography-base-sizes-base-line-height, 24px);
+    }
+
+    .contaner-btn {
+        column-gap: 10px;
+        display: flex;
+        flex-direction: row;
+    }
+}
+
+.container-calculation-detail {
+    display: flex;
+    flex-direction: column;
+    row-gap: 10px;
+
+    .container-text-between {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+    }
+
+    .container-flex-column {
+        display: flex;
+        flex-direction: column;
+        row-gap: 10px;
+    }
+}
+
+
+
+::ng-deep .ant-steps-item-process>.ant-steps-item-container>.ant-steps-item-icon {
+    background: #009FDA;
+}
+
+::ng-deep .ant-steps-item-process .ant-steps-item-icon>.ant-steps-icon {
+    color: #FFF;
+    font-family: Inter;
+    font-size: 20px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: normal;
+}
+
+::ng-deep .ant-steps-item-wait .ant-steps-item-icon {
+    background-color: #E2E8F0;
+    border-color: #E2E8F0;
+}
+
+::ng-deep .ant-steps-item-wait .ant-steps-item-icon>.ant-steps-icon {
+    color: #FFF;
+    font-family: Inter;
+    font-size: 20px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: normal;
+}
+
+.local-footer {
+    position: fixed;
+    bottom: 0;
+    left: 50px;
+    right: 0;
+    background: #fff;
+    box-shadow: 0 -1px 5px rgba(0, 0, 0, 0.1);
+    z-index: 100;
+}
+
+.footer-container {
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 1rem 2rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    .button-container {
+        display: flex;
+        column-gap: 10px;
+    }
+}
+
+.cancel-link {
+    color: var(--PTTEP-Primary-Blue-600_Initial, #009FDA);
+    font-family: var(--font-family-base);
+    font-size: var(--typography-base-sizes-base-font-size, 16px);
+    font-style: normal;
+    font-weight: var(--font-weight-bold, 700);
+    line-height: 100%;
+    cursor: pointer;
+}
+
+
+#pipingData {
+    scroll-margin-top: 72px;
+    /* ปรับให้เท่ากับความสูงของ .container-title */
+}

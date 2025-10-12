@@ -1,1 +1,150 @@
-<p>thermowell works!</p>
+<div class="container">
+  <app-collapse [label]="'Wake Frequency (Thermowell)'" [isOpen]="expanded">
+    <div class="thermowell-body" *ngIf="expanded">
+      <div class="thermowell-section">
+        <form #innerDiv class="form-container" [formGroup]="form" *ngIf="form">
+          <div class="card-view-piping">
+            <div class="header">
+              <span class="text-title-header">Piping Information</span>
+              <span class="text-edit" (click)="scrollToPiping.emit()">Edit</span>
+            </div>
+            <div class="content">
+              <div class="container-text">
+                <div class="text-title">{{'Piping Size:'}}</div>
+                <div class="text">{{form.get('pipingSize')?.value}}</div>
+                <div class="text">{{'inch'}}</div>
+              </div>
+              <div class="container-text">
+                <div class="text-title">{{'Piping Class:'}}</div>
+                <div class="text">{{form.get('pipingClass')?.value}}</div>
+                <div class="text">{{''}}</div>
+              </div>
+              <div class="container-text">
+                <div class="text-title">{{'Inner Diameter(Di):'}}</div>
+                <div class="text" *ngIf="shouldDisplayInnerDiameter()">
+                  {{getDisplayValue('innerDiameter')}}
+                </div>
+                <div class="text" *ngIf="shouldDisplayInnerDiameter()">
+                  {{form.get('innerDiameterUnit')?.value || 'inch'}}
+                </div>
+                <div class="text" *ngIf="!shouldDisplayInnerDiameter()">
+                  {{'inch'}}
+                </div>
+              </div>
+              <div class="container-text">
+                <div class="text-title">{{'Thickness:'}}</div>
+                <div class="text">{{form.get('thickNess')?.value}}</div>
+                <div class="text">{{'mm'}}</div>
+              </div>
+              <div class="container-text">
+              </div>
+            </div>
+          </div>
+          <div class="content-container">
+            <div class="text-title">
+              Position 1 : Export Manifold
+            </div>
+            <div class="flex-content">
+              <div class="field-container w-[50%]">
+                <app-input-text class="text-input" [witdthInput]="'w-[290px]'" [label]="'Insulation Thickness'"
+                  [default]="'0'" [numeric]="true" [allowDecimals]="true" [decimalLimit]="4" [unit]="'mm'"
+                  [formControl]="$any(form.get('insulationThickness'))"
+                  [textError]="getFieldError(getFormControl(form, 'insulationThickness'), 0.1, 100)"
+                  (interacted)="onChildInteracted()">
+                </app-input-text>
+                <app-input-text class="text-input" [witdthInput]="'w-[300px]'" [bgColor]="'#F0FAFF'"
+                  [placeholder]="'Auto filled from piping information'" [placeholderColor]="'#94A3B8'"
+                  [label]="'Insertion Length'" [unit]="'mm'" [numeric]="true" [allowDecimals]="true" [decimalLimit]="4"
+                  [formControl]="$any(form.get('insertionLength'))"
+                  [textError]="getFieldError(getFormControl(form, 'insertionLength'))"
+                  (interacted)="onChildInteracted()">
+                </app-input-text>
+                <div class="w-[290px]">
+                  <app-dropdown [label]="'Thermowell Material'" [placeholder]="'Select Option'"
+                    [formControl]="$any(form.get('thermowellMaterial'))" [options]="thermowellMaterialOptions"
+                    [defaultSelected]="getThermowellMaterialOption(form.get('thermowellMaterial')?.value)"
+                    (interacted)="onChildInteracted()">
+                  </app-dropdown>
+                </div>
+                <app-input-text class="text-input" [witdthInput]="'w-[300px]'" [label]="'Root Diameter'"
+                  [default]="'26.5'" [unit]="'mm'" [numeric]="true" [allowDecimals]="true" [decimalLimit]="4"
+                  [formControl]="$any(form.get('rootDiameter'))"
+                  [textError]="getFieldError(getFormControl(form, 'rootDiameter'), 0.1, 100)"
+                  (interacted)="onChildInteracted()">
+                </app-input-text>
+                <app-input-text class="text-input" [witdthInput]="'w-[300px]'" [label]="'Bore Diameter'"
+                  [default]="'6.6'" [unit]="'mm'" [numeric]="true" [allowDecimals]="true" [decimalLimit]="4"
+                  [formControl]="$any(form.get('boreDiameter'))"
+                  [textError]="getFieldError(getFormControl(form, 'boreDiameter'), 0.1, 100)"
+                  (interacted)="onChildInteracted()">
+                </app-input-text>
+                <app-input-text class="text-input" [witdthInput]="'w-[300px]'" [label]="'AVG Diam of Actual Insertion'"
+                  [default]="'18'" [unit]="'mm'" [numeric]="true" [allowDecimals]="true" [decimalLimit]="4"
+                  [formControl]="$any(form.get('avgDiam'))"
+                  [textError]="getFieldError(getFormControl(form, 'avgDiam'), 0.1, 100)"
+                  (interacted)="onChildInteracted()">
+                </app-input-text>
+              </div>
+              <div class="field-container w-[50%]">
+                <div class="w-[290px]">
+                  <app-dropdown [label]="'Stem Type'" [placeholder]="'Select Option'"
+                    [formControl]="$any(form.get('stemType'))" [options]="stemTypeOptions"
+                    [defaultSelected]="getStemTypeOption(form.get('stemType')?.value)"
+                    (interacted)="onChildInteracted()">
+                  </app-dropdown>
+                </div>
+                <div class="form-group">
+                  <div class="label-row-with-tooltip">
+                    <span class="label-text">Well length (U-length)</span>
+                  </div>
+                  <div class="input-with-unit">
+                    <h2 class="value-text">
+                      {{ form.get('wellLength')?.value }}
+                    </h2>
+                    <span class="unit">mm</span>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <div class="label-row-with-tooltip">
+                    <span class="label-text">Young's Modulus (E)</span>
+                    <app-tooltip [title]="'sss'">
+                      <nz-icon nzType="minus-circle" nzTheme="outline" style="color:#009FDA;font-size: 24px;" />
+                    </app-tooltip>
+                  </div>
+                  <div class="input-with-unit">
+                    <h2 class="value-text" [innerHTML]="youngModulusFormattedHtml">
+                      {{form.get('youngModulus')?.value}}
+                    </h2>
+                    <span class="unit">Pa</span>
+                  </div>
+                </div>
+                <app-input-text class="text-input" [witdthInput]="'w-[300px]'" [label]="'Tip Diameter'" [default]="'18'"
+                  [unit]="'mm'" [numeric]="true" [allowDecimals]="true" [decimalLimit]="4"
+                  [formControl]="$any(form.get('tipDiameter'))"
+                  [textError]="getFieldError(getFormControl(form, 'tipDiameter'), 0.1, 100)"
+                  (interacted)="onChildInteracted()">
+                </app-input-text>
+                <div class="w-[290px]">
+                  <app-dropdown [label]="'Connection Type'" [placeholder]="'Select Option'"
+                    [formControl]="$any(form.get('connectionType'))" [options]="connectionTypeOptions"
+                    [defaultSelected]="getConnectionTypeOption(form.get('connectionType')?.value)"
+                    (interacted)="onChildInteracted()">
+                  </app-dropdown>
+                </div>
+                <div>
+                  <app-input-text class="text-input" [witdthInput]="'w-[300px]'" [bgColor]="'#F0FAFF'"
+                    [placeholder]="'Auto filled from piping information'" [placeholderColor]="'#94A3B8'"
+                    [label]="'Nozzle Length'" [unit]="'mm'" [numeric]="true" [allowDecimals]="true" [decimalLimit]="4"
+                    [formControl]="$any(form.get('nozzleLength'))"
+                    [textError]="getFieldError(getFormControl(form, 'nozzleLength'))"
+                    (interacted)="onChildInteracted()">
+                  </app-input-text>
+                </div>
+              </div>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </app-collapse>
+</div>

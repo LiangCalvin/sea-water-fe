@@ -1,0 +1,181 @@
+.form-container {
+  display: flex;
+  flex-direction: column;
+  row-gap: 30px;
+  align-items: center;
+}
+
+.thermowell-body {
+  padding: 40px 20px 40px 20px;
+}
+
+.thermowell-section {
+  padding: 10px;
+}
+
+.card-view-piping {
+  display: flex;
+  width: 100%;
+  padding: 20px 20px;
+  align-items: flex-start;
+  gap: var(--Space-Margin-margin, 16px);
+  border-radius: var(--BorderRadius-borderRadiusLG, 8px);
+  border: 1px solid var(--PTTEP-Primary-Blue-400, #36ccfa);
+  background: var(--PTTEP-Primary-Blue-50, #f0faff);
+  flex-direction: column;
+
+  .header {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    justify-content: space-between;
+  }
+
+  .text-title {
+    color: var(--tailwind-colors-slate-600, #475569);
+    font-family: var(--font-family-base);
+    font-size: var(--Font-Size-md, 14px);
+    font-style: normal;
+    font-weight: 700;
+    line-height: var(--Line-Height-24, 24px);
+    /* 150% */
+  }
+  .text-title-header {
+    font-size: 16px;
+    font-weight: 700;
+    color: #475569;
+  }
+
+  .text-edit {
+    color: var(--tailwind-colors-sky-600, #0284c7);
+    font-family: var(--font-family-base);
+    font-size: var(--Font-Size-sm, 14px);
+    font-style: normal;
+    font-weight: 700;
+    line-height: var(--Line-Height-22, 22px);
+    /* 157.143% */
+    cursor: pointer;
+  }
+
+  .text {
+    color: var(--tailwind-colors-slate-600, #475569);
+    font-family: var(--font-family-base);
+    font-size: var(--Font-Size-sm, 14px);
+    font-style: normal;
+    font-weight: 400;
+    line-height: var(--Line-Height-22, 22px);
+  }
+
+  .content {
+    display: flex;
+    width: 100%;
+    column-gap: 5px;
+    justify-content: space-between;
+  }
+
+  .container-text {
+    display: flex;
+    column-gap: 5px;
+    align-items: baseline;
+  }
+}
+
+.content-container {
+  display: flex;
+  width: 100%;
+  flex-direction: column;
+  row-gap: 30px;
+
+  .text-title {
+    color: var(--tailwind-colors-slate-600, #475569);
+    font-family: var(--font-family-base);
+    font-size: var(--typography-base-sizes-base-font-size, 16px);
+    font-style: normal;
+    font-weight: var(--font-weight-semibold, 600);
+    line-height: var(--typography-base-sizes-base-line-height, 24px);
+  }
+}
+
+.flex-content {
+  display: flex;
+  column-gap: 10px;
+
+  .field-container {
+    display: flex;
+    flex-direction: column;
+    row-gap: 30px;
+  }
+}
+
+.input-container {
+  display: flex;
+
+  .field {
+    display: flex;
+  }
+
+  .text-input {
+    width: 100%;
+  }
+
+  .dropdown {
+    width: 90%;
+  }
+}
+
+.input-group {
+  display: flex;
+  gap: 10px; /* หรือ 16px ปรับตามต้องการ */
+  align-items: center; /* ให้แนวล่างของ input/dropdown เท่ากัน */
+  margin-top: 30px;
+}
+.label-row {
+  display: flex;
+  justify-content: space-between;
+  width: 300px;
+}
+.value-text {
+  display: flex;
+  align-items: center;
+  margin: 0;
+  font-weight: bold;
+}
+.unit {
+  display: flex;
+  align-items: center;
+  font-size: 14px;
+}
+.input-with-unit {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.form-group {
+  height: 55px;
+}
+.form-group label {
+  display: flex;
+  margin-bottom: 8px;
+  font-size: 14px;
+  color: #475569;
+}
+
+.label-row-with-tooltip {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding-bottom: 10px;
+}
+
+.label-text {
+  font-size: 14px;
+  color: #475569;
+  line-height: 1;
+}
+
+app-tooltip {
+  display: inline-flex;
+  align-items: center;
+  height: 16px;
+}

@@ -1,0 +1,179 @@
+<div *ngFor="let data of details">
+    <div *ngIf="data.title === title">
+        <div class="m-[10px]">
+            <div class="p-[10px]">
+                <div class="container-title">
+                    <span class="text-title">{{'Velocity'}}</span>
+                    <app-tag 
+                        [text]="data.failed > 0 ? 'FAILED' : 'PASSED'"
+                        [backgroundColor]="data.failed > 0 ? '#FFF1F0' :'#F6FFED'"
+                        [textColor]="data.failed > 0 ? '#F5222D':'#52C41A'" 
+                        [border]="true"
+                        [borderColor]="data.failed > 0 ?'#FFA39E':'#B7EB8F'">
+                    </app-tag>
+                </div>
+            </div>
+            <div *ngFor="let item of data.items">
+                <div *ngIf="item.type === 'line_sizing'">
+                    <ng-container>
+                        <div class="p-[10px]">
+                            <div class="container-title ml-[20px]">
+                                <span class="text-title">{{'1.API14E (erosional) - C max velocity'}}</span>
+                                <app-tag 
+                                    [text]="item.details.resultCmaxVelocity === 'TRUE' ? 'PASSED':'FAILED'"
+                                    [backgroundColor]="item.details.resultCmaxVelocity === 'TRUE' ? '#F6FFED':'#FFF1F0'"
+                                    [textColor]="item.details.resultCmaxVelocity === 'TRUE'  ? '#52C41A':'#F5222D'" 
+                                    [border]="true"
+                                    [borderColor]="item.details.resultCmaxVelocity === 'TRUE' ? '#B7EB8F':'#FFA39E'">
+                                </app-tag>
+                            </div>
+                            <div class="container-content">
+                                <span class="text-title">{{'Velocity'}} (m/s):</span>
+                                <span>{{ formatValue(item.details.velocity) }}</span>
+                            </div>
+                            <div class="container-content">
+                                <span class="text-title">{{'Criteria:'}}</span>
+                                <div class="flex-column">
+                                    <span class="text">{{`Pass: Velocity (m/s) <= Vₐₚᵢ ${formatValue(item.details.vapi, 'Velocity API' )} (m/s)`}}</span>
+                                    <span class="text">{{`Fail: Velocity (m/s) > Vₐₚᵢ ${formatValue(item.details.vapi, 'Velocity API')} (m/s)`}}</span>
+                                </div>
+                            </div>
+                        </div>
+                        <ng-container *ngTemplateOutlet="line"></ng-container>
+                    </ng-container>
+                    <ng-container>
+                        <div class="p-[10px]">
+                            <div class="container-title">
+                                <span class="text-title ml-[20px]">{{'2.API14E (erosional) - V max velocity'}}</span>
+                                <app-tag 
+                                    [text]="item.details.resultVmaxVelocity === 'TRUE' ? 'PASSED':'FAILED'"
+                                    [backgroundColor]="item.details.resultVmaxVelocity === 'TRUE' ? '#F6FFED':'#FFF1F0'"
+                                    [textColor]="item.details.resultVmaxVelocity === 'TRUE' ?'#52C41A':'#F5222D'" 
+                                    [border]="true"
+                                    [borderColor]="item.details.resultVmaxVelocity === 'TRUE'  ?'#B7EB8F':'#FFA39E'">
+                                </app-tag>
+                            </div>
+                            <div class="container-content">
+                                <span class="text-title">{{'Velocity'}} (m/s):</span>
+                                <span>{{formatValue(item.details.velocity)}}</span>
+                            </div>
+                            <div class="container-content">
+                                <span class="text-title">{{'Criteria:'}}</span>
+                                <div class="flex-column">
+                                    <span class="text">{{`Pass: Velocity (m/s) <= Vₘₐₓ ${formatValue(item.details.vmax)} (m/s)`}}</span>
+                                    <span class="text">{{`Fail: Velocity (m/s) > Vₘₐₓ ${formatValue(item.details.vmax)} (m/s)`}}</span>
+                                    <span class="text">{{`Remark: Criteria based on material type: ${displayMaterialType(item.criteria.material)}`}}</span>
+                                </div>
+                            </div>
+                        </div>
+                        <ng-container *ngTemplateOutlet="line"></ng-container>
+                    </ng-container>
+                     <ng-container>
+                        <div class="p-[10px]">
+                            <div class="container-title">
+                                <span class="text-title ml-[20px]">{{'3.Max Momentum'}}</span>
+                                <app-tag 
+                                    [text]="item.details.resultMaxMomentum === 'TRUE' ? 'PASSED':'FAILED'"
+                                    [backgroundColor]="item.details.resultMaxMomentum === 'TRUE'? '#F6FFED' :'#FFF1F0'"
+                                    [textColor]="item.details.resultMaxMomentum === 'TRUE'? '#52C41A':'#F5222D'" [border]="true"
+                                    [borderColor]="item.details.resultMaxMomentum === 'TRUE'? '#B7EB8F':'#FFA39E'">
+                                </app-tag>
+                            </div>
+                            <div class="container-content">
+                                <span class="text-title">{{'Momentum (PV²)'}}</span>
+                                <span>{{item.details.momentum | number:'1.0-0'}}</span>
+                                <span class="text">{{'kg/m.s²'}}</span>
+                            </div>
+                            <div class="container-content">
+                                <span class="text-title">{{'Criteria:'}}</span>
+                                <div class="flex-column">
+                                    <span class="text">Pass: PV² result is within the acceptable range {{ formatValue(item.details.maxVelocityRangeLowerBound) }} - {{ formatValue(item.details.maxVelocityRangeUpperBound ) }} kg/m.s²</span>
+                                    <span class="text">Fail: PV² result is outside the acceptable range {{ formatValue(item.details.maxVelocityRangeLowerBound)}} - {{ formatValue(item.details.maxVelocityRangeUpperBound )}} kg/m.s²</span>
+                                    <span class="text">Remark: Criteria based on Topside design pressure: {{ formatValue(item.details.topsideDesignPressure)}} barg</span>
+                                </div>
+                            </div>
+                        </div>
+                        <ng-container *ngTemplateOutlet="line"></ng-container>
+                    </ng-container>
+                    <div class="container-recommendation p-[10px]">
+                        <span class="text-title">{{'Recommendation:'}}</span>
+                        @if(item.details.resultCmaxVelocity === 'TRUE' && item.details.resultMaxMomentum === 'TRUE' && item.details.resultVmaxVelocity === 'TRUE'){
+                        <span class="text">{{'-'}}</span>
+                        }@else {
+                        <div class="flex-column">
+                            <span class="text">{{`Reduce Flowrate,`}}</span>
+                            <span class="text">{{`Increase density,`}}</span>
+                            <span class="text">{{`Increase Pressure`}}</span>
+                        </div>
+                        }
+                    </div>
+                    <div class="p-[10px]">
+                        <div class="line"></div>
+                    </div>
+                    <div class="m-[10px]" *ngIf="!!item.details.ErosionCalculationInput">
+                        <div class="p-[10px]">
+                            <div class="container-title">
+                                <span class="text-title">{{'Sand Erosion'}}</span>
+                                @if(item.details.ErosionCalculationOutput.type === 'max_sand_rate'){
+                                    <div></div>
+                                }@else {
+                                    <app-tag 
+                                    [text]="data.status === 'TRUE'? 'PASSED':'FAILED'"
+                                    [backgroundColor]="data.status === 'TRUE'? '#F6FFED' :'#FFF1F0'"
+                                    [textColor]="data.status === 'TRUE'?  '#52C41A':'#F5222D'" 
+                                    [border]="true"
+                                    [borderColor]="data.status === 'TRUE'? '#B7EB8F':'#FFA39E'">
+                                </app-tag>
+                                }
+                            </div>
+                        </div>
+                        <ng-container>
+                            <div class="p-[10px]">
+                                @if(item.details.ErosionCalculationOutput.type === 'max_sand_rate'){
+                                <div class="container-content">
+                                    <span class="text-title">{{'Maximum limit of Sand Production Rate:'}}</span>
+                                    <span class="text-long">{{formatValue(item.details.ErosionCalculationOutput.value, 'Max Sand Rate')}}</span>
+                                    <span class="text">{{'kg/day'}}</span>
+                                </div>
+                                }@else{
+                                    <div class="container-content">
+                                        <span class="text-title">{{'Erosion Rate:'}}</span>
+                                        <span class="text">{{formatValue(item.details.ErosionCalculationOutput.value, 'Max Sand Rate')}}</span>
+                                        <span class="text">{{'mm/year'}}</span>
+                                    </div>
+                                    <div class="container-content">
+                                        <span class="text-title">{{'Criteria:'}}</span>
+                                        <div class="flex-column">
+                                            <span class="text">{{`Pass: Erosion Rate <= 0.1 mm/year`}}</span>
+                                            <span class="text">{{`Fail: Erosion Rate > 0.1 mm/year`}}</span>
+                                        </div>
+                                    </div>
+                                }
+                            </div>
+                        </ng-container>
+                        <div class="container-recommendation p-[10px]">
+                            <span class="text-title">{{'Recommendation:'}}</span>
+                            @if(item.details.ErosionCalculationOutput.type === 'max_sand_rate'){
+                            <span class="text">{{'-'}}</span>
+                            }@else {
+                            <div class="flex-column">
+                                <span class="text">{{`Reduce Flowrate,`}}</span>
+                                <span class="text">{{`Revisit Particle size`}}</span>
+                            </div>
+                            }
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<ng-template #line>
+    <div class="container-line">
+        <svg xmlns="http://www.w3.org/2000/svg" width="569" height="2" viewBox="0 0 569 2" fill="none">
+            <path d="M0 1H569.001" stroke="#E2E8F0" />
+        </svg>
+    </div>
+</ng-template>

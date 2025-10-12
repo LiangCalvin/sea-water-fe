@@ -1,1 +1,56 @@
-<p>all-studies works!</p>
+<div class="all-study-page">
+    <div class="container">
+        <div class="study-management-container">
+            <div class="page-header">
+                <div class="header-content">
+                    <h1 class="page-title">All Studies ({{ totalItems }})</h1>
+                </div>
+                <app-button [type]="'primary'" [width]="'auto'" [class]="'btn-text'" (click)="onCreateNewStudy()">
+                    Create Study
+                </app-button>
+            </div>
+            <div class="main-card">
+                <div class="header-controls">
+                    <div class="left-controls">
+                        <label class="checkbox-container">
+                            <input type="checkbox" [(ngModel)]="selectAll" (change)="onCreatedByMeToggle()">
+                            <span class="checkmark"></span>
+                            Created by me
+                        </label>
+                    </div>
+                    <div class="right-controls">
+                        <div class="search-container">
+                            <input nz-input placeholder="Search by Study ID, Study Name, Created By"
+                                [(ngModel)]="searchTerm" (input)="onInput($event)" class="search-input"
+                                (keydown.enter)="onSearchEnter()" />
+                            <nz-icon class="search-icon" nzType="search" nzTheme="outline" />
+                        </div>
+                        <div class="filter-group">
+                            <div class="w-[140px]">
+                                <app-dropdown class="w-full" [(ngModel)]="statusFilter" [options]="statusOptions"
+                                    (selectChange)="onStatusFilterChange()"></app-dropdown>
+                            </div>
+                        </div>
+                        <div class="filter-group">
+                            <div class="w-[140px]">
+                                <app-dropdown class="w-full" [(ngModel)]="assetFilter" [options]="assetOptions"
+                                    (selectChange)="onAssetFilterChange()"></app-dropdown>
+                            </div>
+                        </div>
+                        <div class="filter-group">
+                            <div class="w-[150px]">
+                                <app-dropdown class="w-full" [(ngModel)]="locationFilter" [options]="locationOptions"
+                                    [disabled]="isLocationDisabled"
+                                    (selectChange)="onLocationFilterChange()"></app-dropdown>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <app-table [columnNames]="columnData" [data]="studies" [sortField]="sortField"
+                    [sortDirection]="sortDirection" [currentPage]="currentPage" [totalPages]="totalPages"
+                    (sortChange)="onSortData($event)" (pageChange)="onGoToPage($event)" [totalPages]="totalPages"
+                    (rowChange)="goToStudyDetails($event)" [isLoading]="isLoading"></app-table>
+            </div>
+        </div>
+    </div>
+</div>

@@ -5,8 +5,8 @@ import { toSignal } from '@angular/core/rxjs-interop';
 import { filter, map } from 'rxjs';
 import { CommonModule } from '@angular/common';
 import { AlertModalComponent } from '../modals/alert-modal/alert-modal.component';
-import { GlobalService } from '../../../pages/services/global.service';
-import { GlobalTemplateService } from '../../../pages/services/global-template.service';
+import { GlobalService } from '../../../services/global.service';
+import { GlobalTemplateService } from '../../../services/global-template.service';
 
 @Component({
   selector: 'app-app-template',

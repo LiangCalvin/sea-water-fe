@@ -1,1 +1,75 @@
-<p>model-and-basic-composition works!</p>
+@if(isLoading){
+<div class="loading-wrapper">
+    <ng-container [ngTemplateOutlet]="LOADING_TEMPLATE"></ng-container>
+</div>
+}@else {
+<app-card [footerBorder]="false" [style]="{ boxShadow: 'none', padding:'20px' }" [title]="'Model and Basic Composition'"
+    [addPadding]="true">
+    <div content class="content-container">
+        <form [formGroup]="form">
+            <div class="flex w-full flex-col gap-5">
+                <div class="flex">
+                    <div class="w-[30%]">
+                        <span>WHP Design</span>
+                    </div>
+                    <div class="w-[100%]">
+                        <div class="w-[50%]">
+                            <app-dropdown [placeholder]="'Select Wellhead Model'"
+                                [formControl]="$any(form.get('whpDesign'))"
+                                [textError]="$any(form.get('whpDesign')).invalid && $any(form.get('whpDesign')).touched ? 'Please complete all required data.': '' "
+                                [options]="models" (selectChange)="onWHPDesignChange($event)">
+                            </app-dropdown>
+                        </div>
+                    </div>
+                </div>
+                <div class="flex">
+                    <div class="w-[30%]">
+                        <span>
+                            Basic Composition
+                            <div>(Mixed Phase)</div>
+                        </span>
+                    </div>
+                    <div class="basic-composition-content w-[100%]">
+                        <div class="radio-group">
+                            <div class="raido-container">
+                                <app-radio [formControl]="$any(form.get('genericType'))" [options]="generic"
+                                    (valueChange)="onChange($event)">
+                                </app-radio>
+                                <app-dropdown class="w-[50%]" [formControl]="$any(form.get('genericComposition'))"
+                                    [placeholder]="'Select Option'" [options]="compositionGeneric"
+                                    (selectChange)="onChangeComposition()">
+                                </app-dropdown>
+                            </div>
+                            <div class="radio-desc">
+                                <span class="desc-text">Default composition values have been auto-filled. You may review
+                                    and
+                                    edit these values as needed.</span>
+                            </div>
+                            <div class="raido-container">
+                                <app-radio [formControl]="$any(form.get('manualType'))" [options]="manual"
+                                    (valueChange)="onChange($event)">
+                                </app-radio>
+                            </div>
+                            <div class="radio-desc">
+                                <span class="desc-text">Upload your own basic composition data using the provided Excel
+                                    template. Once uploaded, you can review and edit the values in the table
+                                    below.</span>
+                            </div>
+                        </div>
+                        <div class="import-container">
+                            @if(form.get('manualType')?.value){
+                            <app-button [type]="'white'" [disabled]="false" [width]="'auto'" [class]="'btn-text'"
+                                (click)="openUploadDialog()">Import Basic Composition data
+                            </app-button>
+                            <span class="cancel-link" (click)="onClearData()">Clear Data</span>
+                            }
+                        </div>
+                        <app-excel-table [data]="dataModel" (formValueChanged)="onExcelValueChanged($event)">
+                        </app-excel-table>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</app-card>
+}

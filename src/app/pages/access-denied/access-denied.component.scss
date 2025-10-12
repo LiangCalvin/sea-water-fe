@@ -1,0 +1,14 @@
+.credentials-container {
+  display: flex;
+  flex-wrap: wrap;
+  align-content: center;
+  height: 100%;
+
+  &> h2 {
+      flex: 1 1 100%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+  }
+}

@@ -1,0 +1,196 @@
+<div class="container">
+    <app-collapse class="header" [label]="'Piping Data'" [isOpen]="expanded">
+        <div class="piping-body" *ngIf="expanded">
+            <div *ngFor="let item of pipingDataInput; let i = index">
+                <div class="piping-position">
+                    <nz-row class="position-header-row" align="left">
+                        <nz-col [nzSpan]="8">
+                            <ng-container [ngSwitch]="i">
+                                <h3 *ngSwitchCase="0">Position 1 : Production Manifold</h3>
+                                <h3 *ngSwitchCase="1">Position 1 : Export Manifold</h3>
+                                <h3 *ngIf="item.position === 2 && item.subPosition === 1">Position 2.1 Receiving
+                                    Facility 1</h3>
+                                <h3 *ngIf="item.position === 2 && item.subPosition === 2">Position 2.2 Receiving
+                                    Facility 2</h3>
+                                <h3 *ngIf="item.position > 2">
+                                    Position {{ item.position }} Export Facility
+                                </h3>
+                            </ng-container>
+                        </nz-col>
+                        <nz-col [nzSpan]="'auto'" *ngIf="i >= 1" class="position-type-label">
+                            {{ getPositionTypeLabel(item, i) }}
+                        </nz-col>
+                    </nz-row>
+                    <div *ngIf="item.positionType !== 'same_as_1'">
+                        <div class="form-section">
+                            <div class="form-row">
+                                <div class="form-column">
+                                    <div class="input-with-unit">
+                                        <p>Piping Size</p>
+                                    </div>
+                                    <div class="value-with-unit">
+                                        {{ item.pipingSize }} <span class="unit-text">inch</span>
+                                    </div>
+                                </div>
+                                <div class="form-column">
+                                    <div class="input-with-unit">
+                                        <p>Piping Class</p>
+                                    </div>
+                                    <div class="value-with-unit">
+                                        {{ item.pipingClass }}
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-column">
+                                    <div class="input-with-unit">
+                                        <p>Inner Diameter (Di)</p>
+                                    </div>
+                                    <div class="value-with-unit">
+                                        {{ item.innerDiameter.value }} <span
+                                            class="unit-text">{{item.innerDiameter.unit}}</span>
+                                    </div>
+                                </div>
+                                <div class="form-column">
+                                    <div class="input-with-unit">
+                                        <p>Outer Diameter (D)</p>
+                                    </div>
+                                    <div class="value-with-unit">
+                                        {{ item.outerDiameter.value }} <span
+                                            class="unit-text">{{item.outerDiameter.unit}}</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-column">
+                                    <div class="input-with-unit">
+                                        <p>Piping Thickness</p>
+                                    </div>
+                                    <div class="value-with-unit">
+                                        {{ item.thickness.value }}<span class="unit-text">{{item.thickness.unit}}</span>
+                                    </div>
+                                </div>
+                                <div class="form-column">
+                                    <div class="input-with-unit">
+                                        <p>Actual Thickness</p>
+                                    </div>
+                                    <div class="value-with-unit">
+                                        {{ item.actualThickness }} <span class="unit-text">mm</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-column">
+                                    <div class="input-with-unit">
+                                        <p>Material</p>
+                                    </div>
+                                    <div class="value-with-unit">
+                                        {{ getMaterialName(item.material) }}
+                                    </div>
+                                </div>
+                                <div class="form-column">
+                                    <div class="input-with-unit">
+                                        <p>Spec no.</p>
+                                    </div>
+                                    <div class="value-with-unit">
+                                        {{ item.specNo }}
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-column">
+                                    <div class="input-with-unit">
+                                        <p>Max Operating Temperature</p>
+                                    </div>
+                                    <div class="value-with-unit">
+                                        {{ item.maxOperatingTemp }} <span class="unit-text">°C</span>
+                                    </div>
+                                </div>
+                                <div class="form-column">
+                                    <div class="input-with-unit">
+                                        <p>Allowable stress</p>
+                                    </div>
+                                    <div class="value-with-unit">
+                                        {{ item.allowableStress }} <span class="unit-text">Ksi</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-column">
+                                    <div class="input-with-unit">
+                                        <p>Coefficient</p>
+                                    </div>
+                                    <div class="value-with-unit">
+                                        {{ item.coefficient }}
+                                    </div>
+                                </div>
+                                <div class="form-column">
+                                    <div class="input-with-unit">
+                                        <p>Quality Factor</p>
+                                    </div>
+                                    <div class="value-with-unit">
+                                        {{ item.qualityFactor }}
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-column">
+                                    <div class="input-with-unit">
+                                        <p>Corrosion allowance (optional)</p>
+                                    </div>
+                                    <div class="value-with-unit">
+                                        {{ item.corrosionAllowance }}
+                                    </div>
+                                </div>
+                                <div class="form-column">
+                                    <div class="input-with-unit">
+                                        <p>Welding Joint strength reduction</p>
+                                    </div>
+                                    <div class="value-with-unit">
+                                        {{ item.weldingJointStrength }}
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-column">
+                                    <div class="input-with-unit">
+                                        <p>Span Type</p>
+                                    </div>
+                                    <div class="value-with-unit">
+                                        {{ getSpanTypeName(item.spanType) }}
+                                    </div>
+                                </div>
+                                <div class="form-column" *ngIf="item.spanType === 'custom'">
+                                    <div class="input-with-unit">
+                                        <p>Span Length</p>
+                                    </div>
+                                    <div class="value-with-unit">
+                                        {{ item.spanLength }} <span class="unit-text">m</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-column">
+                                    <div class="input-with-unit">
+                                        <p>Topside Design Pressure</p>
+                                    </div>
+                                    <div class="value-with-unit">
+                                        {{ item.pipelineDesignPressure }} <span class="unit-text">barg</span>
+                                    </div>
+                                </div>
+                                <div class="form-column">
+                                    <div class="input-with-unit">
+                                        <p>Erosion Velocity Constant</p>
+                                    </div>
+                                    <div class="value-with-unit">
+                                        {{ item.erosionVelocityConstant }} <span class="unit-text">ft/s</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </app-collapse>
+</div>

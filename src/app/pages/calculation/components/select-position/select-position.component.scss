@@ -1,0 +1,113 @@
+.content-container {
+  display: grid;
+  grid-template-columns: repeat(1, 1fr);
+  row-gap: 20px;
+}
+
+.flex-container {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  column-gap: 10px;
+}
+
+.flex-dropdown {
+  display: flex;
+  align-items: flex-end;
+  justify-content: flex-start;
+  column-gap: 10px;
+
+  .label {
+    line-height: 10px;
+    color: #374151;
+    font-family: var(--font-family-base);
+    font-size: var(--typography-base-sizes-base-font-size, 16px);
+    font-style: normal;
+    font-weight: var(--font-weight-semibold, 600);
+  }
+}
+
+.image-full-height {
+  width: 100%;
+  height: 400px;
+  object-fit: cover;
+}
+.card-container {
+  display: flex;
+  flex-direction: column;
+  row-gap: 10px;
+}
+
+.card {
+  display: flex;
+  width: 369px;
+  height: 86px;
+  padding: var(--spacing-4, 16px);
+  align-items: flex-start;
+  gap: var(--spacing-4, 16px);
+  flex-shrink: 0;
+  border-radius: var(--border-radius-md, 6px);
+  border: 1px solid var(--base-border, #e4e4e7);
+  background: var(--base-popover, #fff);
+  box-shadow:
+    0px 4px 6px -1px rgba(0, 0, 0, 0.1),
+    0px 2px 4px -1px rgba(0, 0, 0, 0.06);
+}
+
+.text-container {
+  display: flex;
+  flex-direction: row;
+
+  .text {
+    color: #4b5563;
+    font-family: var(--font-family-base);
+    font-size: var(--typography-base-sizes-small-font-size, 14px);
+    font-style: normal;
+    font-weight: var(--font-weight-normal, 400);
+    line-height: var(--typography-base-sizes-small-line-height, 20px);
+  }
+}
+
+.local-footer {
+  position: fixed;
+  bottom: 0;
+  left: 50px;
+  right: 0;
+  background: #fff;
+  box-shadow: 0 -1px 5px rgba(0, 0, 0, 0.1);
+  z-index: 100;
+}
+
+.footer-container {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 1rem 2rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  .button-container {
+    display: flex;
+    column-gap: 10px;
+  }
+}
+.cancel-link {
+  color: var(--PTTEP-Primary-Blue-600_Initial, #009fda);
+  font-family: var(--font-family-base);
+  font-size: var(--typography-base-sizes-base-font-size, 16px);
+  font-style: normal;
+  font-weight: var(--font-weight-bold, 700);
+  line-height: 100%;
+  cursor: pointer;
+}
+
+.test {
+  flex: 1 1 auto;
+  width: calc(100vw - 230px);
+}
+
+@media screen and (max-width: 1024px) {
+  .flex-container {
+    display: flex;
+    flex-direction: column;
+  }
+}

@@ -1,1 +1,37 @@
-<p>select-position works!</p>
+<app-card [footerBorder]="false" [style]="{ boxShadow: 'none' }" [title]="'Select Position for Calculation'"
+    [addPadding]="true">
+    <div content class="content-container">
+        <div class="flex-dropdown w-[50%]">
+            <app-position-selector [sequenceFlow]="sequenceFlow" (positionChange)="onPositionChange($event)"></app-position-selector>
+        </div>
+        <div class="flex-container">
+            <div class="">
+                <app-image [src]="'../../../assets/images/Image_position.jpg'" [width]="450"></app-image>
+            </div>
+            <div class="">
+                <div class="card-container">
+                    <div class="card">
+                        <div class="text-container">
+                            <span class="text">Position 1 : Verify fluid properties at the focused WHP against those at the production and export manifolds.</span>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <div class="text-container">
+                            <span class="text">Position 2 : Verify fluid properties from the upstream WHP against those received at the focused WHP.</span>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <div class="text-container">
+                            <span class="text">Position 3 : Verify the combined fluid properties from all WHPs at the topside export facility.</span>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <div class="text-container">
+                            <span class="text">Position 4 : Verify the combined fluid properties from all WHPs within the riser and pipeline.</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</app-card>

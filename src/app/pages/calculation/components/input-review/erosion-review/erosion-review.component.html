@@ -1,0 +1,63 @@
+<div class="container">
+    <app-collapse [label]="'Erosion Calculation Data'" [isOpen]="expanded">
+        <div class="erosion-body" *ngIf="expanded">
+            <div class="erosion-section">
+                <nz-row class="section-header-row" align="left">
+                    <nz-col [nzSpan]="15">
+                        <h3>Erosion Data</h3>
+                    </nz-col>
+                    <nz-col [nzSpan]="9" class="text-right">
+                    </nz-col>
+                </nz-row>
+                <div>
+                    <div class="section">
+                        <div class="flow-types">
+                            <div class="flow-column">
+                                <div class="form-group">
+                                    <p>Calculation Options</p>
+                                    {{ erosionDataInput?.calculationOption?.type === 'allowable_erosion_rate'
+                                    ? 'Calculate Allowable Erosion Rate'
+                                    : 'Calculate Max Sand Rate' }}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="section">
+                        <div class="flow-types">
+                            <div class="flow-column">
+                                <div class="form-group">
+                                    <p>
+                                        {{ erosionDataInput?.calculationOption?.type === 'max_sand_rate'
+                                        ? 'Erosion Rate'
+                                        : 'Sand Production Rate' }}
+                                    </p>
+                                    {{erosionDataInput?.calculationOption?.value}}
+                                    <span class="unit-text">
+                                        {{ erosionDataInput?.calculationOption?.type === 'max_sand_rate' ? 'mm/year' :
+                                        'kg/day' }}
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="flow-column">
+                                <div class="form-group">
+                                    <p>Sand Diameter</p>
+                                    {{erosionDataInput?.sandDiameter}} <span class="unit-text">micron</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="section">
+                        <div class="flow-types">
+                            <div class="flow-column">
+                                <div class="form-group">
+                                    <p>Geometry Constant</p>
+                                    {{erosionDataInput?.geometryConstant}}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </app-collapse>
+</div>

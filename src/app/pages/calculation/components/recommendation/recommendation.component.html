@@ -1,1 +1,115 @@
-<p>recommendation works!</p>
+<div class="container-head-card" #resultData>
+    <div [ngClass]="activeTab === 'recommend' ? 'active' : 'in-active'" (click)="activeTab = 'recommend'">
+        Recommendation
+    </div>
+</div>
+
+<div>
+    <ng-container *ngIf="activeTab === 'recommend'; else detailsTemplate" [ngTemplateOutlet]="recommend"></ng-container>
+</div>
+
+<ng-template #recommend>
+    <div class="container-card">
+        <div class="container-header">
+            <span class="title-text">Recommendation</span>
+            <div class="container-button" *ngIf="calStatus === 'DONE'">
+                <app-button [type]="'white'" [width]="'auto'" (click)="onExport()">Export</app-button>
+                <app-tooltip [title]="'Adjust your input values and recalculate the results. Submitting will save the update under a new Calculation ID'">
+                    <app-button [type]="'primary'" [width]="'auto'" (click)="onRecalculation()">Recalculate</app-button>
+                </app-tooltip>
+            </div>
+        </div>
+        @if(calStatus === 'DONE'){
+        <ng-container>
+            <ng-container *ngTemplateOutlet="detailsRecommendation"></ng-container>
+        </ng-container>
+        }@else {
+        <ng-container>
+            <ng-container *ngTemplateOutlet="waiting"></ng-container>
+        </ng-container>
+        }
+    </div>
+</ng-template>
+
+<ng-template #detailsTemplate>
+    <div class="container-card">
+        <div class="title-text">Details result</div>
+        <div class="container-content">
+        </div>
+    </div>
+</ng-template>
+
+<ng-template #detailsRecommendation>
+    <div class="container-content">
+        <div class="container-calculation-detail">
+            <div class="container-text-between">
+                <span class="text-title ">{{studyDetail?.studyName}}</span>
+                <span class="text">{{'Created on'}} {{studyDetail?.createdAt | date: 'MMM d, y \'at\' h:mm a'}}</span>
+            </div>
+            <div class="container-text-between">
+                <div class="container-flex-column">
+                    <span class="text">{{'Field Asset'}}</span>
+                    <span class="text-bold">{{studyDetail?.assetName?.name}}</span>
+                </div>
+                <div class="container-flex-column">
+                    <span class="text">{{'Location'}}</span>
+                    <span class="text-bold">{{studyDetail?.locationName?.name}}</span>
+                </div>
+                <div class="container-flex-column">
+                    <span class="text">{{'Created By'}}</span>
+                    <span class="text-bold">{{this.displayName(studyDetail?.createdBy)}}</span>
+                </div>
+            </div>
+        </div>
+
+        <app-recommendation-summary 
+            [dataTopSide]="dataTopSide" 
+            [dataPipeLine]="dataPipeLine" 
+            [dataProcess]="dataProcess"
+            [dataThermowell]="dataThermowell"
+            (scrollToTop)="onScrollTop()">
+        </app-recommendation-summary>
+    </div>
+</ng-template>
+
+<ng-template #waiting>
+    <div class="h-[500px]">
+        <div class="container-content-waiting">
+            @if(calStatus === 'PROCESSING'){
+            <div>
+                <img class="" src="../../../../assets/icons/Clock2.svg" />
+            </div>
+            <div class="container-text">
+                <h1 class="main-text">{{mainText}} </h1>
+                <p class="text">{{text}}</p>
+            </div>
+            }@else {
+            <div>
+                <img class="" src="../../../../assets/icons/Vector.svg" />
+            </div>
+            <div class="container-text">
+                <h1 class="main-text">{{'System failed to return an output'}} </h1>
+                <p class="text">{{'Please review your input data and resubmit'}}</p>
+            </div>
+            }
+            @if(calStatus === 'PROCESSING'){
+                <div class="contaner-btn">
+                    <app-button type="white" [width]="'auto'" (click)="onBackToHome()">Back to homepage</app-button>
+                </div>
+            }@else {
+                <div class="contaner-btn">
+                    <app-button type="white" [width]="'auto'" (click)="onBackToHome()">Back to homepage</app-button>
+                    <app-button type="primary" [width]="'auto'" (click)="onRecalculation()">Resubmit</app-button>
+                </div>
+            }
+        </div>
+    </div>
+</ng-template>
+
+<ng-template #iconSuccess>
+    <img class="" src="../../../../assets/icons/indicator2.svg" />
+</ng-template>
+
+<ng-template #iconInprogress>
+    <img class="" src="../../../../assets/icons/indicator2.svg" />
+</ng-template>

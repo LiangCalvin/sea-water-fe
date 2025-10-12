@@ -1,0 +1,210 @@
+<div class="container">
+    <app-collapse [label]="'Wake Frequency (Thermowell)'" [isOpen]="expanded">
+        <div class="thermowell-body" *ngIf="expanded">
+            <div class="thermowell-section">
+                <form class="form-container">
+                    <div class="card-view-piping">
+                        <div class="header">
+                            <span class="text-title-header">Piping Information</span>
+                        </div>
+                        <div class="content">
+                            <div class="container-text">
+                                <div class="text-title">{{'Piping Size:'}}</div>
+                                <div class="text"> {{ pipingDataInput[1]?.pipingSize }} </div>
+                                <div class="text">{{'inch'}}</div>
+                            </div>
+                            <div class="container-text">
+                                <div class="text-title">{{'Piping Class:'}}</div>
+                                <div class="text">{{ pipingDataInput[1]?.pipingClass }}</div>
+                                <div class="text">{{''}}</div>
+                            </div>
+                            <div class="container-text">
+                                <div class="text-title">{{'Inner Diameter(Di):'}}</div>
+                                <div class="text">{{ pipingDataInput[1]?.innerDiameter.value }}</div>
+                                <div class="text">{{ pipingDataInput[1]?.innerDiameter.unit }}</div>
+                            </div>
+                            <div class="container-text">
+                                <div class="text-title">{{'Thickness:'}}</div>
+                                <div class="text">{{ pipingDataInput[1]?.thickness.value }}</div>
+                                <div class="text">{{ pipingDataInput[1]?.thickness.unit }}</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="content-container">
+                        <div class="text-title">
+                            Position 1 : Export Manifold
+                        </div>
+                        <div class="flex-content">
+                            <!-- Left Column -->
+                            <div class="field-container w-[50%]">
+                                <div class="form-group">
+                                    <div class="label-row-with-tooltip">
+                                        <span class="label-text">Insulation Thickness</span>
+                                    </div>
+                                    <div class="input-with-unit">
+                                        <h2 class="value-text">
+                                            {{ thermowellDataInput?.insulationThickness }}
+                                            <!-- {{firstPiping?.pipingSize}} -->
+                                        </h2>
+                                        <span class="unit">mm</span>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="label-row-with-tooltip">
+                                        <span class="label-text">Insertion Length</span>
+                                        <app-tooltip [title]="'sss'">
+                                            <nz-icon nzType="minus-circle" nzTheme="outline"
+                                                style="color:#009FDA;font-size: 24px;" />
+                                        </app-tooltip>
+                                    </div>
+                                    <div class="input-with-unit">
+                                        <h2 class="value-text">
+                                            {{ thermowellDataInput?.insertionLength }}
+                                            <!-- {{thermo?.insertionLength}} -->
+                                        </h2>
+                                        <span class="unit">mm</span>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="label-row-with-tooltip">
+                                        <span class="label-text">Thermowell Material</span>
+                                        <app-tooltip [title]="'sss'">
+                                            <nz-icon nzType="minus-circle" nzTheme="outline"
+                                                style="color:#009FDA;font-size: 24px;" />
+                                        </app-tooltip>
+                                    </div>
+                                    <div class="input-with-unit">
+                                        <h2 class="value-text">
+                                            {{ materialTypeMap[thermowellDataInput?.thermowellMaterial] ||
+                                            thermowellDataInput?.thermowellMaterial }}
+                                        </h2>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="label-row-with-tooltip">
+                                        <span class="label-text">Root Diameter</span>
+                                        <app-tooltip [title]="'sss'">
+                                            <nz-icon nzType="minus-circle" nzTheme="outline"
+                                                style="color:#009FDA;font-size: 24px;" />
+                                        </app-tooltip>
+                                    </div>
+                                    <div class="input-with-unit">
+                                        <h2 class="value-text">
+                                            {{ thermowellDataInput?.rootDiameter }}
+                                        </h2>
+                                        <span class="unit">mm</span>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="label-row-with-tooltip">
+                                        <span class="label-text">Bore Diameter</span>
+                                        <app-tooltip [title]="'sss'">
+                                            <nz-icon nzType="minus-circle" nzTheme="outline"
+                                                style="color:#009FDA;font-size: 24px;" />
+                                        </app-tooltip>
+                                    </div>
+                                    <div class="input-with-unit">
+                                        <h2 class="value-text">
+                                            {{ thermowellDataInput?.boreDiameter }}
+                                        </h2>
+                                        <span class="unit">mm</span>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="label-row-with-tooltip">
+                                        <span class="label-text">AVG Diam of Actual Insertion</span>
+                                        <app-tooltip [title]="'sss'">
+                                            <nz-icon nzType="minus-circle" nzTheme="outline"
+                                                style="color:#009FDA;font-size: 24px;" />
+                                        </app-tooltip>
+                                    </div>
+                                    <div class="input-with-unit">
+                                        <h2 class="value-text">
+                                            {{ thermowellDataInput?.avgDiam }}
+                                        </h2>
+                                        <span class="unit">mm</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- Right Column -->
+                            <div class="field-container w-[50%]">
+                                <div class="form-group">
+                                    <div class="label-row-with-tooltip">
+                                        <span class="label-text">Stem Type</span>
+                                    </div>
+                                    <div class="input-with-unit">
+                                        <h2 class="value-text">
+                                            {{ stemTypeMap[thermowellDataInput?.stemType] ||
+                                            thermowellDataInput?.stemType
+                                            }}
+                                        </h2>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="label-row-with-tooltip">
+                                        <span class="label-text">Well length (U-length)</span>
+                                    </div>
+                                    <div class="input-with-unit">
+                                        <h2 class="value-text">
+                                            {{ thermowellDataInput?.wellLength }}
+                                        </h2>
+                                        <span class="unit">mm</span>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="label-row-with-tooltip">
+                                        <span class="label-text">Young's Modulus (E)</span>
+                                        <app-tooltip [title]="'sss'">
+                                            <nz-icon nzType="minus-circle" nzTheme="outline"
+                                                style="color:#009FDA;font-size: 24px;" />
+                                        </app-tooltip>
+                                    </div>
+                                    <div class="input-with-unit">
+                                        <h2 class="value-text" [innerHTML]="youngModulusFormattedHtml">
+                                            {{ thermowellDataInput?.youngModulus }}
+                                        </h2>
+                                        <span class="unit">Pa</span>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="label-row-with-tooltip">
+                                        <span class="label-text">Tip Diameter</span>
+                                    </div>
+                                    <div class="input-with-unit">
+                                        <h2 class="value-text">
+                                            {{ thermowellDataInput?.tipDiameter }}
+                                        </h2>
+                                        <span class="unit">mm</span>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="label-row-with-tooltip">
+                                        <span class="label-text">Connection Type</span>
+                                    </div>
+                                    <div class="input-with-unit">
+                                        <h2 class="value-text">
+                                            {{ connectionTypeMap[thermowellDataInput?.connectionType] ||
+                                            thermowellDataInput?.connectionType
+                                            }}
+                                        </h2>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="label-row-with-tooltip">
+                                        <span class="label-text">Nozzle Length</span>
+                                    </div>
+                                    <div class="input-with-unit">
+                                        <h2 class="value-text">
+                                            {{ thermowellDataInput?.nozzleLength }}
+                                        </h2>
+                                        <span class="unit">mm</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </app-collapse>
+</div>

@@ -1,1 +1,263 @@
-<p>process-information works!</p>
+<div class="container">
+  <app-collapse [label]="'Process Information'" [isOpen]="expanded">
+    <div class="process-body" *ngIf="expanded">
+      <div *ngFor="let item of fetchedData; let i = index">
+        <div class="form-section">
+          <nz-row class="form-header" align="left">
+            <nz-col [nzSpan]="9">
+              <h3>
+                Simulation Input Position
+                {{ item.position }}{{ item.position === 1 ? '' : '.' + item.subPosition }}
+                {{ item.position === 1 ? 'Production and Export' : 'Receiving Facility ' + item.subPosition }}
+              </h3>
+            </nz-col>
+            <nz-col [nzSpan]="6">
+              <ng-container *ngIf="i !== 0">
+                <ng-container *ngIf="!editMode; else dropdownTemplate">
+                  <h2 class="dropdown-display">{{ getDropdownLabel(itemPreSelections[getPositionKey(item.position,
+                    item.subPosition)], i) }}</h2>
+                </ng-container>
+                <ng-template #dropdownTemplate>
+                  <app-dropdown [options]="dropdownOptions"
+                    [defaultSelected]="getSelectedOption(getPositionKey(item.position, item.subPosition))"
+                    (selectChange)="onDropdownSelectionChange($event, getPositionKey(item.position, item.subPosition))"></app-dropdown>
+                </ng-template>
+              </ng-container>
+            </nz-col>
+            <nz-col [nzSpan]="9" class="text-right">
+              <ng-container *ngIf="i === 0">
+                <ng-container *ngIf="isOwner(); else viewOnlyButtons">
+                  <app-button *ngIf="!editMode" [type]="'white'" (click)="toggleEditMode()">Edit</app-button>
+                  <app-button *ngIf="editMode" [type]="'white'" [disabled]="!isAllFormsValid"
+                    (click)="saveDraft()">Save</app-button>
+                </ng-container>
+                <!-- For Non-Owner (createdBy !== Owner): View-only Edit/Save -->
+                <ng-template #viewOnlyButtons>
+                  <app-button *ngIf="!editMode" [type]="'white'" (click)="toggleEditMode()">Edit</app-button>
+                  <app-button *ngIf="editMode" [type]="'white'" (click)="toggleViewMode()">Save</app-button>
+                </ng-template>
+              </ng-container>
+            </nz-col>
+          </nz-row>
+          <form #innerDiv [formGroup]="formGroups[getPositionKey(item.position, item.subPosition)]"
+            *ngIf="positionTypes[getPositionKey(item.position, item.subPosition)] === 'custom'">
+            <div class="input-section">
+              <h4>Flow rate</h4>
+              <div class="form-group"
+                [class.invalid]="formGroups[getPositionKey(item.position, item.subPosition)].get('gas')?.invalid && formGroups[getPositionKey(item.position, item.subPosition)].get('gas')?.touched">
+                <div *ngIf="!editMode" class="label-row">
+                  <label>Gas</label>
+                </div>
+                <div class="input-with-unit">
+                  <app-input-text *ngIf="editMode; else gasDisplay" class="w-[400px]" [label]="'Gas'" [default]="'80'"
+                    [unit]="'MMSCFD'" [numeric]="true" [allowDecimals]="true" [decimalLimit]="4"
+                    [formControl]="getFormControl(formGroups[getPositionKey(item.position, item.subPosition)], 'gas')"
+                    [textError]="getFieldError(getFormControl(formGroups[getPositionKey(item.position, item.subPosition)], 'gas'), 0, 300)">
+                  </app-input-text>
+                  <ng-template #gasDisplay>
+                    <h2 class="value-text">
+                      {{ formGroups[getPositionKey(item.position, item.subPosition)].get('gas')?.value }}
+                    </h2>
+                    <span class="unit">MMSCFD</span>
+                  </ng-template>
+                </div>
+              </div>
+              <div class="input-row">
+                <div class="input-column">
+                  <div class="radio-group" [formGroup]="formGroups[getPositionKey(item.position, item.subPosition)]">
+                    <app-radio [options]="condensateRadioOptions" [disabled]="!editMode"
+                      formControlName="condensateType" [disabledColor]="'#9ca3af'"
+                      (valueChange)="onCondensateTypeChange(getPositionKey(item.position, item.subPosition), $event)">
+                    </app-radio>
+                  </div>
+                  <div class="form-group"
+                    *ngIf="formGroups[getPositionKey(item.position, item.subPosition)].get('condensateType')?.value === 'Condensate Flowrate'"
+                    [class.invalid]="formGroups[getPositionKey(item.position, item.subPosition)].get('condensateType')?.invalid && formGroups[getPositionKey(item.position, item.subPosition)].get('condensateType')?.touched">
+                    <div *ngIf="!editMode" class="label-row">
+                      <label>Condensate Flowrate</label>
+                    </div>
+                    <div class="input-with-unit">
+                      <app-input-text *ngIf="editMode; else condensateValueDisplay" class="w-[400px]"
+                        [label]="'Condensate Flowrate'" [default]="'3,200'" [unit]="'BPD'" [numeric]="true"
+                        [allowDecimals]="true" [decimalLimit]="4"
+                        [formControl]="getFormControl(formGroups[getPositionKey(item.position, item.subPosition)], 'condensateValue')"
+                        [textError]="getFieldError(getFormControl(formGroups[getPositionKey(item.position, item.subPosition)], 'condensateValue'), 0, 20000)">
+                      </app-input-text>
+                      <ng-template #condensateValueDisplay>
+                        <h2 class="value-text">
+                          {{ formGroups[getPositionKey(item.position, item.subPosition)].get('condensateValue')?.value |
+                          number:'1.0-0' }}
+                        </h2>
+                        <span class="unit">BPD</span>
+                      </ng-template>
+                    </div>
+                  </div>
+                  <div class="form-group"
+                    *ngIf="formGroups[getPositionKey(item.position, item.subPosition)].get('condensateType')?.value === 'CGR'"
+                    [class.invalid]="formGroups[getPositionKey(item.position, item.subPosition)].get('condensateType')?.invalid && formGroups[getPositionKey(item.position, item.subPosition)].get('condensateType')?.touched">
+                    <div *ngIf="!editMode" class="label-row">
+                      <label>CGR</label>
+                    </div>
+                    <div class="input-with-unit">
+                      <app-input-text *ngIf="editMode; else cgrValueDisplay" class="w-[400px]" [label]="'CGR'"
+                        [default]="'40'" [unit]="'bbl/MMSCF'" [numeric]="true" [allowDecimals]="true" [decimalLimit]="4"
+                        [formControl]="getFormControl(formGroups[getPositionKey(item.position, item.subPosition)], 'cgrValue')"
+                        [textError]="getFieldError(getFormControl(formGroups[getPositionKey(item.position, item.subPosition)], 'cgrValue'), 0, 500)">
+                      </app-input-text>
+                      <ng-template #cgrValueDisplay>
+                        <h2 class="value-text">
+                          {{ formGroups[getPositionKey(item.position, item.subPosition)].get('cgrValue')?.value |
+                          number:'1.0-0' }}
+                        </h2>
+                        <span class="unit">bbl/MMSCF</span>
+                      </ng-template>
+                    </div>
+                  </div>
+                </div>
+                <div class="input-column">
+                  <div class="radio-group" [formGroup]="formGroups[getPositionKey(item.position, item.subPosition)]">
+                    <app-radio [options]="waterRadioOptions" [disabled]="!editMode" formControlName="waterType"
+                      (valueChange)="onWaterTypeChange(getPositionKey(item.position, item.subPosition), $event)">
+                    </app-radio>
+                  </div>
+                  <div class="form-group"
+                    *ngIf="formGroups[getPositionKey(item.position, item.subPosition)].get('waterType')?.value === 'Water Flowrate'"
+                    [class.invalid]="formGroups[getPositionKey(item.position, item.subPosition)].get('waterType')?.invalid && formGroups[getPositionKey(item.position, item.subPosition)].get('waterType')?.touched">
+                    <div *ngIf="!editMode" class="label-row">
+                      <label>Water Flowrate</label>
+                    </div>
+                    <div class="input-with-unit">
+                      <app-input-text *ngIf="editMode; else waterValueDisplay" class="w-[400px]"
+                        [label]="'Condensate Flowrate'" [default]="'4,000'" [unit]="'BPD'" [numeric]="true"
+                        [allowDecimals]="true" [decimalLimit]="4"
+                        [formControl]="getFormControl(formGroups[getPositionKey(item.position, item.subPosition)], 'waterValue')"
+                        [textError]="getFieldError(getFormControl(formGroups[getPositionKey(item.position, item.subPosition)], 'waterValue'), 0, 20000)">
+                      </app-input-text>
+                      <ng-template #waterValueDisplay>
+                        <h2 class="value-text">
+                          {{ formGroups[getPositionKey(item.position, item.subPosition)].get('waterValue')?.value |
+                          number:'1.0-0' }}
+                        </h2>
+                        <span class="unit">BPD</span>
+                      </ng-template>
+                    </div>
+                  </div>
+                  <div class="form-group"
+                    *ngIf="formGroups[getPositionKey(item.position, item.subPosition)].get('waterType')?.value === 'WGR'"
+                    [class.invalid]="formGroups[getPositionKey(item.position, item.subPosition)].get('waterType')?.invalid && formGroups[getPositionKey(item.position, item.subPosition)].get('waterType')?.touched">
+                    <div *ngIf="!editMode" class="label-row">
+                      <label>WGR</label>
+                    </div>
+                    <div class="input-with-unit">
+                      <app-input-text *ngIf="editMode; else wgrValueDisplay" class="w-[400px]" [label]="'WGR'"
+                        [default]="'50'" [unit]="'bbl/MMSCF'" [numeric]="true" [allowDecimals]="true" [decimalLimit]="4"
+                        [formControl]="getFormControl(formGroups[getPositionKey(item.position, item.subPosition)], 'wgrValue')"
+                        [textError]="getFieldError(getFormControl(formGroups[getPositionKey(item.position, item.subPosition)], 'wgrValue'), 0, 500)">
+                      </app-input-text>
+                      <ng-template #wgrValueDisplay>
+                        <h2 class="value-text">
+                          {{ formGroups[getPositionKey(item.position, item.subPosition)].get('wgrValue')?.value |
+                          number:'1.0-0' }}
+                        </h2>
+                        <span class="unit">bbl/MMSCF</span>
+                      </ng-template>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="input-section">
+              <h4>Composition (Gas Phase)</h4>
+              <div class="input-row">
+                <div class="form-group"
+                  [class.invalid]="formGroups[getPositionKey(item.position, item.subPosition)].get('h2s')?.invalid && formGroups[getPositionKey(item.position, item.subPosition)].get('h2s')?.touched">
+                  <div *ngIf="!editMode" class="label-row">
+                    <label>H2S</label>
+                  </div>
+                  <div class="input-with-unit">
+                    <app-input-text *ngIf="editMode; else h2sDisplay" class="w-[400px]" [label]="'H2S'"
+                      [default]="'120'" [unit]="'ppm'" [numeric]="true" [allowDecimals]="true" [decimalLimit]="4"
+                      [formControl]="getFormControl(formGroups[getPositionKey(item.position, item.subPosition)], 'h2s')"
+                      [textError]="getFieldError(getFormControl(formGroups[getPositionKey(item.position, item.subPosition)], 'h2s'), 0, 200)">
+                    </app-input-text>
+                    <ng-template #h2sDisplay>
+                      <h2 class="value-text">
+                        {{ formGroups[getPositionKey(item.position, item.subPosition)].get('h2s')?.value }}
+                      </h2>
+                      <span class="unit">ppm</span>
+                    </ng-template>
+                  </div>
+                </div>
+                <div class="form-group"
+                  [class.invalid]="formGroups[getPositionKey(item.position, item.subPosition)].get('co2')?.invalid && formGroups[getPositionKey(item.position, item.subPosition)].get('co2')?.touched">
+                  <div *ngIf="!editMode" class="label-row">
+                    <label>CO2</label>
+                  </div>
+                  <div class="input-with-unit">
+                    <app-input-text *ngIf="editMode; else co2Display" class="w-[400px]" [label]="'CO2'" [default]="'50'"
+                      [unit]="'%'" [numeric]="true" [allowDecimals]="true" [decimalLimit]="4"
+                      [formControl]="getFormControl(formGroups[getPositionKey(item.position, item.subPosition)], 'co2')"
+                      [textError]="getFieldError(getFormControl(formGroups[getPositionKey(item.position, item.subPosition)], 'co2'), 0, 100)">
+                    </app-input-text>
+                    <ng-template #co2Display>
+                      <h2 class="value-text">
+                        {{ formGroups[getPositionKey(item.position, item.subPosition)].get('co2')?.value | number:'1.0-2'}} 
+                      </h2>
+                      <span class="unit">%</span>
+                    </ng-template>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="input-section">
+              <h4>Temperature</h4>
+              <div class="input-row">
+                <div class="form-group"
+                  [class.invalid]="formGroups[getPositionKey(item.position, item.subPosition)].get('exportTemperature')?.invalid && formGroups[getPositionKey(item.position, item.subPosition)].get('exportTemperature')?.touched">
+                  <div *ngIf="!editMode" class="label-row">
+                    <label>Export Temperature</label>
+                  </div>
+                  <div class="input-with-unit">
+                    <app-input-text *ngIf="editMode; else exportTemperatureDisplay" class="w-[400px]"
+                      [label]="'Export Temperature'" [default]="'120'" [unit]="'°C'" [numeric]="true"
+                      [allowDecimals]="true" [decimalLimit]="4"
+                      [formControl]="getFormControl(formGroups[getPositionKey(item.position, item.subPosition)], 'exportTemperature')"
+                      [textError]="getFieldError(getFormControl(formGroups[getPositionKey(item.position, item.subPosition)], 'exportTemperature'), 0, 135)">
+                    </app-input-text>
+                    <ng-template #exportTemperatureDisplay>
+                      <h2 class="value-text">
+                        {{ formGroups[getPositionKey(item.position, item.subPosition)].get('exportTemperature')?.value
+                        }}
+                      </h2>
+                      <span class="unit">°C</span>
+                    </ng-template>
+                  </div>
+                </div>
+                <div class="form-group"
+                  [class.invalid]="formGroups[getPositionKey(item.position, item.subPosition)].get('exportPressure')?.invalid && formGroups[getPositionKey(item.position, item.subPosition)].get('exportPressure')?.touched">
+                  <div *ngIf="!editMode" class="label-row">
+                    <label>Export Pressure</label>
+                  </div>
+                  <div class="input-with-unit">
+                    <app-input-text *ngIf="editMode; else exportPressureDisplay" class="w-[400px]"
+                      [label]="'Export Pressure'" [default]="'33'" [unit]="'barg'" [numeric]="true"
+                      [allowDecimals]="true" [decimalLimit]="4"
+                      [formControl]="getFormControl(formGroups[getPositionKey(item.position, item.subPosition)], 'exportPressure')"
+                      [textError]="getFieldError(getFormControl(formGroups[getPositionKey(item.position, item.subPosition)], 'exportPressure'), 0, 91)">
+                    </app-input-text>
+                    <ng-template #exportPressureDisplay>
+                      <h2 class="value-text">
+                        {{ formGroups[getPositionKey(item.position, item.subPosition)].get('exportPressure')?.value }}
+                      </h2>
+                      <span class="unit">barg</span>
+                    </ng-template>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </app-collapse>
+</div>

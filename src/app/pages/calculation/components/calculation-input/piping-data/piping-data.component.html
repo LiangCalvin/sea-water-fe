@@ -1,1 +1,255 @@
-<p>piping-data works!</p>
+<div class="container">
+  <app-collapse class="header" [label]="'Piping Data'" [isOpen]="expanded">
+    <div class="piping-body" *ngIf="expanded">
+      <div *ngFor="let item of fetchedData; let i = index">
+        <div class="piping-position">
+          <nz-row class="position-header-row" align="left">
+            <nz-col [nzSpan]="8">
+              <ng-container [ngSwitch]="i">
+                <h3 *ngSwitchCase="0">Position 1 : Production Manifold</h3>
+                <h3 *ngSwitchCase="1">Position 1 : Export Manifold</h3>
+                <h3 *ngIf="item.position === 2 && item.subPosition === 1">Position 2.1 Receiving Facility 1</h3>
+                <h3 *ngIf="item.position === 2 && item.subPosition === 2">Position 2.2 Receiving Facility 2</h3>
+                <h3 *ngIf="item.position > 2">
+                  Position {{ item.position }} Export Facility
+                </h3>
+              </ng-container>
+            </nz-col>
+            <nz-col [nzSpan]="'auto'" *ngIf="i >= 1">
+              <ng-container *ngIf="isPipingReady">
+                <app-dropdown [options]="getDropdownOptions(i)"
+                  [defaultSelected]="getSelectedOption(getPositionKey(item.position, item.subPosition))"
+                  (selectChange)="onDropdownSelectionChange($event, getPositionKey(item.position, item.subPosition))"
+                  (interacted)="onChildInteracted()">
+                </app-dropdown>
+              </ng-container>
+            </nz-col>
+          </nz-row>
+          <form #innerDiv [formGroup]="formGroups[getItemKey(item)]"
+            *ngIf="itemPreSelections[getItemKey(item)] === 'custom'">
+            <div class="form-section">
+              <div class="form-row">
+                <div class="form-column">
+                  <div class="input-with-unit">
+                    <app-dropdown class="w-[300px]" [options]="pipingSizeOptions" [label]="'Piping Size'"
+                      [defaultSelected]="getPipingSizeOption(formGroups[getItemKey(item)].get('pipingSize')?.value)"
+                      (selectChange)="onPipingSizeChange($event, getItemKey(item))" [placeholder]="'Select options'"
+                      [textError]="getFieldError(getFormControl(formGroups[getItemKey(item)], 'pipingSize'))"
+                      (interacted)="onChildInteracted()">
+                    </app-dropdown>
+                    <p class="unit-text">inch</p>
+                  </div>
+                </div>
+                <div class="form-column">
+                  <div class="input-with-unit">
+                    <app-dropdown class="w-[300px]" [options]="pipingClassOptions" [label]="'Piping Class'"
+                      [defaultSelected]="getPipingClassOption(formGroups[getItemKey(item)].get('pipingClass')?.value)"
+                      (selectChange)="onPipingClassChange($event, getItemKey(item))" [placeholder]="'Select options'"
+                      [textError]="getFieldError(getFormControl(formGroups[getItemKey(item)], 'pipingClass'))"
+                      (interacted)="onChildInteracted()">
+                    </app-dropdown>
+                  </div>
+                </div>
+              </div>
+              <div class="form-row">
+                <div class="form-column">
+                  <div class="input-with-unit">
+                    <app-input-text [label]="'Inner Diameter (Di)'" [numeric]="true" [witdthInput]="'w-[300px]'"
+                      [unitDropdown]="true" [placeholder]="'Auto filled from piping information'" [bgColor]="'#f0faff'"
+                      [allowDecimals]="true" [decimalLimit]="4"
+                      [formControl]="getFormControl(formGroups[getItemKey(item)], 'innerDiameter')"
+                      [textError]="getFieldError(getFormControl(formGroups[getItemKey(item)], 'innerDiameter'))"
+                      (interacted)="onChildInteracted()">
+                      <app-dropdown [options]="unitOptions"
+                        [defaultSelected]="getUnitOption(formGroups[getItemKey(item)].get('innerDiameterUnit')?.value)"
+                        (selectChange)="onUnitChange($event, getItemKey(item), 'innerDiameterUnit')"
+                        (interacted)="onChildInteracted()">
+                      </app-dropdown>
+                    </app-input-text>
+                  </div>
+                </div>
+                <div class="form-column">
+                  <div class="input-with-unit">
+                    <app-input-text [label]="'Outer Diameter (D)'" [numeric]="true" [witdthInput]="'w-[300px]'"
+                      [unitDropdown]="true" [placeholder]="'Auto filled from piping information'" [bgColor]="'#f0faff'"
+                      [allowDecimals]="true" [decimalLimit]="4"
+                      [formControl]="getFormControl(formGroups[getItemKey(item)], 'outerDiameter')"
+                      [textError]="getFieldError(getFormControl(formGroups[getItemKey(item)], 'outerDiameter'))"
+                      [textWarning]="getWarning(getFormControl(formGroups[getItemKey(item)], 'outerDiameter'), 60, 762)"
+                      (interacted)="onChildInteracted()">
+                      <app-dropdown [options]="unitOptions"
+                        [defaultSelected]="getUnitOption(formGroups[getItemKey(item)].get('outerDiameterUnit')?.value)"
+                        (selectChange)="onUnitChange($event, getItemKey(item), 'outerDiameterUnit')"
+                        (interacted)="onChildInteracted()">
+                      </app-dropdown>
+                    </app-input-text>
+                  </div>
+                </div>
+              </div>
+              <div class="form-row">
+                <div class="form-column">
+                  <div class="input-with-unit">
+                    <app-input-text [label]="'Piping Thickness'" [numeric]="true" [witdthInput]="'w-[300px]'"
+                      [unitDropdown]="true" [placeholder]="'Auto filled from piping information'" [bgColor]="'#f0faff'"
+                      [allowDecimals]="true" [decimalLimit]="4"
+                      [formControl]="getFormControl(formGroups[getItemKey(item)], 'thickness')"
+                      [textError]="getFieldError(getFormControl(formGroups[getItemKey(item)], 'thickness'))">
+                      <app-dropdown [options]="getUnitOptions(['mm'])"
+                        [defaultSelected]="getUnitOption(formGroups[getItemKey(item)].get('thicknessUnit')?.value)"
+                        (selectChange)="onUnitChange($event, getItemKey(item), 'thicknessUnit')">
+                      </app-dropdown>
+                    </app-input-text>
+                    <app-input-text class="w-[390px]" [label]="'Actual Thickness'" [unit]="'mm'" [numeric]="true"
+                      [allowDecimals]="true" [decimalLimit]="4"
+                      [formControl]="getFormControl(formGroups[getItemKey(item)], 'actualThickness')"
+                      [textError]="getFieldError(getFormControl(formGroups[getItemKey(item)], 'actualThickness'))"
+                      (interacted)="onChildInteracted()">
+                    </app-input-text>
+                  </div>
+                </div>
+                <div class="form-column">
+                  <div class="input-with-unit">
+                  </div>
+                </div>
+              </div>
+              <div class="form-row">
+                <div class="form-column">
+                  <div class="input-with-unit">
+                    <app-dropdown class="w-[300px]" [options]="materialOptions" [label]="'Material'"
+                      [bgColor]="'#f0faff'"
+                      [defaultSelected]="getMaterialOption(formGroups[getItemKey(item)].get('material')?.value)"
+                      (selectChange)="onMaterialChange($event, getItemKey(item))" [placeholder]="'Select options'"
+                      [textError]="getFieldError(getFormControl(formGroups[getItemKey(item)], 'material'))"
+                      (interacted)="onChildInteracted()">
+                    </app-dropdown>
+                  </div>
+                </div>
+                <div class="form-column">
+                  <div class="input-with-unit">
+                    <app-input-text class="w-[300px]" [label]="'Spec no.'" [numeric]="false"
+                      [placeholder]="'Auto filled from piping information'" [bgColor]="'#f0faff'"
+                      [formControl]="getFormControl(formGroups[getItemKey(item)], 'specNo')"
+                      [textError]="getFieldError(getFormControl(formGroups[getItemKey(item)], 'specNo'))"
+                      (interacted)="onChildInteracted()">
+                    </app-input-text>
+                  </div>
+                </div>
+              </div>
+              <div class="form-row">
+                <div class="form-column">
+                  <div class="input-with-unit">
+                    <app-input-text class="w-[390px]" [label]="'Max Operating Temperature'" [unit]="'°C'"
+                      [decimalLimit]="4" [numeric]="true" [allowDecimals]="true"
+                      [formControl]="getFormControl(formGroups[getItemKey(item)], 'maxOperatingTemp')"
+                      [textError]="getFieldError(getFormControl(formGroups[getItemKey(item)], 'maxOperatingTemp'))"
+                      (interacted)="onChildInteracted()">
+                    </app-input-text>
+                  </div>
+                </div>
+                <div class="form-column">
+                  <div class="input-with-unit">
+                    <app-input-text class="w-[390px]" [label]="'Allowable stress'" [numeric]="true" [unit]="'Ksi'"
+                      [placeholder]="'Auto filled from piping information'" [bgColor]="'#f0faff'" [allowDecimals]="true"
+                      [decimalLimit]="4" [formControl]="getFormControl(formGroups[getItemKey(item)], 'allowableStress')"
+                      [textError]="getFieldError(getFormControl(formGroups[getItemKey(item)], 'allowableStress'))"
+                      (interacted)="onChildInteracted()">
+                    </app-input-text>
+                  </div>
+                </div>
+              </div>
+              <div class="form-row">
+                <div class="form-column">
+                  <div class="input-with-unit">
+                    <app-input-text class="w-[390px]" [label]="'Coefficient'" [unit]="' '" [numeric]="true"
+                      [allowDecimals]="true" [decimalLimit]="4" [default]="'0.4'"
+                      [formControl]="getFormControl(formGroups[getItemKey(item)], 'coefficient')"
+                      [textError]="getFieldError(getFormControl(formGroups[getItemKey(item)], 'coefficient'))"
+                      (interacted)="onChildInteracted()">
+                    </app-input-text>
+                  </div>
+                </div>
+                <div class="form-column">
+                  <div class="input-with-unit">
+                    <app-input-text class="w-[300px]" [label]="'Quality Factor'" [numeric]="true"
+                      [placeholder]="'Auto filled from piping information'" [bgColor]="'#f0faff'" [allowDecimals]="true"
+                      [decimalLimit]="4" [formControl]="getFormControl(formGroups[getItemKey(item)], 'qualityFactor')"
+                      [textError]="getFieldError(getFormControl(formGroups[getItemKey(item)], 'qualityFactor'))"
+                      (interacted)="onChildInteracted()">
+                    </app-input-text>
+                  </div>
+                </div>
+              </div>
+              <div class="form-row">
+                <div class="form-column">
+                  <div class="input-with-unit">
+                    <app-input-text class="w-[390px]" [label]="'Corrosion allowance (optional)'" [numeric]="true"
+                      [unit]="' '" [placeholder]="'Auto filled from piping information'" [bgColor]="'#f0faff'"
+                      [allowDecimals]="true" [decimalLimit]="4"
+                      [formControl]="getFormControl(formGroups[getItemKey(item)], 'corrosionAllowance')"
+                      [textError]="getFieldError(getFormControl(formGroups[getItemKey(item)], 'corrosionAllowance'))"
+                      (interacted)="onChildInteracted()">
+                    </app-input-text>
+                  </div>
+                </div>
+                <div class="form-column">
+                  <div class="input-with-unit">
+                    <app-input-text class="w-[390px]" [label]="'Welding Joint strength reduction'" [numeric]="true"
+                      [allowDecimals]="true" [decimalLimit]="4" [default]="'1.0'" [unit]="' '"
+                      [formControl]="getFormControl(formGroups[getItemKey(item)], 'weldingJointStrength')"
+                      [textError]="getFieldError(getFormControl(formGroups[getItemKey(item)], 'weldingJointStrength'))"
+                      (interacted)="onChildInteracted()">
+                    </app-input-text>
+                  </div>
+                </div>
+              </div>
+              <div class="form-row">
+                <div class="form-column">
+                  <div class="input-with-unit">
+                    <app-dropdown class="w-[300px]" [options]="spanTypeOptions" [label]="'Span Type'"
+                      [defaultSelected]="getSpanTypeOption(formGroups[getItemKey(item)].get('spanType')?.value)"
+                      (selectChange)="onSpanTypeChange($event, getItemKey(item))" [placeholder]="'Select options'"
+                      [textError]="getFieldError(getFormControl(formGroups[getItemKey(item)], 'spanType'))"
+                      (interacted)="onChildInteracted()">
+                    </app-dropdown>
+                  </div>
+                </div>
+                <div class="form-column" *ngIf="formGroups[getItemKey(item)].get('spanType')?.value === 'custom'">
+                  <div class="input-with-unit">
+                    <app-input-text class="w-[390px]" [label]="'Span Length'" [numeric]="true" [allowDecimals]="true"
+                      [decimalLimit]="4" [unit]="'m'"
+                      [formControl]="getFormControl(formGroups[getItemKey(item)], 'spanLength')"
+                      [textError]="getFieldError(getFormControl(formGroups[getItemKey(item)], 'spanLength'))"
+                      (interacted)="onChildInteracted()">
+                    </app-input-text>
+                  </div>
+                </div>
+              </div>
+              <div class="form-row">
+                <div class="form-column">
+                  <div class="input-with-unit">
+                    <app-input-text class="w-[390px]" [label]="'Topside Design Pressure'" [unit]="'barg'"
+                      [numeric]="true" [allowDecimals]="true" [decimalLimit]="4" [default]="'77'"
+                      [formControl]="getFormControl(formGroups[getItemKey(item)], 'pipelineDesignPressure')"
+                      [textError]="getFieldError(getFormControl(formGroups[getItemKey(item)], 'pipelineDesignPressure'))"
+                      (interacted)="onChildInteracted()">
+                    </app-input-text>
+                  </div>
+                </div>
+                <div class="form-column">
+                  <div class="input-with-unit">
+                    <app-input-text class="w-[390px]" [label]="'Erosion Velocity Constant'" [unit]="'ft/s'"
+                      [numeric]="true" [allowDecimals]="true" [decimalLimit]="4" [default]="'130'"
+                      [formControl]="getFormControl(formGroups[getItemKey(item)], 'erosionVelocityConstant')"
+                      [textError]="getFieldError(getFormControl(formGroups[getItemKey(item)], 'erosionVelocityConstant'))"
+                      (interacted)="onChildInteracted()">
+                    </app-input-text>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </app-collapse>
+</div>

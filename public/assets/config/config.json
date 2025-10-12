@@ -1,0 +1,64 @@
+{
+  "BASE_URL_SERVICE": "https://endpoint-dev.api.pttep.com/well-fast",
+  "APP_TITLE": "PTTEP Well Fast",
+  "APIGW_BASE_URL": "https://endpoint-dev.api.pttep.com",
+  "APPLICATION_SERVER_KEY": "BAJF0OYPLmYiEFBhEgs4O7GScqOU_C4oOSK5F6_yMe0y2DeHbQU2j7UYojxmV-uP9kf_rHOLz328V7hCgVdtmy4",
+  "BASE_URL": "https://endpoint-dev.api.pttep.com/well-fast",
+  "DEBUG_MODE": true,
+  "MICROSOFT_TENANT": "c03b7ea5-365c-4a0f-b767-955babc64911",
+  "MSAL_CLIENT_ID": "cb388f47-378b-46c2-bf5d-ebe05bd73fb1",
+  "NODE_ENV": "dev",
+  "EP_LAYOUT_URL": "https://epdigital-dev.apps.pttep.com/ep-layout/mfe-ep-layout.js",
+  "MENU_ITEMS": [
+    {
+      "title": "All Studies",
+      "iconPath": "../assets/icons/Notebook.svg",
+      "link": "/all-studies",
+      "permissions": [],
+      "disabledActiveClick": true
+    },
+    {
+      "title": "My Studies",
+      "iconPath": "../assets/icons/Notebook.svg",
+      "link": "/my-studies",
+      "permissions": [],
+      "disabledActiveClick": true
+    }
+  ],
+  "LAYOUT_STYLE": {
+    "header": {
+      "bgColor": "#FFFFFF"
+    },
+    "navigation": {
+      "bgColor": "linear-gradient(to top, #05567D, #066C9D, #099CE3)",
+      "menuItem": {
+        "active": {
+          "bgColor": "linear-gradient(to right, #CCECF8, #FFFFFF, #CCECF8)"
+        },
+        "hover": {
+          "bgColor": "linear-gradient(to right, #98DEFF, #FFFFFF, #98DEFF)",
+          "textColor": "#05567D"
+        }
+      },
+      "childMenuItem": {
+        "bgColor": "linear-gradient(to bottom, #05567D, #099CE3)",
+        "default": {
+          "textColor": "#FFFFFF"
+        },
+        "active": {
+          "bgColor": "linear-gradient(to right, #98DEFF, #FFFFFF, #98DEFF)",
+          "textColor": "#05567D",
+          "iconColor": "#05567D"
+        },
+        "hover": {
+          "bgColor": "linear-gradient(to right, #98DEFF, #FFFFFF, #98DEFF)",
+          "textColor": "#05567D"
+        }
+      }
+    }
+  },
+  "SEQUENCE_FLOW": [
+    "1,2,3",
+    "1,3"
+  ]
+}

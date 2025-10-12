@@ -1,0 +1,219 @@
+<div class="main">
+    <div class="container-overview-summary">
+        <div>
+            <div class="container-title">
+                <div class="container-text-title">
+                    <span class="text-title">Result</span>
+                </div>
+            </div>
+            <div class="container-title" *ngIf="topSideData.topside.results.length > 0">
+                <div class="container-text-title">
+                    <div class="container-title-status">
+                        <span class="text-title">{{topSideData.topside.title}}</span>
+                        <div class="container-tag-tilte">
+                            @if(topSideData.topside.sumResult.status){
+                            <app-tag [text]="'PASSED'" [backgroundColor]="'#F6FFED'" [textColor]="'#52C41A'"
+                                [border]="true" [borderColor]="'#B7EB8F'">
+                            </app-tag>
+                            }@else {
+                            <app-tag [text]="'FAILED'" [backgroundColor]="'#FFF1F0'" [textColor]="'#F5222D'"
+                                [border]="true" [borderColor]="'#FFA39E'">
+                            </app-tag>
+                            }
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <ng-container *ngFor="let top of topSideData.topside.results;let i = index">
+                <div class="container-sub-tilte"  [ngClass]="{ 'active': activeTopSideIndex === i}" (click)="onClickOpenDetail(top ,topSideData.topside.title,i)">
+                    <span class="text-title">{{top.title}}</span>
+                    <div class="container-tag-tilte">
+                        <app-tag [text]="top.success" [backgroundColor]="'#F6FFED'" [textColor]="'#52C41A'"
+                            [border]="true" [borderColor]="'#B7EB8F'">
+                        </app-tag>
+                        <app-tag [text]="top.failed" [backgroundColor]="'#FFF1F0'" [textColor]="'#F5222D'"
+                            [border]="true" [borderColor]="'#FFA39E'">
+                        </app-tag>
+                    </div>
+
+                </div>
+                <ng-container *ngFor="let item of top.items; let j = index;let isLast = last">
+                    <div class="container-sub-tilte" [ngClass]="{ 'active': activeTopSideSubIndex?.mainIndex === i && activeTopSideSubIndex?.subIndex === j }" (click)="onClickOpenSubDetail(item,i,j)">
+                        <div class="">
+                            @if(item.status === 'TRUE'){
+                            <app-tag [backgroundColor]="'#F6FFED'" [textColor]="'#52C41A'" [border]="true"
+                                [circle]="true" [borderColor]="'#B7EB8F'">
+                            </app-tag>
+                            }@else {
+                            <app-tag [backgroundColor]="'#FFF1F0'" [textColor]="'#F5222D'" [border]="true"
+                                [circle]="true" [borderColor]="'#FFA39E'">
+                            </app-tag>
+                            }
+                            <span class="text">{{item.title}}</span>
+                        </div>
+                    </div>
+                    <div *ngIf="isLast" class="container-line-border"></div>
+                </ng-container>
+            </ng-container>
+            <div class="container-title" *ngIf="pipeLineData.pipeLine.results.length > 0">
+                <div class="container-text-title">
+                    <div class="container-title-status">
+                        <span class="text-title">{{pipeLineData.pipeLine.title}}</span>
+                        <div class="container-tag-tilte">
+                            @if(pipeLineData.pipeLine.sumResult.status){
+                            <app-tag [text]="'PASSED'" [backgroundColor]="'#F6FFED'" [textColor]="'#52C41A'"
+                                [border]="true" [borderColor]="'#B7EB8F'">
+                            </app-tag>
+                            }@else {
+                            <app-tag [text]="'FAILED'" [backgroundColor]="'#FFF1F0'" [textColor]="'#F5222D'"
+                                [border]="true" [borderColor]="'#FFA39E'">
+                            </app-tag>
+                            }
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <ng-container *ngFor="let pipeline of pipeLineData.pipeLine.results;let i = index">
+                <div class="container-sub-tilte" [ngClass]="{ 'active': activePipeLineIndex === i}" (click)="onClickOpenPipelineDetail(pipeline , pipeLineData.pipeLine.title ,i)">
+                    <span class="text-title">{{pipeline.title}}</span>
+                    <div class="container-tag-tilte">
+                        <app-tag [text]="pipeline.success" [backgroundColor]="'#F6FFED'" [textColor]="'#52C41A'"
+                            [border]="true" [borderColor]="'#B7EB8F'">
+                        </app-tag>
+                        <app-tag [text]="pipeline.failed" [backgroundColor]="'#FFF1F0'" [textColor]="'#F5222D'"
+                            [border]="true" [borderColor]="'#FFA39E'">
+                        </app-tag>
+                    </div>
+                </div>
+                <ng-container *ngFor="let item of pipeline.items; let j = index;let isLast = last">
+                    <div class="container-sub-tilte"[ngClass]="{ 'active': activePipeLineSubIndex?.mainIndex === i && activePipeLineSubIndex?.subIndex === j }" (click)="onClickOpenPipelineSubDetail(item,i,j)">
+                        <div class="">
+                            @if(item.status === 'TRUE'){
+                            <app-tag [backgroundColor]="'#F6FFED'" [textColor]="'#52C41A'" [border]="true"
+                                [circle]="true" [borderColor]="'#B7EB8F'">
+                            </app-tag>
+                            }@else if(item.status === 'FALSE'){
+                            <app-tag [backgroundColor]="'#FFF1F0'" [textColor]="'#F5222D'" [border]="true"
+                                [circle]="true" [borderColor]="'#FFA39E'">
+                            </app-tag>
+                            }@else{
+                                <div></div>
+                            }
+                            <span class="text">{{item.title}}</span>
+                        </div>
+                    </div>
+                </ng-container>
+            </ng-container>
+        </div>
+    </div>
+    <div class="container-overview-summary-detail">
+        <div class="container-template-default">
+            <div class="container-title">
+                <div class="container-title-text">
+                    <span class="text">
+                           {{ verificationText }}<ng-container *ngIf="mainTitle"> : {{ mainTitle }}</ng-container>
+                    </span>
+                    <span class="text-title">
+                        {{title}}
+                    </span>
+                </div>
+                <div class="container-tag-tilte" *ngIf="type !== 'empty'">
+                    @if(status === 'TRUE'){
+                    <app-tag [text]="'PASSED'" [backgroundColor]="'#F6FFED'" [textColor]="'#52C41A'" [border]="true"
+                        [borderColor]="'#B7EB8F'">
+                    </app-tag>
+                    }@else if(status === 'FALSE') {
+                    <app-tag [text]="'FAILED'" [backgroundColor]="'#FFF1F0'" [textColor]="'#F5222D'" [border]="true"
+                        [borderColor]="'#FFA39E'">
+                    </app-tag>
+                    }@else {
+                        <div></div>
+                    }
+                </div>
+            </div>
+        </div>
+        <div>
+            <ng-container *ngIf="type === 'empty'">
+                <ng-container *ngTemplateOutlet="noData"></ng-container>
+            </ng-container>
+            <ng-container *ngIf="type === 'default'">
+                <ng-container *ngTemplateOutlet="default"></ng-container>
+            </ng-container>
+            <ng-container *ngIf="type === 'line_sizing'">
+                <ng-container *ngTemplateOutlet="lineSizing"></ng-container>
+            </ng-container>
+            <ng-container *ngIf="type === 'flow_induced_vibration'">
+                <ng-container *ngTemplateOutlet="flowInducedVibration"></ng-container>
+            </ng-container>
+            <ng-container *ngIf="type === 'fit_for_service'">
+                <ng-container *ngTemplateOutlet="fitForService"></ng-container>
+            </ng-container>
+            <ng-container *ngIf="type === 'wake_frequency'">
+                <ng-container *ngTemplateOutlet="wakeFrequency"></ng-container>
+            </ng-container>
+            <ng-container *ngIf="type === 'erosianol_velocity'">
+                <ng-container *ngTemplateOutlet="erosionalVelocity"></ng-container>
+            </ng-container>
+            <ng-container *ngIf="type === 'pressure'">
+                <ng-container *ngTemplateOutlet="pressure"></ng-container>
+            </ng-container>
+            <!-- <ng-container *ngIf="type === 'fluid_desity'">
+            <ng-container *ngTemplateOutlet="fluidDensity"></ng-container>
+        </ng-container>  NOTE: next phase -->
+            <ng-container *ngIf="type === 'temperature_profile'">
+                <ng-container *ngTemplateOutlet="tempeatureProfile"></ng-container>
+            </ng-container>
+            <ng-container *ngIf="type === 'sour_service'">
+                <ng-container *ngTemplateOutlet="sourService"></ng-container>
+            </ng-container>
+        </div>
+    </div>
+</div>
+
+<ng-template #default>
+    <app-overview-summary [details]="title === 'Position 4'? pipeLineDetails:topSideDetails" [title]="title"
+        [verification]="verificationText"></app-overview-summary>
+</ng-template>
+
+<ng-template #lineSizing>
+    <app-line-sizing [details]="topSideDetails" [title]="mainTitle"></app-line-sizing>
+</ng-template>
+
+<ng-template #flowInducedVibration>
+    <app-flow-induced-vibration [details]="topSideDetails" [title]="mainTitle"></app-flow-induced-vibration>
+</ng-template>
+
+<ng-template #fitForService>
+    <app-fit-for-service [details]="topSideDetails" [title]="mainTitle"></app-fit-for-service>
+</ng-template>
+
+<ng-template #wakeFrequency>
+    <app-wake-frequency [details]="topSideDetails" [title]="mainTitle"></app-wake-frequency>
+</ng-template>
+
+<ng-template #erosionalVelocity>
+    <app-erosional-velocity [details]="pipeLineDetails" [title]="mainTitle"></app-erosional-velocity>
+</ng-template>
+
+<ng-template #pressure>
+    <app-pressure-profile [details]="pipeLineDetails" [title]="mainTitle"></app-pressure-profile>
+</ng-template>
+
+<ng-template #fluidDensity>
+    <app-fluid-density></app-fluid-density>
+</ng-template>
+
+<ng-template #tempeatureProfile>
+    <app-temperature-profile [details]="pipeLineDetails" [title]="mainTitle"></app-temperature-profile>
+</ng-template>
+
+<ng-template #sourService>
+    <app-sour-service [details]="pipeLineDetails" [title]="mainTitle"></app-sour-service>
+</ng-template>
+
+<ng-template #noData>
+    <div class="container-no-data">
+        <i nz-icon nzType="inbox" class="large-icon" style="color: #E6E6E6;"></i>
+        <p class="text">{{'No data'}}</p>
+    </div>
+</ng-template>

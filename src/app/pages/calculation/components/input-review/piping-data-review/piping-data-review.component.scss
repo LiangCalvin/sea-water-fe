@@ -1,0 +1,189 @@
+.piping-position {
+  border-bottom: 1px solid #e2e8f0;
+  padding: 10px;
+}
+
+.piping-body {
+  padding: 0px 20px 0px 20px;
+}
+
+.position-header-row {
+  align-items: center;
+  padding-top: 24px;
+  padding-bottom: 24px;
+  color: #475569;
+  h3 {
+    margin: 0;
+    font-weight: 600;
+    font-size: 16px;
+    align-items: center;
+    justify-content: center;
+    line-height: 1.5;
+    color: #475569;
+  }
+
+  .dropdown-select {
+    width: auto;
+    max-width: auto;
+  }
+}
+
+.radio-group {
+  display: flex;
+  gap: 16px;
+  margin-bottom: 16px;
+}
+
+.radio-group input[type="radio"] {
+  margin-right: 8px;
+}
+
+.form-section {
+  margin-bottom: 24px;
+}
+
+.form-section h4 {
+  margin: 0 0 16px 0;
+  font-size: 14px;
+  color: #475569;
+  font-weight: bold;
+}
+
+.form-row {
+  display: flex;
+  gap: 5px;
+  width: 840px;
+  flex: 1;
+}
+
+.form-row-unit {
+  display: flex;
+  gap: 3px;
+  width: 840px;
+}
+
+.form-column {
+  margin-bottom: 40px;
+  flex: 1;
+}
+
+.form-column label {
+  display: block;
+  margin-bottom: 8px;
+  font-size: 14px;
+  color: #475569;
+}
+
+.input-group {
+  display: flex;
+  align-items: center;
+  border: 1px solid #cbd5e1;
+  border-radius: 4px;
+  overflow: hidden;
+  width: 300px;
+}
+
+.input-group input {
+  flex-grow: 1;
+  padding: 8px 12px;
+  font-size: 14px;
+}
+
+.input-group input:focus {
+  outline: none;
+}
+
+.input-group-error {
+  border: 1px solid red;
+}
+
+.unit {
+  display: flex;
+  align-items: center;
+  font-size: 14px;
+}
+
+@media (max-width: 768px) {
+  .form-section,
+  .form-row,
+  .form-column {
+    flex-direction: column;
+    gap: 16px;
+  }
+}
+
+.error-message {
+  color: red;
+  font-size: 0.875rem;
+  margin-top: 0.25rem;
+}
+
+.label-row {
+  display: flex;
+  justify-content: space-between;
+  width: 300px;
+}
+
+.default-value {
+  font-size: 14px;
+  color: #94a3b8;
+}
+
+.autofetch-input {
+  background-color: #f0faff;
+}
+
+.input-with-unit {
+  display: flex;
+  align-items: flex-end;
+  gap: 12px;
+
+  .unit-text {
+    color: #6b7280;
+    font-size: 14px;
+    font-weight: 500;
+    line-height: 36px;
+    margin: 0;
+    white-space: nowrap;
+    padding-bottom: 0;
+  }
+  p {
+    color: #475569;
+    font-size: 14px;
+    font-weight: 500;
+  }
+
+  app-dropdown {
+    flex-shrink: 0;
+  }
+}
+.info-icon {
+  color: #1890ff;
+  font-size: 16px;
+  margin-top: 0;
+  margin-bottom: 8px;
+  cursor: pointer;
+  flex-shrink: 0;
+}
+
+.info-icon:hover {
+  color: #40a9ff;
+}
+
+.unit-text {
+  display: inline; // ensures same line
+  margin-left: 4px;
+  font-size: 14px;
+  color: #475569;
+  font-weight: normal;
+}
+.value-with-unit {
+  font-weight: 700;
+  color: #475569;
+}
+
+.position-type-label {
+  font-weight: 400;
+  font-size: 14px;
+  color: #475569; /* optional, to match your theme */
+}

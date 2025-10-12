@@ -1,0 +1,155 @@
+<div class="container">
+    <app-collapse [label]="'Process Information'" [isOpen]="expanded">
+        <div class="process-body" *ngIf="expanded">
+            <div *ngFor="let item of processDataInput; let i = index">
+                <div class="form-section">
+                    <nz-row class="form-header" align="left">
+                        <nz-col [nzSpan]="13">
+                            <h3>
+                                Simulation Input Position
+                                {{ item.position }}{{ item.position === 1 ? '' : '.' + item.subPosition }}
+                                {{ item.position === 1 ? 'Production and Export' : 'Receiving Facility ' +
+                                item.subPosition }}
+                            </h3>
+                        </nz-col>
+                        <nz-col [nzSpan]="6">
+                            <ng-container *ngIf="i !== 0">
+                                <div class="dropdown-display">
+                                    {{ item.positionType === 'same_as_1' ? 'Same as position 1' : 'Custom' }}
+                                </div>
+                            </ng-container>
+                        </nz-col>
+                        <nz-col [nzSpan]="9" class="text-right">
+                        </nz-col>
+                    </nz-row>
+                    <div *ngIf="item.positionType !== 'same_as_1'">
+                        <div class="input-section">
+                            <h4>Flow rate</h4>
+                            <div class="form-group">
+                                <div class="label-row">
+                                    <label>Gas</label>
+                                </div>
+                                <div class="input-with-unit">
+                                    <div>
+                                        <h2 class="value-text">
+                                            {{ item.flowRate?.gas }}
+                                        </h2>
+                                    </div>
+                                    <span class="unit">MMSCFD</span>
+                                </div>
+                            </div>
+                            <div class="input-row">
+                                <div class="input-column">
+                                    <div class="form-group">
+                                        <div class="label-row">
+                                            <label>
+                                                {{ item.flowRate?.condensate.type === 'flowrate' ? 'Condensate Flowrate'
+                                                : 'CGR' }}
+                                            </label>
+                                        </div>
+                                        <div class="input-with-unit">
+                                            <div>
+                                                <h2 class="value-text">
+                                                    {{ item.flowRate?.condensate.value }}
+                                                </h2>
+                                            </div>
+                                            <span class="unit">
+                                                {{ item.flowRate?.condensate.type === 'flowrate' ? 'BPD' : 'bbl/MMSCF'
+                                                }}
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- water -->
+                                <div class="input-column">
+                                    <div class="form-group">
+                                        <div class="label-row">
+                                            <label>
+                                                {{ item.flowRate?.water.type === 'flowrate' ? 'Water Flowrate'
+                                                : 'WGR' }}
+                                            </label>
+                                        </div>
+                                        <div class="input-with-unit">
+                                            <div>
+                                                <h2 class="value-text">
+                                                    {{ item.flowRate?.water.value }}
+                                                </h2>
+                                            </div>
+                                            <span class="unit">
+                                                {{ item.flowRate?.water.type === 'flowrate' ? 'BPD' : 'bbl/MMSCF'
+                                                }}
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="input-section">
+                            <h4>Composition (Gas Phase)</h4>
+                            <div class="input-row">
+                                <div class="form-group">
+                                    <div class="label-row">
+                                        <label>H2S</label>
+                                    </div>
+                                    <div class="input-with-unit">
+                                        <div>
+                                            <h2 class="value-text">
+                                                {{ item.composition?.h2s }}
+                                            </h2>
+                                        </div>
+                                        <span class="unit">ppm</span>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="label-row">
+                                        <label>CO2</label>
+                                    </div>
+                                    <div class="input-with-unit">
+                                        <div>
+                                            <h2 class="value-text">
+                                                {{ item.composition?.co2 }}
+                                            </h2>
+                                        </div>
+                                        <span class="unit">%</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="input-section">
+                            <h4>Temperature</h4>
+                            <div class="input-row">
+                                <div class="form-group">
+                                    <div class="label-row">
+                                        <label>Export Temperature</label>
+                                    </div>
+                                    <div class="input-with-unit">
+                                        <div>
+                                            <h2 class="value-text">
+                                                {{ item.temperature?.export }}
+                                            </h2>
+                                        </div>
+                                        <span class="unit">°C</span>
+
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="label-row">
+                                        <label>Export Pressure</label>
+                                    </div>
+                                    <div class="input-with-unit">
+                                        <div>
+                                            <h2 class="value-text">
+                                                {{ item.temperature?.pressure }}
+                                            </h2>
+                                        </div>
+                                        <span class="unit">barg</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </app-collapse>
+</div>

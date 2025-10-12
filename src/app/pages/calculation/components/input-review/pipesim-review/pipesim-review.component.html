@@ -1,0 +1,457 @@
+<div class="container">
+    <app-collapse [label]="'Pipesim'" [isOpen]="expanded">
+        <div class="pipesim-body" *ngIf="expanded">
+            <div class="pipesim-section">
+                <ng-container>
+                    <div class="form-container">
+                        <ng-container>
+                            <span class="text-header">Pressure</span>
+                            <div class="text-header-detail">
+                                <p>{{ pipesimDataInput?.platformPressure?.name }}</p>
+                                <p class="pressure-value">{{ pipesimDataInput?.platformPressure?.value }}
+                                    <span class="pressure-unit">barg</span>
+                                </p>
+                            </div>
+                        </ng-container>
+                        <!-- PIPELINE SECTION -->
+                        <ng-container>
+                            <table border="1">
+                                <thead>
+                                    <tr class="add-coating-row">
+                                        <td [attr.colspan]="pipesimDataInput?.pipelineSection.length + 2">
+                                            <div class="section-header">
+                                                <span class="text-header-table">Pipeline Section</span>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr class="bg-header">
+                                        <th style="width: 30%;">
+                                            <span class="text-header">Data</span>
+                                        </th>
+                                        <th *ngFor="let section of pipesimDataInput?.pipelineSection; let i = index">
+                                            <span class="text-header">Position {{ section.position }}</span>
+                                        </th>
+                                        <th style="width: 10%;">
+                                            <span class="text-header">Unit</span>
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td> <span class="text">Outer Diameter</span></td>
+                                        <td *ngFor="let section of pipesimDataInput?.pipelineSection">
+                                            <span class="text-value"> {{ section.outerDiameter }}</span>
+                                        </td>
+                                        <td>
+                                            <span class="text">mm</span>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            {{ pipesimDataInput?.pipelineSection[0]?.pipelineInput?.name === 'thickness'
+                                            ? 'Thickness' :
+                                            pipesimDataInput?.pipelineSection[0]?.pipelineInput?.name ===
+                                            'inner_diameter' ? 'Inner Diameter' :
+                                            pipesimDataInput?.pipelineSection[0]?.pipelineInput?.name }}
+                                        </td>
+                                        <td *ngFor="let section of pipesimDataInput?.pipelineSection">
+                                            <span class="text-value">{{ section.pipelineInput.value }}</span>
+                                        </td>
+                                        <td>
+                                            <span class="text">mm</span>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td><span class="text">Length</span></td>
+                                        <td *ngFor="let section of pipesimDataInput?.pipelineSection">
+                                            <span class="text-value">{{ section.pipelineLength }}</span>
+                                        </td>
+                                        <td>
+                                            <span class="text">m</span>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                                <tbody class="bg-coating"
+                                    *ngFor="let coatingOrder of getCoatingOrders(pipesimDataInput?.pipelineSection)">
+                                    <tr>
+                                        <td><span class="text-coating">Coating {{ coatingOrder }} Name</span></td>
+                                        <td *ngFor="let section of pipesimDataInput?.pipelineSection">
+                                            <span class="text-value">{{ getCoatingByOrder(section.coating,
+                                                coatingOrder)?.name || '' }}</span>
+                                        </td>
+                                        <td></td>
+                                    </tr>
+                                    <tr>
+                                        <td><span class="text-coating">Design Temperature</span></td>
+                                        <td *ngFor="let section of pipesimDataInput?.pipelineSection">
+                                            <span class="text-value">{{ getCoatingByOrder(section.coating,
+                                                coatingOrder)?.designTemperature || '' }}</span>
+                                        </td>
+                                        <td><span class="text">°C</span></td>
+                                    </tr>
+                                    <tr>
+                                        <td><span class="text-coating">Coating {{ coatingOrder }} Conductivity</span>
+                                        </td>
+                                        <td *ngFor="let section of pipesimDataInput?.pipelineSection">
+                                            <span class="text-value">{{ getCoatingByOrder(section.coating,
+                                                coatingOrder)?.conductivity || '' }}</span>
+                                        </td>
+                                        <td><span class="text">W/moC</span></td>
+                                    </tr>
+                                    <tr class="line-bottom">
+                                        <td><span class="text-coating">Coating {{ coatingOrder }} Thickness</span></td>
+                                        <td *ngFor="let section of pipesimDataInput?.pipelineSection">
+                                            <span class="text-value">{{ getCoatingByOrder(section.coating,
+                                                coatingOrder)?.thickness || '' }}</span>
+                                        </td>
+                                        <td>
+                                            <span class="text">mm</span>
+                                        </td>
+                                    </tr>
+
+                                </tbody>
+                                <tbody class="bg-coating">
+                                    <tr>
+                                        <!-- <td><span class="text">Manage Coating</span></td> -->
+                                        <!-- <td *ngFor="let section of pipesimDataInput?.pipelineSection; let i = index">
+                                            <div class="coating-actions">
+                                                <button type="button" *ngIf="section.coating.length > 1">
+                                                    <ng-container>Add</ng-container>
+                                                </button>
+                                                <button type="button" *ngIf="section.coating.length <= 2">
+                                                    <ng-container>Delete</ng-container>
+                                                </button>
+                                            </div>
+                                        </td> -->
+                                        <!-- <td>
+                                        </td> -->
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </ng-container>
+                        <!-- RISER DOWN SECTION -->
+                        <ng-container>
+                            <table border="1">
+                                <thead>
+                                    <tr class="add-coating-row">
+                                        <td [attr.colspan]="pipesimDataInput?.riserDown.length + 2">
+                                            <div class="section-header">
+                                                <span class="text-header-table">Riser Down Section</span>
+                                                <div class="section-actions">
+                                                    <!-- Action buttons -->
+                                                </div>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr class="bg-header">
+                                        <th style="width: 30%;">
+                                            <span class="text-header">Data</span>
+                                        </th>
+                                        <th *ngFor="let riser of pipesimDataInput?.riserDown; let i = index">
+                                            <span class="text-header">Position {{ riser.position }}</span>
+                                        </th>
+                                        <th style="width: 10%;">
+                                            <span class="text-header">Unit</span>
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td><span class="text">Outer Diameter</span></td>
+                                        <td *ngFor="let riser of pipesimDataInput?.riserDown">
+                                            <span class="text-value">{{ riser.outerDiameter }}</span>
+                                        </td>
+                                        <td>
+                                            <span class="text">mm</span>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            {{ pipesimDataInput?.riserDown[0]?.riserInput?.name === 'thickness' ?
+                                            'Thickness' :
+                                            pipesimDataInput?.riserDown[0]?.riserInput?.name === 'inner_diameter' ?
+                                            'Inner Diameter' :
+                                            pipesimDataInput?.riserDown[0]?.riserInput?.name }}
+                                        </td>
+                                        <td *ngFor="let riser of pipesimDataInput?.riserDown">
+                                            <span class="text-value">{{ riser.riserInput.value }}</span>
+                                        </td>
+                                        <td>
+                                            <span class="text">mm</span>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td><span class="text">Height</span></td>
+                                        <td *ngFor="let riser of pipesimDataInput?.riserDown">
+                                            <span class="text-value">{{ riser.height }}</span>
+                                        </td>
+                                        <td>
+                                            <span class="text">m</span>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                                <tbody class="bg-coating"
+                                    *ngFor="let coatingOrder of getCoatingOrders(pipesimDataInput?.riserDown)">
+                                    <tr>
+                                        <td><span class="text-coating">Coating {{ coatingOrder }} Name</span></td>
+                                        <td *ngFor="let riser of pipesimDataInput?.riserDown">
+                                            <span class="text-value">{{ getCoatingByOrder(riser.coating,
+                                                coatingOrder)?.name || '' }}</span>
+                                        </td>
+                                        <td></td>
+                                    </tr>
+                                    <tr>
+                                        <td><span class="text-coating">Design Temperature</span></td>
+                                        <td *ngFor="let riser of pipesimDataInput?.riserDown">
+                                            <span class="text-value">{{ getCoatingByOrder(riser.coating,
+                                                coatingOrder)?.designTemperature || '' }}</span>
+                                        </td>
+                                        <td><span class="text">°C</span></td>
+                                    </tr>
+                                    <tr>
+                                        <td><span class="text-coating">Coating {{ coatingOrder }} Conductivity</span>
+                                        </td>
+                                        <td *ngFor="let riser of pipesimDataInput?.riserDown">
+                                            <span class="text-value">{{ getCoatingByOrder(riser.coating,
+                                                coatingOrder)?.conductivity || '' }}</span>
+                                        </td>
+                                        <td><span class="text">W/moC</span></td>
+                                    </tr>
+                                    <tr class="line-bottom">
+                                        <td><span class="text-coating">Coating {{ coatingOrder }} Thickness</span></td>
+                                        <td *ngFor="let riser of pipesimDataInput?.riserDown">
+                                            <span class="text-value">{{ getCoatingByOrder(riser.coating,
+                                                coatingOrder)?.thickness || '' }}</span>
+                                        </td>
+                                        <td>
+                                            <span class="text">mm</span>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                                <tbody class="bg-coating">
+                                    <tr>
+                                        <!-- <td><span class="text">Manage Coating</span></td>
+                                        <td *ngFor="let riser of pipesimDataInput?.riserDown; let i = index">
+                                            <div class="coating-actions">
+                                                <button type="button" *ngIf="riser.coating.length > 1">
+                                                    <ng-container>Add</ng-container>
+                                                </button>
+                                                <button type="button" *ngIf="riser.coating.length <= 2">
+                                                    <ng-container>Delete</ng-container>
+                                                </button>
+                                            </div>
+                                        </td>
+                                        <td>
+                                        </td> -->
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </ng-container>
+                        <!-- RISER UP SECTION -->
+                        <ng-container>
+                            <table border="1">
+                                <thead>
+                                    <tr class="add-coating-row">
+                                        <td [attr.colspan]="pipesimDataInput?.riserUp.length + 2">
+                                            <div class="section-header">
+                                                <span class="text-header-table">Riser Up Section</span>
+                                                <div class="section-actions">
+                                                    <!-- Action buttons -->
+                                                </div>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr class="bg-header">
+                                        <th style="width: 30%;">
+                                            <span class="text-header">Data</span>
+                                        </th>
+                                        <th *ngFor="let riser of pipesimDataInput?.riserUp; let i = index">
+                                            <span class="text-header">Position {{ riser.position }}</span>
+                                        </th>
+                                        <th style="width: 10%;">
+                                            <span class="text-header">Unit</span>
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td><span class="text">Outer Diameter</span></td>
+                                        <td *ngFor="let riser of pipesimDataInput?.riserUp">
+                                            <span class="text-value">{{ riser.outerDiameter }}</span>
+                                        </td>
+                                        <td>
+                                            <span class="text">mm</span>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td><span class="text">{{ pipesimDataInput?.riserUp[0]?.riserInput?.name ===
+                                                'thickness' ? 'Thickness' : 'Inner Diameter' }}</span></td>
+                                        <td *ngFor="let riser of pipesimDataInput?.riserUp">
+                                            <span class="text-value">{{ riser.riserInput.value }}</span>
+                                        </td>
+                                        <td>
+                                            <span class="text">{{ pipesimDataInput?.riserUp[0]?.riserInput?.name ===
+                                                'thickness' ? 'mm' : 'mm' }}</span>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td><span class="text">Height</span></td>
+                                        <td *ngFor="let riser of pipesimDataInput?.riserUp">
+                                            <span class="text-value">{{ riser.height }}</span>
+                                        </td>
+                                        <td>
+                                            <span class="text">m</span>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                                <tbody class="bg-coating"
+                                    *ngFor="let coatingOrder of getCoatingOrders(pipesimDataInput?.riserUp)">
+                                    <tr>
+                                        <td><span class="text-coating">Coating {{ coatingOrder }} Name</span></td>
+                                        <td *ngFor="let riser of pipesimDataInput?.riserUp">
+                                            <span class="text-value">{{ getCoatingByOrder(riser.coating,
+                                                coatingOrder)?.name || '' }}</span>
+                                        </td>
+                                        <td></td>
+                                    </tr>
+                                    <tr>
+                                        <td><span class="text-coating">Design Temperature</span></td>
+                                        <td *ngFor="let riser of pipesimDataInput?.riserUp">
+                                            <span class="text-value">{{ getCoatingByOrder(riser.coating,
+                                                coatingOrder)?.designTemperature || '' }}</span>
+                                        </td>
+                                        <td><span class="text">°C</span></td>
+                                    </tr>
+                                    <tr>
+                                        <td><span class="text-coating">Coating {{ coatingOrder }} Conductivity</span>
+                                        </td>
+                                        <td *ngFor="let riser of pipesimDataInput?.riserUp">
+                                            <span class="text-value">{{ getCoatingByOrder(riser.coating,
+                                                coatingOrder)?.conductivity || '' }}</span>
+                                        </td>
+                                        <td><span class="text">W/moC</span></td>
+                                    </tr>
+                                    <tr class="line-bottom">
+                                        <td><span class="text-coating">Coating {{ coatingOrder }} Thickness</span></td>
+                                        <td *ngFor="let riser of pipesimDataInput?.riserUp">
+                                            <span class="text-value">{{ getCoatingByOrder(riser.coating,
+                                                coatingOrder)?.thickness || '' }}</span>
+                                        </td>
+                                        <td>
+                                            <span class="text">mm</span>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                                <tbody class="bg-coating">
+                                    <tr>
+                                        <!-- <td><span class="text">Manage Coating</span></td>
+                                        <td *ngFor="let riser of pipesimDataInput?.riserUp; let i = index">
+                                            <div class="coating-actions">
+                                                <button type="button" *ngIf="riser.coating.length > 1">
+                                                    <ng-container>Add</ng-container>
+                                                </button>
+                                                <button type="button" *ngIf="riser.coating.length <= 2">
+                                                    <ng-container>Delete</ng-container>
+                                                </button>
+                                            </div>
+                                        </td>
+                                        <td>
+                                        </td> -->
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </ng-container>
+                        <!-- OTHERS SECTION -->
+                        <ng-container>
+                            <table>
+                                <thead>
+                                    <tr class="add-coating-row">
+                                        <td colspan="3">
+                                            <div class="section-header">
+                                                <span class="text-header-table">Others</span>
+                                                <div class="section-actions">
+                                                    <!-- Action buttons -->
+                                                </div>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr class="bg-header">
+                                        <th style="width: 30%;">
+                                            <span class="text-header">Data</span>
+                                        </th>
+                                        <th><span class="text-header">Value</span></th>
+                                        <th style="width: 10%;">
+                                            <span class="text-header">Unit</span>
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td><span class="text">Pipeline Design Pressure</span></td>
+                                        <td class="text-value">{{ pipesimDataInput?.otherData.designPressure }}</td>
+                                        <td><span class="text">barg</span></td>
+                                    </tr>
+                                    <tr>
+                                        <td><span class="text">U/S Wellhead Platform PAHH</span></td>
+                                        <td class="text-value">{{ pipesimDataInput?.otherData.usPahh }}</td>
+                                        <td><span class="text">barg</span></td>
+                                    </tr>
+                                    <tr>
+                                        <td><span class="text">Target Pressure</span></td>
+                                        <td class="text-value">{{ pipesimDataInput?.otherData.targetPressure }}</td>
+                                        <td><span class="text">barg</span></td>
+                                    </tr>
+                                    <tr>
+                                        <td><span class="text">pH (optional)</span></td>
+                                        <td class="text-value">{{ pipesimDataInput?.otherData.pH }}</td>
+                                        <td></td>
+                                    </tr>
+                                     <tr>
+                                        <td>
+                                            <div class="flex items-center gap-1">                                            
+                                                <span class="text">CO2</span>
+                                                <app-tooltip [title]="'The value is derived from Process Information section'">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16" fill="none">
+                                                        <path
+                                                            d="M14.5 8C14.5 6.27609 13.8152 4.62279 12.5962 3.40381C11.3772 2.18482 9.72391 1.5 8 1.5C6.27609 1.5 4.62279 2.18482 3.40381 3.40381C2.18482 4.62279 1.5 6.27609 1.5 8C1.5 9.72391 2.18482 11.3772 3.40381 12.5962C4.62279 13.8152 6.27609 14.5 8 14.5C9.72391 14.5 11.3772 13.8152 12.5962 12.5962C13.8152 11.3772 14.5 9.72391 14.5 8ZM0 8C0 5.87827 0.842855 3.84344 2.34315 2.34315C3.84344 0.842855 5.87827 0 8 0C10.1217 0 12.1566 0.842855 13.6569 2.34315C15.1571 3.84344 16 5.87827 16 8C16 10.1217 15.1571 12.1566 13.6569 13.6569C12.1566 15.1571 10.1217 16 8 16C5.87827 16 3.84344 15.1571 2.34315 13.6569C0.842855 12.1566 0 10.1217 0 8ZM5.30625 5.16563C5.55312 4.46875 6.21563 4 6.95625 4H8.77812C9.86875 4 10.75 4.88438 10.75 5.97188C10.75 6.67813 10.3719 7.33125 9.75937 7.68437L8.75 8.2625C8.74375 8.66875 8.40938 9 8 9C7.58437 9 7.25 8.66562 7.25 8.25V7.82812C7.25 7.55937 7.39375 7.3125 7.62813 7.17812L9.0125 6.38438C9.15938 6.3 9.25 6.14375 9.25 5.975C9.25 5.7125 9.0375 5.50313 8.77812 5.50313H6.95625C6.85 5.50313 6.75625 5.56875 6.72188 5.66875L6.70937 5.70625C6.57188 6.09688 6.14062 6.3 5.75313 6.1625C5.36563 6.025 5.15938 5.59375 5.29688 5.20625L5.30937 5.16875L5.30625 5.16563ZM7 11C7 10.7348 7.10536 10.4804 7.29289 10.2929C7.48043 10.1054 7.73478 10 8 10C8.26522 10 8.51957 10.1054 8.70711 10.2929C8.89464 10.4804 9 10.7348 9 11C9 11.2652 8.89464 11.5196 8.70711 11.7071C8.51957 11.8946 8.26522 12 8 12C7.73478 12 7.48043 11.8946 7.29289 11.7071C7.10536 11.5196 7 11.2652 7 11Z"
+                                                            fill="#009FDA" />
+                                                    </svg>
+                                                </app-tooltip>
+                                            </div>
+                                        </td>
+                                        <td class="text-value">{{ pipesimDataInput?.otherData?.co2 ?? '-'  }}</td>
+                                        <td><span class="text">%</span></td>
+                                    </tr>
+                                     <tr>
+                                        <td>
+                                            <div class="flex items-center gap-1">
+                                                <span class="text">H2S</span>
+                                                <app-tooltip [title]="'The value is derived from Process Information section'">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16" fill="none">
+                                                        <path
+                                                            d="M14.5 8C14.5 6.27609 13.8152 4.62279 12.5962 3.40381C11.3772 2.18482 9.72391 1.5 8 1.5C6.27609 1.5 4.62279 2.18482 3.40381 3.40381C2.18482 4.62279 1.5 6.27609 1.5 8C1.5 9.72391 2.18482 11.3772 3.40381 12.5962C4.62279 13.8152 6.27609 14.5 8 14.5C9.72391 14.5 11.3772 13.8152 12.5962 12.5962C13.8152 11.3772 14.5 9.72391 14.5 8ZM0 8C0 5.87827 0.842855 3.84344 2.34315 2.34315C3.84344 0.842855 5.87827 0 8 0C10.1217 0 12.1566 0.842855 13.6569 2.34315C15.1571 3.84344 16 5.87827 16 8C16 10.1217 15.1571 12.1566 13.6569 13.6569C12.1566 15.1571 10.1217 16 8 16C5.87827 16 3.84344 15.1571 2.34315 13.6569C0.842855 12.1566 0 10.1217 0 8ZM5.30625 5.16563C5.55312 4.46875 6.21563 4 6.95625 4H8.77812C9.86875 4 10.75 4.88438 10.75 5.97188C10.75 6.67813 10.3719 7.33125 9.75937 7.68437L8.75 8.2625C8.74375 8.66875 8.40938 9 8 9C7.58437 9 7.25 8.66562 7.25 8.25V7.82812C7.25 7.55937 7.39375 7.3125 7.62813 7.17812L9.0125 6.38438C9.15938 6.3 9.25 6.14375 9.25 5.975C9.25 5.7125 9.0375 5.50313 8.77812 5.50313H6.95625C6.85 5.50313 6.75625 5.56875 6.72188 5.66875L6.70937 5.70625C6.57188 6.09688 6.14062 6.3 5.75313 6.1625C5.36563 6.025 5.15938 5.59375 5.29688 5.20625L5.30937 5.16875L5.30625 5.16563ZM7 11C7 10.7348 7.10536 10.4804 7.29289 10.2929C7.48043 10.1054 7.73478 10 8 10C8.26522 10 8.51957 10.1054 8.70711 10.2929C8.89464 10.4804 9 10.7348 9 11C9 11.2652 8.89464 11.5196 8.70711 11.7071C8.51957 11.8946 8.26522 12 8 12C7.73478 12 7.48043 11.8946 7.29289 11.7071C7.10536 11.5196 7 11.2652 7 11Z"
+                                                            fill="#009FDA" />
+                                                    </svg>
+                                                </app-tooltip>
+                                            </div>
+                                        </td>
+                                        <td class="text-value">{{ pipesimDataInput?.otherData?.h2s }}</td>
+                                        <td><span class="text">ppm</span></td>
+                                    </tr>
+                                    <tr>
+                                        <td><span class="text">Pipeline Design Region</span></td>
+                                        <td class="text-value">
+                                            {{ pipelineDesignRegionMap[pipesimDataInput?.otherData.pipelineDesignRegion]
+                                            }}
+                                        </td>
+                                        <td></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </ng-container>
+                    </div>
+                </ng-container>
+            </div>
+        </div>
+    </app-collapse>
+</div>

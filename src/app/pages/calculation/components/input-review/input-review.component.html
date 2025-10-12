@@ -1,1 +1,22 @@
-<p>input-review works!</p>
+@if(isLoading){
+  <div class="loading-wrapper">
+      <ng-container [ngTemplateOutlet]="LOADING_TEMPLATE"></ng-container>
+  </div>
+}@else{
+  <div class="container">
+    <div class="header">
+      Input Review
+    </div>
+    <div class="header-detail">
+      Please review your calculation input carefully before submitting. To make any changes, click ‘Back’ to return to the
+      input form
+    </div>
+    <app-process-information-review [processDataInput]="processData"
+      *ngIf="shouldDisplayStep(1)"></app-process-information-review>
+    <app-piping-data-review [pipingDataInput]="pipingData" *ngIf="sequenceArray.length > 0"></app-piping-data-review>
+    <app-erosion-review [erosionDataInput]="erosionData" *ngIf="shouldDisplayStep(3)"></app-erosion-review>
+    <app-thermowell-review [thermowellDataInput]="thermowellData" [pipingDataInput]="pipingData"
+      *ngIf="shouldDisplayStep(3)"></app-thermowell-review>
+    <app-pipesim-review [pipesimDataInput]="pipesimData" *ngIf="shouldDisplayStep(4)"></app-pipesim-review>
+  </div>
+}

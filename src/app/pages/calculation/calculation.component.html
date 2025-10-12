@@ -1,1 +1,125 @@
-<p>calculation works!</p>
+<div class="calculation-layout pt-5">
+    <div class="sidebar px-5">
+        <app-tag [text]="'ID: ' + studyCode" class="pb-2"></app-tag>
+        <span class="title">Calculation</span>
+        <p class="py-2">Enter the input for calculation WHP</p>
+        <app-stepper 
+            [steps]="stepList" 
+            [activeStep]="currentStep" 
+            [stepOrigin]="stepOrigin"
+            (stepClicked)="saveDraftAndGoToStep($event)"
+            [disabled]="stepValue === calculationStep.RESULT_SUMMARY">
+        </app-stepper>
+    </div>
+    <ng-container [ngSwitch]="currentStep">
+        <div class="form-container">
+            <app-model-and-basic-composition 
+                *ngSwitchCase="0"
+                #step0 
+                (nextStep)="goToStep(currentStep + 1)"
+                (stepInteracted)="onStepInteracted($event)"
+                (formChanged)="onStepFormChanged($event)">
+            </app-model-and-basic-composition>
+            <app-select-position 
+                *ngSwitchCase="1" 
+                #step1 
+                (nextStep)="goToStep(currentStep + 1)"
+                (backStep)="goToStep(currentStep - 1)"
+                [sequenceFlow]="sequenceFlow"
+                (stepInteracted)="onStepInteracted($event)">
+            </app-select-position>
+            <app-calculation-input 
+                *ngSwitchCase="2" 
+                #step2 
+                (nextStep)="goToStep(currentStep + 1)"
+                (backStep)="goToStep(currentStep - 1)" 
+                [sequenceFlow]="sequenceFlow"
+                (stepInteracted)="onStepInteracted($event)"
+                (formChanged)="onStepFormChanged($event)">
+            </app-calculation-input>
+            <app-input-review 
+                *ngSwitchCase="3" 
+                #step3 
+                (nextStep)="goToStep(currentStep + 1)"
+                (backStep)="goToStep(currentStep - 1)" 
+                (stepInteracted)="onStepInteracted($event)">
+            </app-input-review>
+            <app-recommendation 
+                *ngSwitchCase="4" 
+                #step4 
+                (nextStep)="goToStep(currentStep + 1)"
+                (backStep)="goToStep(currentStep - 1)" 
+                (stepInteracted)="onStepInteracted($event)">
+            </app-recommendation>
+        </div>
+    </ng-container>
+</div>
+<div class="footer-container" *ngIf="!(currentStep === 4)">
+    <ng-container *ngIf="currentStep === 0">
+        <ng-container *ngTemplateOutlet="backToCreate"></ng-container>
+        <div class="button-container">
+            <ng-container *ngTemplateOutlet="draft"></ng-container>
+            <ng-container *ngTemplateOutlet="submit"></ng-container>
+        </div>
+    </ng-container>
+    <ng-container *ngIf="currentStep === 1">
+        <ng-container *ngTemplateOutlet="back"></ng-container>
+        <div class="button-container">
+            <ng-container *ngTemplateOutlet="draft"></ng-container>
+            <ng-container *ngTemplateOutlet="submit"></ng-container>
+        </div>
+    </ng-container>
+    <ng-container *ngIf="currentStep === 2">
+        <ng-container *ngTemplateOutlet="back"></ng-container>
+        <div class="button-container">
+            <ng-container *ngTemplateOutlet="draft"></ng-container>
+            <ng-container *ngTemplateOutlet="submit"></ng-container>
+        </div>
+    </ng-container>
+    <ng-container *ngIf="currentStep === 3">
+        <div class="button-container">
+            <ng-container *ngIf="stepValue === calculationStep.RESULT_SUMMARY ; else normalBackTemplate">
+                <ng-container *ngTemplateOutlet="inputreviewBack"></ng-container>
+            </ng-container>
+            <ng-template #normalBackTemplate>
+                <ng-container *ngTemplateOutlet="back"></ng-container>
+            </ng-template>
+        </div>
+        <div class="button-container">
+            <ng-container *ngIf="stepValue === calculationStep.RESULT_SUMMARY; else submitTemplate">
+                <ng-container *ngTemplateOutlet="reviewNext"></ng-container>
+            </ng-container>
+            <ng-template #submitTemplate>
+                <ng-container *ngTemplateOutlet="reviewSubmit"></ng-container>
+            </ng-template>
+        </div>
+    </ng-container>
+    <ng-container *ngIf="currentStep === 4">
+        <ng-container *ngTemplateOutlet="back"></ng-container>
+    </ng-container>
+</div>
+
+<ng-template #backToCreate>
+    <app-button type="white" width="auto" (click)="onBackToCreate()">Back</app-button>
+</ng-template>
+<ng-template #back>
+    <app-button type="white" width="auto" (click)="goToStep(currentStep - 1)">Back</app-button>
+</ng-template>
+<ng-template #backToSelectPosition>
+    <app-button type="white" width="auto" (click)="goToStep(currentStep - 1)">Back</app-button>
+</ng-template>
+<ng-template #draft>
+    <app-button type="white" width="auto" *ngIf="canUserEdit()" (click)="onDraft()">Save Draft</app-button>
+</ng-template>
+<ng-template #submit>
+    <app-button type="primary" width="auto" (click)="onSubmit()">Next</app-button>
+</ng-template>
+<ng-template #reviewSubmit>
+    <app-button type="primary" width="auto" *ngIf="canUserEdit()" (click)="onReview()">Submit</app-button>
+</ng-template>
+<ng-template #reviewNext>
+    <app-button type="primary" width="auto" (click)="goToStep(currentStep + 1)">Next</app-button>
+</ng-template>
+<ng-template #inputreviewBack>
+    <app-button type="white" width="auto">Back</app-button>
+</ng-template>

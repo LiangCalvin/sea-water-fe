@@ -31,11 +31,11 @@ import {
 import { CredentialData } from './core/interfaces/credential';
 import { HttpErrorResponse } from '@angular/common/http';
 import { CommonModule } from '@angular/common';
-import { EnvironmentConfigurationService } from './pages/services/environment-configuration.service';
-import { GlobalTemplateService } from './pages/services/global-template.service';
-import { MfeLayoutService } from './pages/services/mfe-layout.service';
-import { GlobalService } from './pages/services/global.service';
-import { UnsavedChangesService } from './pages/services/unsaved-changes/unsaved-changes.service';
+import { EnvironmentConfigurationService } from './services/environment-configuration.service';
+import { GlobalTemplateService } from './services/global-template.service';
+import { MfeLayoutService } from './services/mfe-layout.service';
+import { GlobalService } from './services/global.service';
+import { UnsavedChangesService } from './services/unsaved-changes/unsaved-changes.service';
 
 @Component({
   selector: 'app-root',
@@ -95,14 +95,18 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
     this.destroy$.complete();
   }
 
+  // ngOnInit() {
+  //   // Usage
+  //   this.loadWebComponent(this.envConfig.getEnvConfig().EP_LAYOUT_URL)
+  //     .then(() => console.log(`${PTTEP_LAYOUT_TAG} is ready!`))
+  //     .catch(console.error);
+
+  //   this.unsavedChangesService.setViewContainerRef(this.viewContainerRef);
+
+  // }
   ngOnInit() {
-    // Usage
-    // this.loadWebComponent(this.envConfig.getEnvConfig().EP_LAYOUT_URL)
-    //   .then(() => console.log(`${PTTEP_LAYOUT_TAG} is ready!`))
-    //   .catch(console.error);
-
+    this.loaded = true;
     this.unsavedChangesService.setViewContainerRef(this.viewContainerRef);
-
   }
 
   /**

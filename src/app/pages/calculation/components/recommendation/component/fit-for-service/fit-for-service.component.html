@@ -1,0 +1,37 @@
+<div *ngFor="let data of details">
+    <div *ngIf="data.title === title">
+        <div *ngFor="let item of data.items">
+            <div *ngIf="item.type === 'fit_for_service'">
+                <div class="m-[10px]">
+                    <ng-container>
+                        <div class="p-[10px]">
+                            <div class="container-content">
+                                <span class="text-title">{{'Maximum Allowable Operating Pressure (Fit for Service):'}}</span>
+                                <span>{{formatValue(item.details.maximumOperatingPressure, 'Maximum Operating Pressure')}}</span>
+                                <span>{{'barg'}}</span>
+                            </div>
+                            <div class="container-content">
+                                <span class="text-title">{{'Criteria:'}}</span>
+                                <div class="flex-column">
+                                    <span class="text">{{`Pass: Maximum Operating Pressure (PA) >= Input Topside Design Pressure`}}</span>
+                                    <span class="text">{{`Fail: Maximum Operating Pressure (PA) < Input Topside Design Pressure`}}</span>
+                                </div>
+                            </div>
+                        </div>
+                    </ng-container>
+                    <div class="container-recommendation p-[10px]">
+                        <span class="text-title">{{'Recommendation:'}}</span>
+                        @if(item.status === 'TRUE'){
+                        <span class="text">{{'-'}}</span>
+                        }@else {
+                        <div class="flex-column">
+                            <span class="text">{{`Reduce Pressure or Piping replacement`}}</span>
+                        </div>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
