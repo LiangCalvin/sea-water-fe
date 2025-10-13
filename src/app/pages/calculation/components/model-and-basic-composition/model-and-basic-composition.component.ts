@@ -431,7 +431,6 @@ export class ModelAndBasicCompositionComponent implements StepComponentWithUnsav
       //     this.alertService.error(modalTitle, modalText, true, 5000);
       //   }
       // });
-      console.log("draft")
       const modalTitle = AlertMessageConstants.MODEL_TITLE_DRAFT;
       const modalText = AlertMessageConstants.MODEL_TEXT_DRAFT;
       this.alertService.success(modalTitle, modalText, true, 3000);
@@ -493,51 +492,57 @@ export class ModelAndBasicCompositionComponent implements StepComponentWithUnsav
     } else {
       try {
         const req = cleanObject(body);
-        this.calculationService.saveModelComposition(req).subscribe({
-          next: (response) => {
-            if (response?.data?.transactionId) {
-              const transactionData = { data: { transactionId: response.data.transactionId } };
-              sessionStorage.setItem('transactionId', JSON.stringify(transactionData));
-              this.isSubmit = true;
-            }
+        // this.calculationService.saveModelComposition(req).subscribe({
+        //   next: (response) => {
+        //     if (response?.data?.transactionId) {
+        //       const transactionData = { data: { transactionId: response.data.transactionId } };
+        //       sessionStorage.setItem('transactionId', JSON.stringify(transactionData));
+        //       this.isSubmit = true;
+        //     }
 
-            const newCO2Value = convertDataComposition?.data?.compositions?.find(c => c.name === 'CO2')?.value;
+        //     const newCO2Value = convertDataComposition?.data?.compositions?.find(c => c.name === 'CO2')?.value;
 
-            if (newCO2Value !== undefined) {
-              const currentProcessData = this.calculationDataService.processData;
-              if (Array.isArray(currentProcessData)) {
-                this.calculationDataService.processData = currentProcessData.map((d: any) => ({
-                  ...d,
-                  composition: {
-                    ...d.composition,
-                    co2: newCO2Value
-                  }
-                }));
-              } else {
-                console.warn('processData is not an array, skipping CO2 update', currentProcessData);
-              }
-            }
+        //     if (newCO2Value !== undefined) {
+        //       const currentProcessData = this.calculationDataService.processData;
+        //       if (Array.isArray(currentProcessData)) {
+        //         this.calculationDataService.processData = currentProcessData.map((d: any) => ({
+        //           ...d,
+        //           composition: {
+        //             ...d.composition,
+        //             co2: newCO2Value
+        //           }
+        //         }));
+        //       } else {
+        //         console.warn('processData is not an array, skipping CO2 update', currentProcessData);
+        //       }
+        //     }
 
-            const modalTitle = AlertMessageConstants.MODEL_TITLE;
-            const modalText = response?.data?.message ?? AlertMessageConstants.MODEL_TEXT;
-            this.getComposition();
-            this.getTableComposition();
-            this.alertService.success(modalTitle, modalText, true, 3000);
+        //     const modalTitle = AlertMessageConstants.MODEL_TITLE;
+        //     const modalText = response?.data?.message ?? AlertMessageConstants.MODEL_TEXT;
+        //     this.getComposition();
+        //     this.getTableComposition();
+        //     this.alertService.success(modalTitle, modalText, true, 3000);
 
-            this.hasInteractedWithForm = false;
-            this.stepInteracted.emit(false);
+        //     this.hasInteractedWithForm = false;
+        //     this.stepInteracted.emit(false);
 
-            this.nextStep.emit();
-          },
-          error: (error) => {
-            const modalTitle = AlertMessageConstants.SAVE_FAILED_TITLE;
-            const modalText = this.alertService.getErrorMessage(error);
-            this.alertService.error(modalTitle, modalText, true, 5000);
-          }
-        });
+        //     this.nextStep.emit();
+        //   },
+        //   error: (error) => {
+        //     const modalTitle = AlertMessageConstants.SAVE_FAILED_TITLE;
+        //     const modalText = this.alertService.getErrorMessage(error);
+        //     this.alertService.error(modalTitle, modalText, true, 5000);
+        //   }
+        // });
       } catch (err) {
         console.error('Error reading table data', err);
       }
+      const modalTitle = AlertMessageConstants.MODEL_TITLE;
+      const modalText = AlertMessageConstants.MODEL_TEXT;
+      this.alertService.success(modalTitle, modalText, true, 3000);
+      this.hasInteractedWithForm = false;
+      this.stepInteracted.emit(false);
+      this.nextStep.emit();
     }
   }
 
