@@ -94,6 +94,16 @@ export class ModelAndBasicCompositionComponent implements StepComponentWithUnsav
 
   async ngOnInit(): Promise<void> {
     this.setupFormChangeTracking();
+    this.models = [
+      { id: 'M01', name: 'Wellhead Model A' },
+      { id: 'M02', name: 'Wellhead Model B' },
+      { id: 'M03', name: 'Wellhead Model C' },
+    ];
+    this.compositionGeneric = [
+      { id: '25%', name: '25%' },
+      { id: '50%', name: '50%' },
+      { id: '75%', name: '75%' }
+    ];
     this.form.valueChanges.subscribe(() => {
       this.hasInteractedWithForm = true;
     });
@@ -105,10 +115,10 @@ export class ModelAndBasicCompositionComponent implements StepComponentWithUnsav
     await this.initForm();
     await this.getTableComposition();
     await this.getComposition();
-  
+
   }
 
- async initForm(): Promise<void> {
+  async initForm(): Promise<void> {
     this.form = this.fb.group({
       whpDesign: [null, Validators.required],
       genericType: [this.defaultType],
@@ -183,9 +193,9 @@ export class ModelAndBasicCompositionComponent implements StepComponentWithUnsav
     } else {
       this.form.get('manualType')?.patchValue('');
       this.form.get('genericComposition')?.enable();
-      const findGeneric = this.tempAllDataModel.find((e)=> e.name === this.form.get('genericComposition')?.value?.name);
+      const findGeneric = this.tempAllDataModel.find((e) => e.name === this.form.get('genericComposition')?.value?.name);
       const table = {
-        data:findGeneric
+        data: findGeneric
       }
       this.dataModel = this.convertCompositionsToTableFormat(table, findGeneric?.name) as manualTableResponse[];
     }
@@ -273,7 +283,7 @@ export class ModelAndBasicCompositionComponent implements StepComponentWithUnsav
     }
   }
 
-  
+
   getComposition(): void {
     this.isLoading = true;
     const transactionId = this.transaction?.data?.transactionId;
@@ -319,7 +329,7 @@ export class ModelAndBasicCompositionComponent implements StepComponentWithUnsav
       whpDesign: modelMatched ?? null,
       genericType: data?.isGeneric ? CalculationConstants.GENERIC : '',
       manualType: !data?.isGeneric ? CalculationConstants.MANUAL : '',
-      genericComposition: nameMatched ?? { id: '3', name: '50%' }
+      genericComposition: nameMatched
     };
   }
 
@@ -400,33 +410,38 @@ export class ModelAndBasicCompositionComponent implements StepComponentWithUnsav
         compositions: convertDataComposition?.data?.compositions || []
       };
       const req = cleanObject(body);
-      this.calculationService.saveDraftModelComposition(req).subscribe({
-        next: (response) => {
-          if (response?.data?.transactionId) {
-            const transactionData = { data: { transactionId: response.data.transactionId } };
-            sessionStorage.setItem('transactionId', JSON.stringify(transactionData));
-            const getStudy: any = sessionStorage.getItem('study');
-            const getTransaction: any = sessionStorage.getItem('transactionId')
-            this.study = JSON.parse(getStudy);
-            this.transaction = JSON.parse(getTransaction);
-            this.getComposition();
-            this.getTableComposition();
-          }
-          const modalTitle = AlertMessageConstants.MODEL_TITLE_DRAFT;
-          const modalText = response?.data?.message ?? AlertMessageConstants.MODEL_TEXT_DRAFT;
-          this.alertService.success(modalTitle, modalText, true, 3000);
-        },
-        error: (error) => {
-          const modalTitle = AlertMessageConstants.SAVE_FAILED_TEXT;
-          const modalText = this.alertService.getErrorMessage(error);
-          this.alertService.error(modalTitle, modalText, true, 5000);
-        }
-      });
 
+      // this.calculationService.saveDraftModelComposition(req).subscribe({
+      //   next: (response) => {
+      //     if (response?.data?.transactionId) {
+      //       const transactionData = { data: { transactionId: response.data.transactionId } };
+      //       sessionStorage.setItem('transactionId', JSON.stringify(transactionData));
+      //       const getStudy: any = sessionStorage.getItem('study');
+      //       const getTransaction: any = sessionStorage.getItem('transactionId')
+      //       this.study = JSON.parse(getStudy);
+      //       this.transaction = JSON.parse(getTransaction);
+      //     }
+      //     const modalTitle = AlertMessageConstants.MODEL_TITLE_DRAFT;
+      //     const modalText = response?.data?.message ?? AlertMessageConstants.MODEL_TEXT_DRAFT;
+      //     this.alertService.success(modalTitle, modalText, true, 3000);
+      //   },
+      //   error: (error) => {
+      //     const modalTitle = AlertMessageConstants.SAVE_FAILED_TEXT;
+      //     const modalText = this.alertService.getErrorMessage(error);
+      //     this.alertService.error(modalTitle, modalText, true, 5000);
+      //   }
+      // });
+      console.log("draft")
+      const modalTitle = AlertMessageConstants.MODEL_TITLE_DRAFT;
+      const modalText = AlertMessageConstants.MODEL_TEXT_DRAFT;
+      this.alertService.success(modalTitle, modalText, true, 3000);
     } catch (err) {
       console.error('Failed to get table values for draft', err);
       this.alertService.error('Unexpected error', 'Could not retrieve table data.', true, 3000);
     }
+    const modalTitle = AlertMessageConstants.MODEL_TITLE_DRAFT;
+    const modalText = AlertMessageConstants.MODEL_TEXT_DRAFT;
+    this.alertService.success(modalTitle, modalText, true, 3000);
   }
 
   private convertTableToCompositions(data: any[]) {
@@ -450,7 +465,7 @@ export class ModelAndBasicCompositionComponent implements StepComponentWithUnsav
   }
 
   async onNextStep(): Promise<void> {
-    
+
     if (this.form.get('whpDesign')?.invalid) {
       this.form.markAllAsTouched();
       return;

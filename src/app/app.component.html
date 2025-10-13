@@ -1,5 +1,11 @@
+<app-alert-modal></app-alert-modal>
+
 <div *ngIf="canRenderSignal(); else loading">
-  <router-outlet></router-outlet>
+  <router-outlet>
+    <app-app-template></app-app-template>
+
+  </router-outlet>
+
 </div>
 
 <ng-template #loading>

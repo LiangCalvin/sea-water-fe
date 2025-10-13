@@ -37,12 +37,13 @@ import { GlobalTemplateService } from './services/global-template.service';
 import { MfeLayoutService } from './services/mfe-layout.service';
 import { GlobalService } from './services/global.service';
 import { UnsavedChangesService } from './services/unsaved-changes/unsaved-changes.service';
+import { AlertModalComponent } from './shared/components/modals/alert-modal/alert-modal.component';
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss',
-  imports: [RouterModule, CommonModule],
+  imports: [RouterModule, CommonModule, AlertModalComponent],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })
 export class AppComponent implements OnInit, AfterViewInit, OnDestroy {

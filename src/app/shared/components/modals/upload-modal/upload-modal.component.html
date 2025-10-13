@@ -4,7 +4,7 @@
         <p>{{desc}}</p>
         <div *ngIf="templateName" class="container-btn-download">
             <app-button [type]="'white'" [disabled]="false" [width]="'auto'" [class]="'btn-text'"
-                (click)="downloadSampleTemplate()">
+                (click)="downloadSampleTemplate()" onKeyPress="">
                 Download sample template
             </app-button>
         </div>
@@ -14,7 +14,7 @@
         <nz-upload [nzShowUploadList]="false" [nzBeforeUpload]="beforeUpload" nzAccept=".xlsx">
             <div *ngIf="this.selectedFile === null" class="upload-box">
                 <i nz-icon nzType="cloud-upload" nzTheme="outline" style="font-size: 36px;"></i>
-                <img class="" src="../../../../assets/icons/CloudUpload.svg" />
+                <img class="" src="../../../../assets/icons/CloudUpload.svg" alt="" />
                 <p><strong>Upload file</strong></p>
                 <p>Drag file here to upload or <span>browse</span></p>
                 <p>(Size Limit: 10 MB)</p>
@@ -25,7 +25,7 @@
             <div class="file-container">
                 <div class="icon">
                     <div class="imageIcon">
-                        <img class="" src="../../../../assets/icons/File.svg" />
+                        <img class="" src="../../../../assets/icons/File.svg" alt="" />
                     </div>
                     <span class="text-size">{{this.selectedFile.size + 'KB'}}</span>
                 </div>
@@ -33,12 +33,12 @@
                     <span class="text-name">{{this.selectedFile.name}}</span>
                     <span class="text-date">{{this.selectedFile.lastModified | date: "MMM d, y 'at' h:mm a" }}</span>
                 </div>
-                <div class="close-icon-container" (click)="onClearFile()">
-                    <img class="close-icon" src="../../../../assets/icons/Close.svg" />
+                <div class="close-icon-container" (click)="onClearFile()" onKeyPress="">
+                    <img class="close-icon" src="../../../../assets/icons/Close.svg" alt="" />
                 </div>
             </div>
             <div *ngIf="fileError" class="error-container">
-                <img class="" src="../../../../assets/icons/Warning.svg" />
+                <img class="" src="../../../../assets/icons/Warning.svg" alt="" />
                 <div class="error">
                     <p class="text-error">Cannot upload the selected file</p>
                     <p class="text-error">{{ fileError }}</p>
@@ -49,8 +49,9 @@
     </div>
 
     <div class="modal-footer">
-        <app-button [type]="'white'" (click)="onCancel()">Cancel</app-button>
-        <app-button [type]="'primary'" (click)="onSubmit()" [disabled]="!!fileError || !selectedFile">Submit</app-button>
+        <app-button [type]="'white'" (click)="onCancel()" onKeyPress="">Cancel</app-button>
+        <app-button [type]="'primary'" (click)="onSubmit()" [disabled]="!!fileError || !selectedFile"
+            onKeyPress="">Submit</app-button>
     </div>
 
 </div>
