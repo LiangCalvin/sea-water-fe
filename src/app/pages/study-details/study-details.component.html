@@ -1,1 +1,89 @@
-<p>study-details works!</p>
+<div class="main">
+    <div class="container">
+        <app-breadcrumb [list]="list"></app-breadcrumb>
+        <div class="container-header">
+            <div class="container-content">
+                <app-tooltip [title]="studyDetail?.studyName">
+                    <span class="text">{{ this.displayStudyName(studyDetail?.studyName)}}</span>
+                </app-tooltip>
+                <div class="container-tag">
+                    <app-tag [text]="studyDetail?.studyCode"></app-tag>
+                    <app-tag [text]="displayStatus(studyDetail?.status)"
+                        [backgroundColor]="displayColorStatus(studyDetail?.status)"></app-tag>
+                </div>
+            </div>
+            <div class="container-content">
+                <app-button [width]="'auto'" *ngIf="canEditStudy" [type]="'white'" (click)="onEdit()" onkeypress="">Edit
+                    Study</app-button>
+                <app-button [width]="'auto'" (click)="onNewCalculation()" onkeypress="">New Calculation</app-button>
+                <app-button [icon]="'more'" [type]="'white'" [width]="'auto'" [listAction]="moreActionsStudy"
+                    (actionChange)="onDropdownAction($event)" [studyDetail]="studyDetail"></app-button>
+            </div>
+        </div>
+        <div class="card">
+            <div class="container-study-detail">
+                <div class="container-content">
+                    <div class="container-text">
+                        <span class="label">Field Asset</span>
+                        <span class="text">{{studyDetail?.assetName}}</span>
+                    </div>
+                    <div class="container-text">
+                        <span class="label">Location</span>
+                        <span class="text">{{studyDetail?.locationName}}</span>
+                    </div>
+                </div>
+                <div class="container-content">
+                    <div class="container-text">
+                        <span class="label">Created By</span>
+                        <span class="text">{{this.displayName(studyDetail?.createdBy)}}</span>
+                    </div>
+                    <div class="container-text">
+                        <span class="label">Created Date</span>
+                        <span class="text">{{studyDetail?.createdAt | date: 'MMM d, y \'at\' h:mm a'}}</span>
+                    </div>
+                </div>
+                <div class="container-content">
+                    <div class="container-text">
+                        <span class="label">Last Updated</span>
+                        <span class="text">{{studyDetail?.updatedAt | date: 'MMM d, y \'at\' h:mm a'}}</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="card">
+            <div class="container-calculation-table">
+                <div>
+                    <span class="title"> Calculation History ({{totalItems}})</span>
+                </div>
+                <div class="container-content">
+                    <div class="container-checkbox">
+                        <input type="checkbox" class="custom-checkbox" (change)="onCheckCreateByMe($event)" />
+                        <span class="text">Created by me</span>
+                    </div>
+                    <div class="container-input">
+                        <app-input-search [data]="searchList" [isLoading]="suggestLoading"
+                            [isScrollLoading]="scrollLoading" (search)="onSearch($event)"
+                            (scrollChange)="onScrollLoad($event)" (enterValueChange)="onEnterSearch($event)"
+                            [placeholder]="'Calculation ID or Created By Name'"
+                            (valueChange)="onSearchValue($event)"></app-input-search>
+                        <app-dropdown [defaultSelected]="{
+                                id: statusOptions[0]?.id,
+                                name:  statusOptions[0]?.name
+                             }" [options]="statusOptions" (selectChange)="onChangeStatus($event)"></app-dropdown>
+                    </div>
+                </div>
+            </div>
+            <app-table [columnNames]="columnData" [isLoading]="isLoading" [data]="data" [listAction]="listMoreAction"
+                [displaySelected]="displaySelected" [sortField]="sortField" [sortDirection]="sortDirection"
+                [currentPage]="currentPage" [totalPages]="totalPages" [notFoundText]="notFoundText"
+                [isFoundData]="isFoundData" [isTooltip]="true" (pageChange)="onGoToPage($event)"
+                (actionChange)="onSelectMoreAction($event)" (rowChange)="onRedirectPage($event)"
+                (selectedRowsChange)="onSelect($event)" (sortChange)="onSortData($event)"
+                (pageChange)="onGoToPage($event)" [includeCreatedBy]="true" [totalItems]="totalItems"
+                [itemsPerPage]="pageSize" [pageSizeOptions]="pageSizeOptions"
+                (itemsPerPageChange)="onItemsPerPageChange($event)">
+                <app-button [width]="'auto'" (click)="onNewCalculation()" onKeyPress="">New Calculation</app-button>
+            </app-table>
+        </div>
+    </div>
+</div>

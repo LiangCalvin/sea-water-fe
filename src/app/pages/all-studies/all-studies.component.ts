@@ -564,7 +564,15 @@ export class AllStudiesComponent implements OnInit {
 
     this.locationOptions = [{ id: '', name: 'All Location' }, ...mockLocations];
   }
+  // goToStudyDetails(value: string) {
+  //   this.router.navigate(['/study-details'], {
+  //     queryParams: { from: 'all-studies', id: value },
+  //   });
+  // }
   goToStudyDetails(value: string) {
+    const selectedStudy = this.studies.find(study => study.studyId === value);
+    sessionStorage.setItem('study', JSON.stringify(selectedStudy));
+
     this.router.navigate(['/study-details'], {
       queryParams: { from: 'all-studies', id: value },
     });

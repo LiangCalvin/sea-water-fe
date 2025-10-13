@@ -138,19 +138,21 @@ export class
     }
   }
   onRowClick(row: any): void {
-    const id = this.getFirstAvailableKey(row, [COLUMN_ID.STUDY_ID, COLUMN_ID.CALCULATION_ID]);
+    // const id = this.getFirstAvailableKey(row, [COLUMN_ID.STUDY_ID, COLUMN_ID.CALCULATION_ID]);
 
-    if (this.includeCreatedBy) {
-      // For study-details component, emit object with createdBy
-      const rowData = {
-        id: id,
-        createdBy: row.createdBy,
-      };
-      this.rowChange.emit(rowData);
-    } else {
-      // For other components, emit just the ID (existing behavior)
-      this.rowChange.emit(id);
-    }
+    // if (this.includeCreatedBy) {
+    //   // For study-details component, emit object with createdBy
+    //   const rowData = {
+    //     id: id,
+    //     createdBy: row.createdBy,
+    //   };
+    //   this.rowChange.emit(rowData);
+    // } else {
+    //   // For other components, emit just the ID (existing behavior)
+    //   this.rowChange.emit(id);
+    // }
+    this.rowChange.emit(row.studyId); // ✅ or row.studyCode if you prefer
+
   }
   private formatPageSizeOptions(): void {
     this.pageSizeOptionsFormatted = this.pageSizeOptions.map(size => ({

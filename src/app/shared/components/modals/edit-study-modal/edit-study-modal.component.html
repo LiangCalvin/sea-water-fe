@@ -28,8 +28,9 @@
     </div>
 
     <div class="modal-footer">
-        <app-button [type]="'white'" [width]="'auto'" (click)="onCancel()">{{btnCancelText}}</app-button>
-        <app-button [type]="'primary'" [width]="'auto'" (click)="onSubmit()">{{btnSubmitText}}</app-button>
+        <app-button [type]="'white'" [width]="'auto'" (click)="onCancel()" onKeyPress="">{{btnCancelText}}</app-button>
+        <app-button [type]="'primary'" [width]="'auto'" (click)="onSubmit()"
+            onKeyPress="">{{btnSubmitText}}</app-button>
     </div>
 
 </div>

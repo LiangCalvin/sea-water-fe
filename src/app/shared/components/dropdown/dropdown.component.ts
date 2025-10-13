@@ -86,9 +86,9 @@ export class DropdownComponent implements ControlValueAccessor {
       }
     }
   }
-  
 
-  
+
+
   ngAfterViewInit() {
     this.isOpened = false;
     this.inputWidth = this.dropdownInputRef.nativeElement.offsetWidth;
@@ -175,5 +175,5 @@ export class DropdownComponent implements ControlValueAccessor {
   setDisabledState(disabled: boolean): void {
     this.isDisabled = disabled;
   }
-  
+
 }
