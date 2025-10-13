@@ -21,7 +21,7 @@ import { StepComponentWithUnsavedChanges } from '../../../../core/models/calcula
     ReactiveFormsModule,
     PositionSelectorComponent,
     ImageComponent
-],
+  ],
   templateUrl: './select-position.component.html',
   styleUrl: './select-position.component.scss'
 })
@@ -83,17 +83,20 @@ export class SelectPositionComponent implements OnInit, StepComponentWithUnsaved
       transactionId: this.transaction?.data?.transactionId,
       sequenceFlow: currentPosition.sequenceFlow
     };
-    this.calculationService.saveDraftSelectPosition(requestPayload).subscribe({
-      next: (response) => {
-        const modalTitle = AlertMessageConstants.SAVE_SUCCESS_TITLE;
-        const modalText = AlertMessageConstants.SAVE_DRAFT_SUCCESS_TEXT;
-        this.alertService.success(modalTitle, modalText, true, 5000);
-        this.resetInteractionState();
-      },
-      error: (error) => {
-        console.error('Failed to save sequence flow draft:', error);
-      }
-    });
+    // this.calculationService.saveDraftSelectPosition(requestPayload).subscribe({
+    //   next: (response) => {
+    //     const modalTitle = AlertMessageConstants.SAVE_SUCCESS_TITLE;
+    //     const modalText = AlertMessageConstants.SAVE_DRAFT_SUCCESS_TEXT;
+    //     this.alertService.success(modalTitle, modalText, true, 5000);
+    //     this.resetInteractionState();
+    //   },
+    //   error: (error) => {
+    //     console.error('Failed to save sequence flow draft:', error);
+    //   }
+    // });
+    const modalTitle = AlertMessageConstants.SAVE_SUCCESS_TITLE;
+    const modalText = AlertMessageConstants.SAVE_DRAFT_SUCCESS_TEXT;
+    this.alertService.success(modalTitle, modalText, true, 5000);
   }
 
   async onNextStep(): Promise<void> {
@@ -107,17 +110,20 @@ export class SelectPositionComponent implements OnInit, StepComponentWithUnsaved
       sequenceFlow: currentPosition.sequenceFlow
     };
 
-    this.calculationService.saveSelectPosition(requestPayload).subscribe({
-      next: (response) => {
-        const modalTitle = AlertMessageConstants.SAVE_SUCCESS_TITLE;
-        const modalText = AlertMessageConstants.SAVE_SUCCESS_TEXT;
-        this.alertService.success(modalTitle, modalText, true, 5000);
-        this.resetInteractionState();
-      },
-      error: (error) => {
-        console.error('Failed to save sequence flow draft:', error);
-      }
-    });
+    // this.calculationService.saveSelectPosition(requestPayload).subscribe({
+    //   next: (response) => {
+    //     const modalTitle = AlertMessageConstants.SAVE_SUCCESS_TITLE;
+    //     const modalText = AlertMessageConstants.SAVE_SUCCESS_TEXT;
+    //     this.alertService.success(modalTitle, modalText, true, 5000);
+    //     this.resetInteractionState();
+    //   },
+    //   error: (error) => {
+    //     console.error('Failed to save sequence flow draft:', error);
+    //   }
+    // });
+    const modalTitle = AlertMessageConstants.SAVE_SUCCESS_TITLE;
+    const modalText = AlertMessageConstants.SAVE_SUCCESS_TEXT;
+    this.alertService.success(modalTitle, modalText, true, 5000);
     this.nextStep.emit();
   }
 
