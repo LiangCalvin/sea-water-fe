@@ -60,6 +60,8 @@ export class AllStudiesComponent implements OnInit {
     { id: 'IN_PROGRESS', name: 'IN-PROGRESS' },
     { id: 'COMPLETED', name: 'COMPLETED' }
   ];
+  pageSize = 25;
+  pageSizeOptions = [10, 25, 50, 100];
 
   assetOptions: AssetOption[] = [{ id: '', name: 'All Assets' }];
 
@@ -111,7 +113,7 @@ export class AllStudiesComponent implements OnInit {
   sortField = 'created_at';
   sortDirection: string = '';
   currentPage = 1;
-  itemsPerPage = 20;
+  itemsPerPage = 25;
   totalPages = 1;
   totalItems = 0;
   availableStatuses = ['PENDING', 'IN_PROGRESS', 'COMPLETED', 'CANCELLED'];
@@ -161,6 +163,19 @@ export class AllStudiesComponent implements OnInit {
       { id: 'asset_4', name: 'Asset 4', assetId: 'asset_4' },
       { id: 'asset_5', name: 'Asset 5', assetId: 'asset_5' },
     ];
+    this.mockAllStudies = Array.from({ length: 100 }, (_, i) => ({
+      studyId: i + 1,
+      studyCode: `ST-${1000 + i}`,
+      studyName: `Study Name ${i + 1}`,
+      assetId: `asset_${(i % 5) + 1}`,
+      assetName: `Asset ${(i % 5) + 1}`,
+      locationId: `location_${(i % 10) + 1}`,
+      locationName: `Location ${(i % 10) + 1}`,
+      createdBy: i % 4 === 0 ? 'ME' : `User ${((i % 3) + 1)}`, // 👈 every 4th study created by "ME"
+      status: ['NEW', 'IN_PROGRESS', 'COMPLETED'][i % 3],
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString(),
+    }));
   }
 
   ngOnDestroy() {
@@ -197,95 +212,142 @@ export class AllStudiesComponent implements OnInit {
   onEnter(): void {
     this.loadStudies();
   }
+  // NOTE: with API
+  // loadStudies() {
+  //   this.isLoading = true;
+  //   this.hasError = false;
+
+  //   const params: StudyListParams = {
+  //     limit: this.itemsPerPage,
+  //     page: this.currentPage,
+  //     order: this.sortDirection,
+  //     sort: this.mappingKeyStudy(this.sortField as StudyConstants),
+  //     search: this.searchTerm,
+  //     status: this.statusFilter?.id || '',
+  //     asset_name: this.assetFilter?.id || '',
+  //     location_name: this.locationFilter?.id || '',
+  //     ...(this.selectAll && {
+  //       created_by: this.globalService.getUserFullName(),
+  //     }),
+  //   };
+  //   const req = cleanObject(params);
+  //   this.allstudiesService.getStudyList(req).subscribe({
+  //     next: (response) => {
+  //       if (response && response.data && Array.isArray(response.data)) {
+  //         this.studies = response.data.map((item) => ({
+  //           studyId: item.studyId,
+  //           studyCode: item.studyCode,
+  //           studyName: item.studyName,
+  //           assetName: item.assetName,
+  //           locationName: item.locationName,
+  //           createdBy: item.createdBy,
+  //           status: item.status,
+  //           updatedAt: item.updatedAt ?? '',
+  //           createdAt: item.createdAt ?? '',
+  //         }));
+  //         this.totalItems = response.total ?? 0;
+  //         this.totalPages = response.totalPage ?? 1;
+  //         if (this.isInitialLoad && this.totalItems > 0) {
+  //           this.hasEverLoadedData = true;
+  //         }
+  //       } else {
+  //         this.studies = [];
+  //         this.totalItems = 0;
+  //         this.totalPages = 1;
+  //       }
+  //       this.isLoading = false;
+  //       this.updateFilterOptions();
+  //     },
+  //     error: (error) => {
+  //       console.error('Error loading studies:', error);
+  //       this.hasError = true;
+  //       this.errorMessage = 'Failed to load studies. Please try again.';
+  //       this.isLoading = false;
+  //       this.studies = [];
+  //     },
+  //   });
+  // }
+  // loadStudies() {
+  //   this.isLoading = true;
+  //   this.hasError = false;
+
+  //   // MOCK 100 studies for testing
+  //   const mockStudies = Array.from({ length: 100 }, (_, i) => ({
+  //     studyId: i + 1,
+  //     studyCode: `ST-${1000 + i}`,
+  //     studyName: `Study Name ${i + 1}`,
+  //     assetName: `Asset ${((i % 5) + 1)}`,
+  //     locationName: `Location ${((i % 10) + 1)}`,
+  //     createdBy: `User ${((i % 3) + 1)}`,
+  //     status: ['NEW', 'IN_PROGRESS', 'COMPLETED'][i % 3],
+  //     createdAt: new Date().toISOString(),
+  //     updatedAt: new Date().toISOString(),
+  //   }));
+
+  //   // simulate API response
+  //   setTimeout(() => {
+  //     // apply filters here
+  //     const filteredStudies = mockStudies.filter((s) => {
+  //       const statusMatch =
+  //         !this.statusFilter?.id || this.statusFilter.id === '' || s.status === this.statusFilter.id;
+  //       const assetMatch =
+  //         !this.assetFilter?.id || this.assetFilter.id === '' || s.assetName === this.assetFilter.name;
+  //       const locationMatch =
+  //         !this.locationFilter?.id || this.locationFilter.id === '' || s.locationName === this.locationFilter.name;
+
+  //       return statusMatch && assetMatch && locationMatch;
+  //     });
+
+
+  //     // update total items and pages based on filtered data
+  //     this.totalItems = filteredStudies.length;
+  //     this.totalPages = Math.ceil(this.totalItems / this.itemsPerPage);
+
+  //     // slice for current page
+  //     const start = (this.currentPage - 1) * this.itemsPerPage;
+  //     const end = start + this.itemsPerPage;
+  //     this.studies = filteredStudies.slice(start, end);
+
+  //     this.isLoading = false;
+  //     this.updateFilterOptions(); // update dropdown filters
+  //   }, 300); // simulate slight delay
+  // }
 
   loadStudies() {
     this.isLoading = true;
     this.hasError = false;
 
-    // const params: StudyListParams = {
-    //   limit: this.itemsPerPage,
-    //   page: this.currentPage,
-    //   order: this.sortDirection,
-    //   sort: this.mappingKeyStudy(this.sortField as StudyConstants),
-    //   search: this.searchTerm,
-    //   status: this.statusFilter?.id || '',
-    //   asset_name: this.assetFilter?.id || '',
-    //   location_name: this.locationFilter?.id || '',
-    //   ...(this.selectAll && {
-    //     created_by: this.globalService.getUserFullName(),
-    //   }),
-    // };
-    // const req = cleanObject(params);
-    // this.allstudiesService.getStudyList(req).subscribe({
-    //   next: (response) => {
-    //     if (response && response.data && Array.isArray(response.data)) {
-    //       this.studies = response.data.map((item) => ({
-    //         studyId: item.studyId,
-    //         studyCode: item.studyCode,
-    //         studyName: item.studyName,
-    //         assetName: item.assetName,
-    //         locationName: item.locationName,
-    //         createdBy: item.createdBy,
-    //         status: item.status,
-    //         updatedAt: item.updatedAt ?? '',
-    //         createdAt: item.createdAt ?? '',
-    //       }));
-    //       this.totalItems = response.total ?? 0;
-    //       this.totalPages = response.totalPage ?? 1;
-    //       if (this.isInitialLoad && this.totalItems > 0) {
-    //         this.hasEverLoadedData = true;
-    //       }
-    //     } else {
-    //       this.studies = [];
-    //       this.totalItems = 0;
-    //       this.totalPages = 1;
-    //     }
-    //     this.isLoading = false;
-    //     this.updateFilterOptions();
-    //   },
-    //   error: (error) => {
-    //     console.error('Error loading studies:', error);
-    //     this.hasError = true;
-    //     this.errorMessage = 'Failed to load studies. Please try again.';
-    //     this.isLoading = false;
-    //     this.studies = [];
-    //   },
-    // });
-    // MOCK 100 studies for testing
-    const mockStudies = Array.from({ length: 100 }, (_, i) => ({
-      studyId: i + 1,
-      studyCode: `ST-${1000 + i}`,
-      studyName: `Study Name ${i + 1}`,
-      assetName: `Asset ${((i % 5) + 1)}`,
-      locationName: `Location ${((i % 10) + 1)}`,
-      createdBy: `User ${((i % 3) + 1)}`,
-      status: ['NEW', 'IN_PROGRESS', 'COMPLETED'][i % 3],
-      createdAt: new Date().toISOString(),
-      updatedAt: new Date().toISOString(),
-    }));
-
-    // simulate API response
     setTimeout(() => {
-      // apply filters here
-      this.studies = mockStudies.filter((s) => {
+      let filteredStudies = this.mockAllStudies.filter((s) => {
         const statusMatch =
-          !this.statusFilter?.id || this.statusFilter.id === '' || s.status === this.statusFilter.id;
+          !this.statusFilter?.id || s.status === this.statusFilter.id;
         const assetMatch =
-          !this.assetFilter?.id || this.assetFilter.id === '' || s.assetName === this.assetFilter.name;
+          !this.assetFilter?.id || s.assetId === this.assetFilter.id;
         const locationMatch =
-          !this.locationFilter?.id || this.locationFilter.id === '' || s.locationName === this.locationFilter.name;
+          !this.locationFilter?.id || s.locationId === this.locationFilter.id;
 
-        return statusMatch && assetMatch && locationMatch;
+        const searchMatch =
+          !this.searchTerm ||
+          s.studyCode.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
+          s.studyName.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
+          s.createdBy.toLowerCase().includes(this.searchTerm.toLowerCase());
+
+        const createdByMeMatch =
+          !this.selectAll || s.createdBy === 'ME'; // 👈 filter when checkbox ON
+
+        return statusMatch && assetMatch && locationMatch && searchMatch && createdByMeMatch;
       });
 
-
-      // this.studies = mockStudies;
-      this.totalItems = mockStudies.length;
+      this.totalItems = filteredStudies.length;
       this.totalPages = Math.ceil(this.totalItems / this.itemsPerPage);
-      this.isLoading = false;
 
-      this.updateFilterOptions(); // update dropdown filters
-    }, 300); // simulate slight delay
+      const start = (this.currentPage - 1) * this.itemsPerPage;
+      const end = start + this.itemsPerPage;
+      this.studies = filteredStudies.slice(start, end);
+
+      this.isLoading = false;
+      this.updateFilterOptions();
+    }, 200);
   }
 
   getEmptyStateType(): 'no-studies' | 'no-results' | 'none' {
@@ -355,19 +417,33 @@ export class AllStudiesComponent implements OnInit {
     this.loadStudies();
   }
 
+  // onAssetFilterChange() {
+  //   this.locationFilter = this.locationOptions[0];
+  //   if (this.assetFilter && this.assetFilter.id) {
+  //     const selectedAsset = this.assetOptions.find(
+  //       (option) => option.id === this.assetFilter.id,
+  //     ) as AssetOption;
+
+  //     if (selectedAsset?.assetId) {
+  //       this.getLocationDropDown(selectedAsset.assetId);
+  //     }
+  //   } else {
+  //     this.locationOptions = [{ id: '', name: 'All Location' }];
+  //   }
+  //   this.currentPage = 1;
+  //   this.loadStudies();
+  // }
+
   onAssetFilterChange() {
     this.locationFilter = this.locationOptions[0];
-    if (this.assetFilter && this.assetFilter.id) {
-      const selectedAsset = this.assetOptions.find(
-        (option) => option.id === this.assetFilter.id,
-      ) as AssetOption;
 
-      if (selectedAsset?.assetId) {
-        this.getLocationDropDown(selectedAsset.assetId);
-      }
+    if (this.assetFilter && this.assetFilter.id) {
+      // use mock instead of API
+      this.getLocationDropDown(this.assetFilter.id);
     } else {
       this.locationOptions = [{ id: '', name: 'All Location' }];
     }
+
     this.currentPage = 1;
     this.loadStudies();
   }
@@ -436,30 +512,58 @@ export class AllStudiesComponent implements OnInit {
       });
   }
 
+  // getLocationDropDown(assetId: string) {
+  //   this.locationOptions = [{ id: '', name: 'All Location' }];
+
+  //   if (!assetId) {
+  //     return;
+  //   }
+  //   this.createStudyService
+  //     .getDropDownLocation(assetId)
+  //     .subscribe(async (response: any) => {
+  //       try {
+  //         this.locationOptions = [
+  //           { id: '', name: 'All Location' },
+  //           ...response.data.map((location: any) => ({
+  //             id: location.name,
+  //             name: location.name,
+  //             locationId: location.id,
+  //           })),
+  //         ];
+  //       } catch (error) {
+  //         console.log('error :', error);
+  //       }
+  //     });
+  // }
+
+  // MOCK location options based on selected asset
+  // getLocationDropDown(assetId: string) {
+  //   // always start with "All Location"
+  //   this.locationOptions = [{ id: '', name: 'All Location' }];
+
+  //   if (!assetId) return;
+
+  //   // Mock: create 5 locations per asset
+  //   const mockLocations: LocationOption[] = Array.from({ length: 5 }, (_, i) => ({
+  //     id: `Location-${assetId}-${i + 1}`,
+  //     name: `Location ${i + 1} (Asset ${assetId})`,
+  //   }));
+
+  //   // append to locationOptions
+  //   this.locationOptions = [{ id: '', name: 'All Location' }, ...mockLocations];
+  // }
+
   getLocationDropDown(assetId: string) {
     this.locationOptions = [{ id: '', name: 'All Location' }];
+    if (!assetId) return;
 
-    if (!assetId) {
-      return;
-    }
-    this.createStudyService
-      .getDropDownLocation(assetId)
-      .subscribe(async (response: any) => {
-        try {
-          this.locationOptions = [
-            { id: '', name: 'All Location' },
-            ...response.data.map((location: any) => ({
-              id: location.name,
-              name: location.name,
-              locationId: location.id,
-            })),
-          ];
-        } catch (error) {
-          console.log('error :', error);
-        }
-      });
+    const mockLocations: LocationOption[] = Array.from({ length: 5 }, (_, i) => ({
+      id: `Location-${assetId}-${i + 1}`,
+      name: `Location ${i + 1} (Asset ${assetId})`,
+    }));
+
+    this.locationOptions = [{ id: '', name: 'All Location' }, ...mockLocations];
   }
-
   goToStudyDetails(value: string) {
     this.router.navigate(['/study-details'], {
       queryParams: { from: 'all-studies', id: value },
@@ -478,4 +582,29 @@ export class AllStudiesComponent implements OnInit {
     this.currentPage = 1;
     this.loadStudies();
   }
+  onItemsPerPageChange(newSize: number) {
+    this.pageSize = newSize;
+    this.itemsPerPage = newSize;
+    this.currentPage = 1;
+    this.loadStudies();
+  }
+
+  mockAllStudies = Array.from({ length: 100 }, (_, i) => {
+    const assetId = `asset_${(i % 5) + 1}`;
+    const locationId = `Location-${assetId}-${(i % 5) + 1}`;
+
+    return {
+      studyId: i + 1,
+      studyCode: `ST-${1000 + i}`,
+      studyName: `Study ${i + 1}`,
+      assetName: `Asset ${assetId}`,
+      assetId,
+      locationName: `Location ${(i % 5) + 1} (Asset ${assetId})`,
+      locationId,
+      createdBy: `User ${(i % 3) + 1}`,
+      status: ['NEW', 'IN_PROGRESS', 'COMPLETED'][i % 3],
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString(),
+    };
+  });
 }

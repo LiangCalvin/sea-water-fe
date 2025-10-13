@@ -50,7 +50,9 @@
                 <app-table [columnNames]="columnData" [data]="studies" [sortField]="sortField"
                     [sortDirection]="sortDirection" [currentPage]="currentPage" [totalPages]="totalPages"
                     (sortChange)="onSortData($event)" (pageChange)="onGoToPage($event)" [totalPages]="totalPages"
-                    (rowChange)="goToStudyDetails($event)" [isLoading]="isLoading"></app-table>
+                    (rowChange)="goToStudyDetails($event)" [isLoading]="isLoading" [totalItems]="totalItems"
+                    [itemsPerPage]="pageSize" [pageSizeOptions]="pageSizeOptions"
+                    (itemsPerPageChange)="onItemsPerPageChange($event)"></app-table>
             </div>
         </div>
     </div>

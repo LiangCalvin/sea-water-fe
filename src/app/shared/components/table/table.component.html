@@ -11,7 +11,7 @@
         <th *ngFor="let col of columnNames" [ngClass]="{
                     'sort-asc': sortField === col.key && sortDirection === 'asc',
                     'sort-desc': sortField === col.key && sortDirection === 'desc'
-                }" class="sortable" (click)="sort(col.key)">
+                }" class="sortable" (click)="sort(col.key)" onKeyPress="">
           <div class="container-column">
             <span class="text"> {{ col.label }} </span>
             <span class="sort-icon"></span>
@@ -29,7 +29,7 @@
           <input type="checkbox" class="custom-checkbox" [checked]="isSelected(row)"
             (change)="toggleRowSelection(row)" />
         </td>
-        <td *ngFor="let col of columnNames" (click)="onRowClick(row)">
+        <td *ngFor="let col of columnNames" (click)="onRowClick(row)" onKeyPress="">
           @if(col?.key === 'status'){
           <ng-container>
             @if(isTooltip){
@@ -64,12 +64,12 @@
           }
         </td>
         <td class="action-cell" *ngIf="listAction.length > 0">
-          <div class="action-more" (click)="onDisplayListMore(i)">
+          <div class="action-more" (click)="onDisplayListMore(i)" onKeyPress="">
             <i nz-icon nzType="more" nzTheme="outline" style="color: #009FDA;"></i>
           </div>
           <div *ngIf="expandedRow === i" class="more-card">
             <div class="line-bottom" *ngFor="let list of getFilteredActions(row)">
-              <div class="list" (click)="onAction(row, list.title)">
+              <div class="list" (click)="onAction(row, list.title)" onKeyPress="">
                 <span class="list-text">{{ list.title }}</span>
               </div>
             </div>
@@ -91,25 +91,50 @@
   <i nz-icon nzType="loading" nzSpin class="large-icon"></i>
 </div>
 
-<div class="pagination-container" *ngIf="totalPages > 1 && !isLoading">
-  <button class="pagination-btn" [disabled]="currentPage === 1" (click)="goToPage(currentPage - 1)">
-    <span class="text">&lt; Previous</span>
-  </button>
-
-  <div class="page-numbers">
-    <ng-container *ngFor="let page of getVisiblePages()">
-      <button *ngIf="page !== '...'; else dots" class="page-btn" [ngClass]="{ 'active': page === currentPage }"
-        (click)="goToPage(page)">
-        {{ page }}
-      </button>
-
-      <ng-template #dots>
-        <span class="page-btn dots">...</span>
-      </ng-template>
-    </ng-container>
+<div class="pagination-container" *ngIf="totalPages > 0 && !isLoading">
+  <div class="left-section">
+    <div>
+      <span class="label">Rows per page:</span>
+    </div>
+    <div class="items-per-page">
+      <app-dropdown [options]="pageSizeOptionsFormatted" [defaultSelected]="selectedPageSize"
+        (selectChange)="onItemsPerPageChange($event)">
+      </app-dropdown>
+    </div>
+    <div class="items-range">
+      <span class="range-text">{{ getItemRangeText() }}</span>
+    </div>
   </div>
+  <!-- Go to Page Feature -->
+  <div class="pagination-controls">
+    <div class="go-to-page-container">
+      <span class="go-to-label">Go to</span>
+      <div class="go-to-page-input-wrapper">
+        <app-input-text [formControl]="goToPageControl" [numeric]="true" [witdthInput]="'w-[60px]'"
+          (keydown)="onGoToPageKeydown($event)">
+        </app-input-text>
+      </div>
+      <span class="go-to-label">Page</span>
+    </div>
+    <button class="pagination-btn" [disabled]="currentPage === 1" (click)="goToPage(currentPage - 1)">
+      <span class="text">&lt; Previous</span>
+    </button>
 
-  <button class="pagination-btn" [disabled]="currentPage === totalPages" (click)="goToPage(currentPage + 1)">
-    <span class="text">Next &gt;</span>
-  </button>
+    <div class="page-numbers">
+      <ng-container *ngFor="let page of getVisiblePages()">
+        <button *ngIf="page !== '...'; else dots" class="page-btn" [ngClass]="{ 'active': page === currentPage }"
+          (click)="goToPage(page)">
+          {{ page }}
+        </button>
+
+        <ng-template #dots>
+          <span class="page-btn dots">...</span>
+        </ng-template>
+      </ng-container>
+    </div>
+
+    <button class="pagination-btn" [disabled]="currentPage === totalPages" (click)="goToPage(currentPage + 1)">
+      <span class="text">Next &gt;</span>
+    </button>
+  </div>
 </div>

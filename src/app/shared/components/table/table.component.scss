@@ -187,13 +187,60 @@
 
 .pagination-container {
   display: flex;
-  justify-content: end;
+  justify-content: space-between;
   align-items: center;
   gap: 8px;
   margin-top: 0;
   padding: 24px 24px 24px 24px;
   background: white;
   border-radius: 8px;
+
+  .left-section {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+  }
+
+  .items-per-page {
+    display: flex;
+    align-items: center;
+
+    ::ng-deep {
+      app-dropdown {
+        .main {
+          margin: 0;
+        }
+
+        .label-container {
+          margin-bottom: 0;
+
+          .text-label {
+            font-size: 14px;
+            color: #666;
+            font-weight: 500;
+            white-space: nowrap;
+          }
+        }
+
+        .container {
+          display: flex;
+          align-items: center;
+          gap: 8px;
+        }
+
+        button {
+          min-width: 80px;
+          height: 36px;
+        }
+      }
+    }
+  }
+}
+
+.pagination-controls {
+  display: flex;
+  align-items: center;
+  gap: 8px;
 }
 
 .pagination-btn {
@@ -389,9 +436,9 @@ input.custom-checkbox:checked::after {
   font-style: normal;
   font-weight: var(--font-weight-bold, 400);
   line-height: 100%;
-  white-space: nowrap;    
+  white-space: nowrap;
   overflow: hidden;
-  text-overflow: ellipsis; 
+  text-overflow: ellipsis;
 }
 
 @media (max-width: 768px) {
@@ -431,4 +478,37 @@ input.custom-checkbox:checked::after {
 .action-cell {
   position: relative;
 
+}
+
+.pagination-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 24px;
+  background: white;
+  border-radius: 8px;
+
+  .left-section {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .go-to-page-container {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+
+    .go-to-label {
+      font-size: 14px;
+      color: #475569;
+      font-weight: 400;
+      white-space: nowrap;
+    }
+
+    app-input-text {
+      display: flex;
+      align-items: center;
+    }
+  }
 }

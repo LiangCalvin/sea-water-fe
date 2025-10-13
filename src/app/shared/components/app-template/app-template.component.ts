@@ -10,7 +10,7 @@ import { GlobalTemplateService } from '../../../services/global-template.service
 
 @Component({
   selector: 'app-app-template',
-  imports: [RouterOutlet, CommonModule, AlertModalComponent],
+  imports: [RouterOutlet, CommonModule],
   templateUrl: './app-template.component.html',
   styleUrl: './app-template.component.scss',
 })

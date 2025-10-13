@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, EventEmitter, HostListener, Input, Output } from '@angular/core';
+import { Component, EventEmitter, HostListener, Input, Output, SimpleChanges } from '@angular/core';
 import { TagComponent } from '../tag/tag.component';
 import { Status, StudyDetailsModule, colorStatus, displayStatus, textTooltip } from '../../../core/enums/all-studies.enum'
 import { NzIconModule } from 'ng-zorro-antd/icon';
@@ -8,9 +8,13 @@ import { UserNameService } from '../../services/user-name.service';
 import { TooltipComponent } from "../tooltip/tooltip.component";
 import { GlobalService } from '../../../services/global.service';
 import { RoleEnum } from '../../../core/enums/role.enum';
+import { IdName } from '../../models/id-name.model';
+import { FormControl } from '@angular/forms';
+import { InputTextComponent } from "../input-text/input-text.component";
+import { DropdownComponent } from "../dropdown/dropdown.component";
 @Component({
   selector: 'app-table',
-  imports: [CommonModule, TagComponent, NzIconModule, TooltipComponent],
+  imports: [CommonModule, TagComponent, NzIconModule, TooltipComponent, InputTextComponent, DropdownComponent],
   standalone: true,
   templateUrl: './table.component.html',
   styleUrl: './table.component.scss'
@@ -30,22 +34,57 @@ export class
   @Input() listAction: any[] = [];
   @Input() isFoundData = false;
   @Input() isTooltip = false;
+  @Input() includeCreatedBy: boolean = false;
+
+
+  @Input() itemsPerPage = 10;
+  @Input() pageSizeOptions: number[] = [10, 25, 50, 100];
+  @Input() totalItems = 0;
   @Output() sortChange = new EventEmitter<string>();
   @Output() pageChange = new EventEmitter<number>();
   @Output() rowChange = new EventEmitter<any>();
   @Output() selectedRowsChange = new EventEmitter<any[]>();
   @Output() actionChange = new EventEmitter<any>();
-  @Input() includeCreatedBy: boolean = false;
+  @Output() itemsPerPageChange = new EventEmitter<number>();
+
+  pageSizeOptionsFormatted: IdName[] = [];
+  selectedPageSize: IdName | null = null;
   selectedRows: any[] = [];
   expandedRow: number | null = null;
   Owner: any;
   hasFullAccess: boolean = false;
+  goToPageInput: string = '';
+  goToPageControl: FormControl = new FormControl('');
+
+  showGoToPage: boolean = false;
+  parseInt = parseInt;
   constructor(
     private userNameService: UserNameService,
     private globalService: GlobalService
   ) {
     this.Owner = this.globalService.getUserFullName();
     this.hasFullAccess = this.globalService.hasPermissionSync(RoleEnum.FULL_ACCESS);
+  }
+
+  ngOnInit(): void {
+    this.formatPageSizeOptions();
+    this.setDefaultPageSize();
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes['pageSizeOptions'] && !changes['pageSizeOptions'].firstChange) {
+      this.formatPageSizeOptions();
+    }
+    if (changes['itemsPerPage'] && !changes['itemsPerPage'].firstChange) {
+      this.setDefaultPageSize();
+    }
+  }
+
+  private setDefaultPageSize(): void {
+    this.selectedPageSize = {
+      id: this.itemsPerPage.toString(),
+      name: this.itemsPerPage.toString()
+    };
   }
 
   @HostListener('document:click', ['$event'])
@@ -71,7 +110,33 @@ export class
   //   const id = this.getFirstAvailableKey(row, [COLUMN_ID.STUDY_ID, COLUMN_ID.CALCULATION_ID]);
   //   this.rowChange.emit(id);
   // }
+  toggleGoToPage(): void {
+    this.showGoToPage = !this.showGoToPage;
+    if (this.showGoToPage) {
+      this.goToPageInput = '';
+      setTimeout(() => {
+        const input = document.querySelector('.go-to-page-input') as HTMLInputElement;
+        input?.focus();
+      }, 0);
+    }
+  }
 
+  onGoToPageChange(): void {
+    const pageNumber = parseInt(this.goToPageControl.value, 10);
+    if (!isNaN(pageNumber) && pageNumber >= 1 && pageNumber <= this.totalPages) {
+      this.goToPage(pageNumber);
+      this.showGoToPage = false;
+      // this.goToPageControl.setValue('');
+    }
+  }
+  onGoToPageKeydown(event: KeyboardEvent): void {
+    if (event.key === 'Enter') {
+      this.onGoToPageChange();
+    } else if (event.key === 'Escape') {
+      this.showGoToPage = false;
+      this.goToPageControl.setValue('');
+    }
+  }
   onRowClick(row: any): void {
     const id = this.getFirstAvailableKey(row, [COLUMN_ID.STUDY_ID, COLUMN_ID.CALCULATION_ID]);
 
@@ -87,6 +152,19 @@ export class
       this.rowChange.emit(id);
     }
   }
+  private formatPageSizeOptions(): void {
+    this.pageSizeOptionsFormatted = this.pageSizeOptions.map(size => ({
+      id: size.toString(),
+      name: size.toString()
+    }));
+  }
+
+  onItemsPerPageChange(selected: IdName): void {
+    const newSize = parseInt(selected.id, 10);
+    this.itemsPerPage = newSize;
+    this.itemsPerPageChange.emit(newSize);
+  }
+
   getVisiblePages(): (number | string)[] {
     const pages: (number | '...')[] = [];
     const total = this.totalPages;
@@ -194,5 +272,15 @@ export class
 
   displayStatus(status: Status): string {
     return displayStatus[status] ?? '';
+  }
+  getItemRangeText(): string {
+    if (this.totalItems === 0) {
+      return '0 items';
+    }
+
+    const startItem = (this.currentPage - 1) * this.itemsPerPage + 1;
+    const endItem = Math.min(this.currentPage * this.itemsPerPage, this.totalItems);
+
+    return `${startItem}–${endItem} of ${this.totalItems} items`;
   }
 }
