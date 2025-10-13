@@ -129,6 +129,20 @@ export class PipingDataComponent {
   ngOnInit() {
     this.loadSessionData();
     this.observeSequenceFlowChanges();
+    this.pipingSizeOptions = [
+      { id: '1', name: '1"' },
+      { id: '2', name: '2"' },
+      { id: '3', name: '3"' },
+      { id: '4', name: '4"' },
+      { id: '6', name: '6"' },
+    ];
+
+    // Mock piping class options
+    this.pipingClassOptions = [
+      { id: 'class1', name: 'Class 1' },
+      { id: 'class2', name: 'Class 2' },
+      { id: 'class3', name: 'Class 3' },
+    ];
     Promise.all([
       this.loadPipingSizeOptions(),
       this.loadPipingClassOptions()
@@ -139,6 +153,8 @@ export class PipingDataComponent {
         this.initializeDefaultForm();
       }
     });
+    this.isPipingReady = true;
+
   }
 
   ngOnDestroy() {

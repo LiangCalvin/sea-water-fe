@@ -5,7 +5,8 @@
                 <div class="header-content">
                     <h1 class="page-title">All Studies ({{ totalItems }})</h1>
                 </div>
-                <app-button [type]="'primary'" [width]="'auto'" [class]="'btn-text'" (click)="onCreateNewStudy()">
+                <app-button [type]="'primary'" [width]="'auto'" [class]="'btn-text'" (click)="onCreateNewStudy()"
+                    onKeyPress="">
                     Create Study
                 </app-button>
             </div>
