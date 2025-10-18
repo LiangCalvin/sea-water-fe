@@ -158,3 +158,9 @@
   color: #666;
   pointer-events: none;
 }
+
+.button-group {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
